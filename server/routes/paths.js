@@ -6,7 +6,3 @@ export const ABA_PATH = {
 	QR_IMAGE: 'payments/generate-qr',
 	LINK_CARD: 'cof/initial'
 }
-
-return  {
-	ABA_PATH
-}
