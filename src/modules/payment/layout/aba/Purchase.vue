@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import {  ref } from 'vue'
 import type { FormInstance } from 'element-plus'
-import { loadPayway } from '@/app/utils/payway'
 import type { PaywayABA, Transaction } from '@/modules/payment/types/aba'
 import {
 	createPayment,
@@ -49,7 +48,6 @@ const ruleForm = ref<PaywayABA>({
 	view_type: 'popup',
 	// payment_option: 'abapay_khqr'
 })
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const qrForm = ref<any>({
 	req_time: '20250222152210',
 	merchant_id: 'ec463980',
@@ -78,19 +76,9 @@ const qrForm = ref<any>({
 const ruleFormRef = ref<FormInstance>()
 const hash = ref('')
 const qrImage = ref()
-const payway = ref()
 const dataResp = ref<object>()
 const rateXML = ref()
 const openDialog = ref(false)
-
-onMounted(async () => {
-	try {
-		payway.value = await loadPayway()
-		console.log(payway.value)
-	} catch (error) {
-		console.error(error)
-	}
-})
 
 const submitForm = async () => {
 	if (!ruleFormRef.value) return
