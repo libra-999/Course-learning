@@ -49,7 +49,8 @@ const ruleForm = ref<PaywayABA>({
 	view_type: 'popup',
 	// payment_option: 'abapay_khqr'
 })
-const qrForm = ref<object>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const qrForm = ref<any>({
 	req_time: '20250222152210',
 	merchant_id: 'ec463980',
 	tran_id:
