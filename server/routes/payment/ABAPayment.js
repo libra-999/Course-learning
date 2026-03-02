@@ -1,26 +1,17 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import crypto from 'crypto'
 import axios from 'axios'
+import { ABA_PATH as ABA_PAYWAY_PATHS } from '../paths.js'
+import { generateHmac } from '../../utils/cryptoUtil.js'
 
 dotenv.config()
-const router = express.Router();
+const router = express.Router()
 // eslint-disable-next-line no-undef
-const API_URL = process.env.ABA_URL;
+const API_URL = process.env.ABA_URL
 // eslint-disable-next-line no-undef
 const API_KEY = process.env.ABA_API_KEY
 
-
 // static path payway of aba
-export const ABA_PAYWAY_PATHS = {
-	TRANSACTION: 'payments/check-transaction-2',
-	PURCHASE: 'payments/purchase',
-	DETAIL_TRANSACTION: 'payments/transaction-detail',
-	EXCHANGE_RATE: 'exchange-rate',
-	QR_IMAGE: 'payments/generate-qr',
-	LINK_CARD: 'cof/initial'
-}
-
 router.post('/api/create-payment', async (req, resp) => {
 	const data = req.body
 	const dataToHash =
@@ -34,10 +25,7 @@ router.post('/api/create-payment', async (req, resp) => {
 		data.email +
 		data.phone +
 		data.currency
-	data.hash = crypto
-		.createHmac('sha512', API_KEY)
-		.update(dataToHash)
-		.digest('base64')
+	data.hash = generateHmac(dataToHash, API_KEY)
 	// resp.send(data)
 	try {
 		const payment = await axios.post(
@@ -53,16 +41,13 @@ router.post('/api/create-payment', async (req, resp) => {
 router.post('/api/check-transaction', async (req, resp) => {
 	const data = req.body
 	const dataToHash = data.req_time + data.merchant_id + data.tran_id
-	data.hash = crypto
-		.createHmac('sha512', API_KEY)
-		.update(dataToHash)
-		.digest('base64')
+	data.hash = generateHmac(dataToHash, API_KEY)
 	try {
 		const checkTrans = await axios.post(
 			`${API_URL}/${ABA_PAYWAY_PATHS.TRANSACTION}`,
 			data,
 		)
-		resp.status(200).json(checkTrans.data);
+		resp.status(200).json(checkTrans.data)
 	} catch (error) {
 		resp.status(200).json(error)
 	}
@@ -71,10 +56,7 @@ router.post('/api/check-transaction', async (req, resp) => {
 router.post('/api/check-rate', async (req, resp) => {
 	const data = req.body
 	const dataToHash = data.req_time + data.merchant_id
-	data.hash = crypto
-		.createHmac('sha512', API_KEY)
-		.update(dataToHash)
-		.digest('base64')
+	data.hash = generateHmac(dataToHash, API_KEY)
 	try {
 		const checkRate = await axios.post(
 			`${API_URL}/${ABA_PAYWAY_PATHS.EXCHANGE_RATE}`,
@@ -106,31 +88,22 @@ router.post('/api/generate-qr', async (req, resp) => {
 		data.payout +
 		data.lifetime +
 		data.qr_image_template
-	data.hash = crypto
-		.createHmac('sha512', API_KEY)
-		.update(dataToHash)
-		.digest('base64')
-
-	// console.log(data.hash)
+	data.hash = generateHmac(dataToHash, API_KEY)
 	try {
 		const genQR = await axios.post(
 			`${API_URL}/${ABA_PAYWAY_PATHS.QR_IMAGE}`,
 			data,
 		)
 		resp.status(200).json(genQR.data)
-	}catch (error){
+	} catch (error) {
 		resp.status(200).json(error)
 	}
-
 })
 
 router.post('/api/link-card', async (req, resp) => {
 	const data = req.body
-	const dataToHash =  data.merchant_id + data.ctid + data.return_param
-	data.hash = crypto
-		.createHmac('sha512', API_KEY)
-		.update(dataToHash)
-		.digest('base64')
+	const dataToHash = data.merchant_id + data.ctid + data.return_param
+	data.hash = generateHmac(dataToHash, API_KEY)
 	try {
 		const link_card = await axios.post(
 			`${API_URL}/${ABA_PAYWAY_PATHS.LINK_CARD}`,
@@ -142,4 +115,4 @@ router.post('/api/link-card', async (req, resp) => {
 	}
 })
 
-export default router;
+export default router

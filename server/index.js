@@ -1,8 +1,9 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
-import ABAPayment from './payment/ABAPayment.js'
-import StripPayment from './payment/StripPayment.js'
+import ABAPayment from './routes/payment/ABAPayment.js'
+import StripPayment from './routes/payment/StripPayment.js'
+import CryptoPayment from './routes/payment/CryptoPayment.js'
 
 const app = express();
 app.use(cors())
@@ -11,5 +12,6 @@ app.use(bodyParser.json())
 //  Router Feature
 app.use("/aba", ABAPayment)
 app.use("/stripe", StripPayment)
+app.use("/crypto", CryptoPayment)
 
 app.listen(8900)

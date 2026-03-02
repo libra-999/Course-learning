@@ -20,6 +20,7 @@ export default defineConfig([
 	{
 		rules: {
 			'vue/multi-word-component-names': 'off', // uncheck multiple name
+			'@typescript-eslint/no-explicit-any': 'off'
 		},
 	},
 ])
