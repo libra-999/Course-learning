@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import axios from 'axios'
-import { ABA_PATH as ABA_PAYWAY_PATHS } from '../paths.js'
+import { ABA_PATH } from '../paths.js'
 import { generateHmac } from '../../utils/cryptoUtil.js'
 
 dotenv.config()
@@ -29,7 +29,7 @@ router.post('/api/create-payment', async (req, resp) => {
 	// resp.send(data)
 	try {
 		const payment = await axios.post(
-			`${API_URL}/${ABA_PAYWAY_PATHS.PURCHASE}`,
+			`${API_URL}/${ABA_PATH.PURCHASE}`,
 			data,
 		)
 		resp.status(200).json(payment.data)
@@ -44,7 +44,7 @@ router.post('/api/check-transaction', async (req, resp) => {
 	data.hash = generateHmac(dataToHash, API_KEY)
 	try {
 		const checkTrans = await axios.post(
-			`${API_URL}/${ABA_PAYWAY_PATHS.TRANSACTION}`,
+			`${API_URL}/${ABA_PATH.TRANSACTION}`,
 			data,
 		)
 		resp.status(200).json(checkTrans.data)
@@ -59,7 +59,7 @@ router.post('/api/check-rate', async (req, resp) => {
 	data.hash = generateHmac(dataToHash, API_KEY)
 	try {
 		const checkRate = await axios.post(
-			`${API_URL}/${ABA_PAYWAY_PATHS.EXCHANGE_RATE}`,
+			`${API_URL}/${ABA_PATH.EXCHANGE_RATE}`,
 			data,
 		)
 		resp.status(200).json(checkRate.data)
@@ -91,7 +91,7 @@ router.post('/api/generate-qr', async (req, resp) => {
 	data.hash = generateHmac(dataToHash, API_KEY)
 	try {
 		const genQR = await axios.post(
-			`${API_URL}/${ABA_PAYWAY_PATHS.QR_IMAGE}`,
+			`${API_URL}/${ABA_PATH.QR_IMAGE}`,
 			data,
 		)
 		resp.status(200).json(genQR.data)
@@ -106,7 +106,7 @@ router.post('/api/link-card', async (req, resp) => {
 	data.hash = generateHmac(dataToHash, API_KEY)
 	try {
 		const link_card = await axios.post(
-			`${API_URL}/${ABA_PAYWAY_PATHS.LINK_CARD}`,
+			`${API_URL}/${ABA_PATH.LINK_CARD}`,
 			data,
 		)
 		resp.status(200).json(link_card.data)
