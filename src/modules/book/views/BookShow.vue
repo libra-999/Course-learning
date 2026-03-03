@@ -21,7 +21,6 @@ const getData = async () => {
         dataBook.value = resp.items || [];
         totals.value = resp.totalItems 
     } catch (error) {
-        Promise.reject(error);
         console.error(error)
     } finally {
         loading.value = false;

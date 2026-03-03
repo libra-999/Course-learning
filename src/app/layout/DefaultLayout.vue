@@ -7,7 +7,7 @@
     <nav>
         <RouterLink class="text-white border-2 rounded-sm bg-blue-400 w-max p-2 mx-2" to="/test">Test</RouterLink>
         <RouterLink class=" text-white border-2 rounded-sm bg-blue-400 w-max p-2 mx-2" to="/books">Book Store</RouterLink>
-        <RouterLink class=" text-white border-2 rounded-sm bg-blue-400 w-max p-2 mx-2" to="/payment">Crypto</RouterLink>
+        <RouterLink class=" text-white border-2 rounded-sm bg-blue-400 w-max p-2 mx-2" to="/payment">Payment</RouterLink>
     </nav>
     <RouterView />
 </template>

@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory, type Router } from 'vue-router'
 import PaymentLayout from '@/modules/payment/layout/PaymentLayout.vue'
+import CryptoPayment from '@/modules/payment/layout/crypto/CryptoPayment.vue'
+import DefaultLayout from '@/app/layout/DefaultLayout.vue'
+import BookStoreDefault from '@/modules/book/layout/BookStoreDefault.vue'
+import TestDefault from '@/modules/test/layout/TestDefault.vue'
 
 const route: Router = createRouter({
 	history: createWebHistory(),
@@ -7,21 +11,21 @@ const route: Router = createRouter({
 		{
 			name: 'home',
 			path: '/',
-			component: () => import('@/app/layout/DefaultLayout.vue'),
+			component: DefaultLayout,
 		},
 		{
 			path: '/books',
 			name: 'Book Store',
-			component: () => import('@/modules/book/layout/BookStoreDefault.vue'),
+			component: BookStoreDefault
 		},
 		{
 			path: '/test',
 			name: 'Testing',
-			component: () => import('@/modules/test/layout/TestDefault.vue'),
+			component: TestDefault
 		},
 		{
 			path: '/payment',
-			name: 'Crytpo',
+			name: 'Payment',
 			component: PaymentLayout,
 			children: [
 				{
@@ -31,6 +35,10 @@ const route: Router = createRouter({
 				{
 					path: 'strip',
 					component: () => import('@/modules/payment/layout/strip/Purchase.vue')
+				},
+				{
+					path: 'crypto',
+					component: CryptoPayment
 				}
 			]
 		}

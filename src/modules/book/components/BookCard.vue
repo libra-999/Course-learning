@@ -20,7 +20,6 @@ const getBook = async (id : string) =>{
         const detailBook = await viewBook(id);
         data.value = detailBook 
     }catch(error){
-        await Promise.reject(error)
         console.log(error);
     }finally {
         loading.value = false
