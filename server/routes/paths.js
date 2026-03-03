@@ -8,10 +8,5 @@ export const ABA_PATH = {
 }
 
 export const NOWPAYMENT_PATH = {
-	INVOICE : 'invoice'
-}
-
-return  {
-	ABA_PATH,
-	NOWPAYMENT_PATH
+	INVOICE: 'invoice'
 }
