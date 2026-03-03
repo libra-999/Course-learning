@@ -6,3 +6,12 @@ export const ABA_PATH = {
 	QR_IMAGE: 'payments/generate-qr',
 	LINK_CARD: 'cof/initial'
 }
+
+export const NOWPAYMENT_PATH = {
+	INVOICE : 'invoice'
+}
+
+return  {
+	ABA_PATH,
+	NOWPAYMENT_PATH
+}
