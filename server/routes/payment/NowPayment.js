@@ -18,7 +18,7 @@ router.post("/api/invoice", async (req , resp) => {
 				'x-api-key':  SECRET_KEY
 			}
 		});
-		if (invoiceReq.status === 201) {
+		if (invoiceReq.status === 200) {
 			return resp.send(invoiceReq.data)
 		}
 	}catch (error){
