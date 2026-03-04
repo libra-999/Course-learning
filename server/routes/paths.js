@@ -8,5 +8,6 @@ export const ABA_PATH = {
 }
 
 export const NOWPAYMENT_PATH = {
-	INVOICE: 'invoice'
+	INVOICE: 'invoice',
+	PAYMENT: 'payment'
 }

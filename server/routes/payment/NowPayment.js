@@ -25,5 +25,19 @@ router.post("/api/invoice", async (req , resp) => {
 		return error.response.data
 	}
 })
-
+router.post("/api/payment", async (req , resp) => {
+	const data = req.body;
+	try {
+		const paymentReq = await axios.post(`${URL_SERVER}/${NOWPAYMENT_PATH.PAYMENT}`, data , {
+			headers: {
+				'x-api-key':  SECRET_KEY
+			}
+		});
+		if (paymentReq.status === 201) {
+			return resp.send(paymentReq.data)
+		}
+	}catch (error){
+		return error.response.data
+	}
+})
 export default router;
