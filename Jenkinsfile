@@ -35,7 +35,7 @@ pipeline {
                 echo "=== Build admin image ==="
                 script {
                      try {
-                        dockerBuildAndPush("vue-test",APP_IMAGE,env.VERSION)
+                        dockerBuildAndPush(APP_IMAGE,env.VERSION)
                         echo "✅ push successfully : )"
                      }catch(Exception error) {
                         env.EXCEPTION_MSG = error.toString()
