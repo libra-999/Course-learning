@@ -1,5 +1,3 @@
-import org.joda.time.LocalDateTime
-
 pipeline {
     agent any
     environment {
