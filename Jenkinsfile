@@ -33,6 +33,12 @@ pipeline {
         stage('Build & Push Docker Images') {
             steps {
                 echo "=== Build admin image ==="
+                agent {
+                    docker {
+                            image 'docker:24-cli'
+                            args '-v /var/run/docker.sock:/var/run/docker.sock --user=root'
+                    }
+                }
                 script {
                      try {
                         dockerBuildAndPush(APP_IMAGE,env.VERSION)
