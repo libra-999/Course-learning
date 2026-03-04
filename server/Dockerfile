@@ -1,10 +1,9 @@
-# image for node
-FROM ubuntu:latest
-# create directory to store service
-WORKDIR /app/api
+FROM node:22-alpine
+WORKDIR /app/server
+RUN npm install -g pnpm
 
-# install dependency
-
-# env (optional)
-# expose port
-EXPOSE 8900
+COPY package.json pnpm-lock.yml ./
+RUN pnpm install
+COPY . .
+EXPOSE 9800
+CMD ["pnpm", "run" , "dev"]

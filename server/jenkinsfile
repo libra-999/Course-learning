@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        APP_IMAGE  = "xemon99/vue-test"
-        APP = "VUE"
+        APP_IMAGE  = "xemon99/vue-api"
+        APP = "VUE_API"
         EXCEPTION_MSG = ""
     }
     // ** building stages **
@@ -35,7 +35,7 @@ pipeline {
                 echo "=== Build admin image ==="
                 script {
                      try {
-                        dockerBuildAndPush("vue-test",APP_IMAGE,env.VERSION)
+                        dockerBuildAndPush("vue-api",APP_IMAGE,env.VERSION)
                         echo "✅ push successfully : )"
                      }catch(Exception error) {
                         env.EXCEPTION_MSG = error.toString()
