@@ -1,0 +1,92 @@
+import org.joda.time.LocalDateTime
+
+pipeline {
+    agent any
+    environment {
+        APP_IMAGE  = "xemon99/vue-test"
+        APP = "VUE"
+        EXCEPTION_MSG = ""
+    }
+    // ** building stages **
+    stages {
+        // ** checkout the Jenkinsfile **
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        // ** check tag if it has or not **
+        stage('Validate Tag') {
+            steps {
+                echo "=== Validate Tag ==="
+                script {
+                    try {
+                        env.VERSION = getValidTag()
+                        echo "✅ Release tag detected: ${env.VERSION}"
+                    } catch (Exception error) {
+                        env.EXCEPTION_MSG = error.toString()
+                        throw error
+                    }
+
+                }
+            }
+        }
+        // ** build to artifact and push to docker hub **
+        stage('Build & Push Docker Images') {
+            steps {
+                echo "=== Build admin image ==="
+                script {
+                     try {
+                        dockerBuildAndPush("vue-test",SYSTEM_IMAGE,env.VERSION)
+                        echo "✅ push successfully : )"
+                     }catch(Exception error) {
+                        env.EXCEPTION_MSG = error.toString()
+                        throw error
+                     }
+                }
+            }
+        }
+    }
+
+}
+
+// ** validation tag repo **
+def getValidTag() {
+    def tag = sh(
+        script: "git describe --tags --exact-match 2>/dev/null || echo ''",
+        returnStdout: true
+    ).trim()
+    if (!tag) {
+        error("❌ No tag found on this commit. Docker build requires a release tag.")
+    }
+//     ex: prod-v0.0.2 or dev-v0.0.2 or uat-v0.0.2 , ex: if tag 'v0.2.1' it mean release new version
+    if ( tag ==~ /^prod-v?\d+\.\d+\.\d+$/ || tag ==~ /^uat-v?\d+\.\d+\.\d+$/ || tag ==~ /^dev-v?\d+\.\d+\.\d+$/ || tag ==~ /^v?\d+\.\d+\.\d+$/) {
+        return tag
+    }else {
+        error("❌ Invalid tag format: ${tag}")
+    }
+}
+// ** docker login and push to docker hub **
+def dockerBuildAndPush(imageName, version) {
+    withCredentials([
+        usernamePassword(
+            credentialsId: 'DOCKER_HUB',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )
+    ]) {
+            sh """
+                    set -e
+                    echo "🐳 Building ${imageName}:${version}"
+                    echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+
+                    # single platform
+                     docker build -t ${imageName}:${version} .
+                    # tag same image as latest version
+                     docker tag ${imageName}:${version} ${imageName}:lts
+                     docker push ${imageName}:${version}
+                     docker push ${imageName}:lts
+                    """
+
+    }
+}
