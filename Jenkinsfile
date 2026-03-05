@@ -31,12 +31,6 @@ pipeline {
         }
         // ** build to artifact and push to docker hub **
         stage('Build & Push Docker Images') {
-            agent {
-                docker {
-                    image 'docker:24-cli'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock --user=root'
-                }
-            }
             steps {
                 echo "=== Build admin image ==="
                 script {
