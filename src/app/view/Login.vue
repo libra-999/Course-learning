@@ -62,7 +62,7 @@ const submit = () => {
 			type: 'success',
 		})
 		router.replace({
-			path: '/'
+			path: '/',
 		})
 	} else {
 		userStore.logout()
@@ -75,43 +75,45 @@ const submit = () => {
 </script>
 
 <template>
-	<div class="flex container flex-col w-[400px] justify-center px-6 py-12 lg:px-8">
-		<div class="sm:mx-auto sm:w-full sm:max-w-sm">
-			<img
-				src="https://cdn.dribbble.com/userupload/19964294/file/original-aa4499649e9791089dd956f98b8032d7.jpg"
-				alt="Your Company"
-				class="mx-auto object-cover h-[60px] w-auto bg-transparent"
-			/>
-			<h2 class="text-center mt-3 text-2xl/9 font-bold">WHO ARE YOU?</h2>
-		</div>
-		<div class="mt-2 sm:mx-auto sm:w-full sm:max-w-sm">
-			<el-form ref="userRefInstance" :rules="userRule" :model="userRef">
-				<el-form-item prop="username">
-					<label class="font-bold">Username</label>
-					<el-input
-						v-model="userRef.username"
-						name="username"
-						type="text"
-						placeholder="please input your name"
-					/>
-				</el-form-item>
-				<el-form-item prop="password">
-					<label class="font-bold">Password</label>
-					<el-input
-						v-model="userRef.password"
-						type="password"
-						name="password"
-						show-password
-						placeholder="please input your password"
-					/>
-				</el-form-item>
-				<el-form-item>
-					<el-checkbox v-model="userRef.isRemember"
-						>Remember user?
-					</el-checkbox>
-				</el-form-item>
-				<ButtonGlobal @click.prevent="submit" value="Submit" />
-			</el-form>
+	<div class="flex place-items-center h-full">
+		<div class="container flex-col w-[400px] px-6 py-12 lg:px-8">
+			<div class="sm:mx-auto sm:w-full sm:max-w-sm">
+				<img
+					src="https://cdn.dribbble.com/userupload/19964294/file/original-aa4499649e9791089dd956f98b8032d7.jpg"
+					alt="Your Company"
+					class="mx-auto object-cover h-[60px] w-auto bg-transparent"
+				/>
+				<h2 class="text-center mt-3 text-2xl/9 font-bold">WHO ARE YOU?</h2>
+			</div>
+			<div class="mt-2 sm:mx-auto sm:w-full sm:max-w-sm">
+				<el-form ref="userRefInstance" :rules="userRule" :model="userRef">
+					<el-form-item prop="username">
+						<label class="font-bold">Username</label>
+						<el-input
+							v-model="userRef.username"
+							name="username"
+							type="text"
+							placeholder="please input your name"
+						/>
+					</el-form-item>
+					<el-form-item prop="password">
+						<label class="font-bold">Password</label>
+						<el-input
+							v-model="userRef.password"
+							type="password"
+							name="password"
+							show-password
+							placeholder="please input your password"
+						/>
+					</el-form-item>
+					<el-form-item>
+						<el-checkbox v-model="userRef.isRemember"
+							>Remember user?
+						</el-checkbox>
+					</el-form-item>
+					<ButtonGlobal @click.prevent="submit" value="Submit" />
+				</el-form>
+			</div>
 		</div>
 	</div>
 </template>
