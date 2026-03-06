@@ -49,7 +49,8 @@ const userRule: FormRules<User> = {
 }
 
 const submit = () => {
-	if (!userRef.value) return
+	if (!userRefInstance.value) return
+	userRefInstance.value.validate()
 	const hash = createHash(userRef.value.password)
 	if (
 		dumpData.value.password === hash &&
@@ -74,9 +75,7 @@ const submit = () => {
 </script>
 
 <template>
-	<div
-		class="flex container flex-col w-[400px] justify-center px-6 py-12 lg:px-8"
-	>
+	<div class="flex container flex-col w-[400px] justify-center px-6 py-12 lg:px-8">
 		<div class="sm:mx-auto sm:w-full sm:max-w-sm">
 			<img
 				src="https://cdn.dribbble.com/userupload/19964294/file/original-aa4499649e9791089dd956f98b8032d7.jpg"
