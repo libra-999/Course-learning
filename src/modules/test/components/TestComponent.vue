@@ -20,7 +20,7 @@ const handleClickAdd = () => {
 </script>
 
 <template>
-	<div class="flex justify-center items-center flex-col">
+	<div class="flex justify-center flex-col">
 		<div class="flex justify-center align-middle">
 			<span
 				v-for="(key, index) in boxValue"

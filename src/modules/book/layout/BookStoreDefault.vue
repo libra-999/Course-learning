@@ -3,7 +3,7 @@ import BookShow from '../views/BookShow.vue';
 
 </script>
 <template>
-    <div class="book-layout">
+    <div class="book-layout h-full flex place-items-center">
         <BookShow/>
     </div>
 </template>

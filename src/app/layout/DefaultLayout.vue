@@ -32,18 +32,17 @@ try {
 }
 </script>
 <template>
-	<div class="w-max px-3 py-5 text-[#112a46]">
+	<div class="w-[100%] px-3 py-5  text-[#112a46]">
 		<div
-			class="mx-auto w-full py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent"
-		>
-			<p class="uppercase font-bold text-center text-sm mb-3">
+			class="mx-auto lg:w-[85%] xl:w-[70%]  sm:w-[100%]  md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent">
+			<p class="uppercase font-bold lg:text-center  text-start sm:text-start text-sm mb-3">
 				Vue 3 Learning Tutorial
 			</p>
-			<p class="uppercase text-center text-5xl font-bold">
+			<p class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold">
 				From Zero to Expert
 			</p>
 		</div>
-		<div class="w-[1000px] mt-5 grid grid-cols-3 gap-4 overflow-hidden">
+		<div class="lg:w-[85%] xl:w-[70%] md:w-[95%] sm:w-[100%] mx-auto mt-5 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:grid-cols-4 gap-4 overflow-hidden">
 			<!-- Test -->
 			<Cardbox
 				title="Test"
@@ -70,4 +69,5 @@ try {
 	<RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
