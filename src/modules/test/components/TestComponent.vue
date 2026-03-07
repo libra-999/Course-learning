@@ -22,13 +22,15 @@ const handleClickAdd = () => {
 <template>
 	<div class="flex justify-center flex-col">
 		<div class="flex justify-center align-middle">
-			<span
-				v-for="(key, index) in boxValue"
-				:key="index"
-				class="bg-center bg-blue-500 w-8 p-2 mx-2 rounded-xl"
-			>
-				{{ key }}</span
-			>
+			<KeepAlive>
+				<span
+					v-for="(key, index) in boxValue"
+					:key="index"
+					class="bg-center bg-blue-500 w-8 p-2 mx-2 rounded-xl"
+				>
+					{{ key }}</span
+				>
+			</KeepAlive>
 		</div>
 		<br />
 		<ButtonGlobal

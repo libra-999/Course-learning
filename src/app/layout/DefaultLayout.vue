@@ -2,11 +2,12 @@
 import { decrypt } from '@/app/utils/hash.ts'
 import { loginStore, type User } from '@/app/store/auth.ts'
 import { ref } from 'vue'
-import route from '@/route'
+import route from '@/app/route'
 import Cardbox from '@/app/components/card/Cardbox.vue'
 import { DataLine, DocumentAdd } from '@element-plus/icons-vue'
 import Timeline, { type Activities } from '@/app/components/card/Timeline.vue'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import { timelineStore } from '@/app/store/line.ts'
 
 const checkLocalstorage = localStorage.getItem('userLogin')
 const userData = ref<User>({ username: '', password: '' })
@@ -35,6 +36,7 @@ try {
 	router.back()
 }
 // timeline activity
+const timeStore = timelineStore()
 const activities: Activities[] = [
 	{
 		content: 'Learn pattern code',
@@ -47,27 +49,24 @@ const activities: Activities[] = [
 		color: 'blue',
 	},
 ]
-
 </script>
 <template>
 	<div class="w-[100%] flex gap-1 place-items-center px-3 py-5 text-[#112a46]">
 		<!--	implement timeline studied-->
 		<div class="w-[20%] hidden 2xl:flex 2xl:flex-col 2xl:items-end 2xl:justify-center">
-			<ButtonGlobal @click="isTimelineShow = true" value="Input Timeline" class="bg-gray-800 text-white hover:bg-gray-600" />
+			<ButtonGlobal
+				@click="isTimelineShow = true"
+				value="Input Timeline"
+				class="bg-gray-800 text-white hover:bg-gray-600"
+			/>
 			<Timeline :activity="activities" />
 		</div>
 		<div class="w-[80%]">
-			<div
-				class="mx-auto lg:w-[100%] xl:w-[80%] sm:w-[100%] md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent"
-			>
-				<p
-					class="uppercase font-bold lg:text-center text-start sm:text-start text-sm mb-3"
-				>
+			<div class="mx-auto lg:w-[100%] xl:w-[80%] sm:w-[100%] md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent">
+				<p class="uppercase font-bold lg:text-center text-start sm:text-start text-sm mb-3">
 					Vue 3 Learning Tutorial
 				</p>
-				<p
-					class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold"
-				>
+				<p class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold">
 					From Zero to Expert
 				</p>
 			</div>
@@ -103,21 +102,36 @@ const activities: Activities[] = [
 	<el-dialog width="500" v-model="isTimelineShow" :show-close="true">
 		<p class="text-2xl font-bold">Timeline Add</p>
 		<el-form class="mt-6 font-bold w-full">
-			<el-form-item >
-				<span class="mr-4">Date Timeline</span>
-				<el-date-picker type="date" placeholder="Select date"/>
-			</el-form-item>
-			<el-form-item  >
-				<span class="mr-4">Color</span>
-				<el-color-picker/>
+			<el-form-item
+				style="
+					display: flex;
+					justify-content: space-between;
+					align-content: center;
+				"
+			>
+				<div class="w-[80%]">
+					<span class="mr-4">Date Timeline</span>
+					<el-date-picker type="date" placeholder="Select date" />
+				</div>
+				<div class="w-[15%]">
+					<el-color-picker />
+				</div>
 			</el-form-item>
 			<el-form-item>
 				<span class="mr-4">Content Timeline</span>
-				<el-input placeholder="Please input title" class="w-[100px]" type="textarea" style="width: 240px"/>
+					<el-input
+						placeholder="Please input title"
+						class="w-[100px]"
+						type="textarea"
+						style="width: 240px"
+					/>
 			</el-form-item>
 		</el-form>
+		<ButtonGlobal
+			class="bg-gray-800 text-white hover:bg-gray-600"
+			value="Add"
+		/>
 	</el-dialog>
-
 	<RouterView />
 </template>
 

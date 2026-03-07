@@ -23,7 +23,7 @@ const mode = ref<TimelineProps['mode']>('alternate-reverse')
 			:timestamp="activity.timestamp"
 			class="text-start font-bold font-mono"
 		>
-			{{ activity.content }}
+			<Transition> {{ activity.content }}</Transition>
 		</el-timeline-item>
 	</el-timeline>
 </template>

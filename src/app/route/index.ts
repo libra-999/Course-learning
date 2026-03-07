@@ -6,6 +6,8 @@ import BookStoreDefault from '@/modules/book/layout/BookStoreDefault.vue'
 import TestDefault from '@/modules/test/layout/TestDefault.vue'
 import Login from '@/app/view/Login.vue'
 import { ElMessage } from 'element-plus'
+import PurchaseStrip from '@/modules/payment/layout/strip/Purchase.vue'
+import PurchaseABA from '@/modules/payment/layout/aba/Purchase.vue'
 
 const route: Router = createRouter({
 	history: createWebHistory(),
@@ -42,13 +44,11 @@ const route: Router = createRouter({
 			children: [
 				{
 					path: 'aba',
-					component: () =>
-						import('@/modules/payment/layout/aba/Purchase.vue'),
+					component: () => PurchaseABA,
 				},
 				{
 					path: 'strip',
-					component: () =>
-						import('@/modules/payment/layout/strip/Purchase.vue'),
+					component: () => PurchaseStrip,
 				},
 				{
 					path: 'crypto',

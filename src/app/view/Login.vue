@@ -4,7 +4,7 @@ import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { loginStore, type User } from '@/app/store/auth.ts'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { createHash } from '@/app/utils/hash.ts'
-import route from '@/route'
+import route from '@/app/route'
 
 // dump data
 const dumpData = ref<User>({
