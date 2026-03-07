@@ -88,7 +88,7 @@ onMounted(() => timeStore.load())
 				<p
 					class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold"
 				>
-					From Zero to Expert
+					From Zero to Zero 🤔
 				</p>
 			</div>
 			<div

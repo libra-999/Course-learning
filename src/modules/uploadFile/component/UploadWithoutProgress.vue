@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { UploadFilled } from '@element-plus/icons-vue'
 </script>
 
 <template>
-
+<p> Upload File without progress</p>
 </template>
 
 <style scoped></style>
