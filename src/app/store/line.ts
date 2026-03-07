@@ -2,17 +2,23 @@ import { defineStore } from 'pinia'
 import type { Activities } from '@/app/components/card/Timeline.vue'
 
 export const timelineStore = defineStore('timeline', {
-	state: (): Activities => ({
-		content: '',
-		timestamp: '',
-		color: ''
+	state: () => ({
+		activities: [] as Activities[]
 	}),
 	actions: {
-		isSave(activity: any) {
-			const activityArr = [];
-			localStorage.setItem('timeline', JSON.stringify(activityArr.push(activity)))
+		load (){
+			const timelineStorage = localStorage.getItem('timeline')
+			if (timelineStorage != null) {
+				this.activities = JSON.parse(timelineStorage)
+			}
 		},
-		isUpdate: {},
-		isDelete: {}
+		isSave(activity: Activities) {
+			this.activities.push(activity)
+			localStorage.setItem('timeline', JSON.stringify(this.activities))
+		},
+		delete(id: number) {
+			this.activities.splice(id,1)
+			localStorage.setItem('timeline', JSON.stringify(this.activities))
+		}
 	}
 })

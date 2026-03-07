@@ -20,7 +20,7 @@ const handleClickAdd = () => {
 </script>
 
 <template>
-	<div class="flex justify-center flex-col">
+	<div class="flex flex-col items-center">
 		<div class="flex justify-center align-middle">
 			<KeepAlive>
 				<span
@@ -36,7 +36,7 @@ const handleClickAdd = () => {
 		<ButtonGlobal
 			value="Reset"
 			v-if="count == 20"
-			class="border-2 rounded-md mx-1"
+			class="border-2 rounded-md"
 			@click="handleReset"
 		/>
 		<ButtonGlobal

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { TimelineProps } from 'element-plus'
+import { ElMessage, type TimelineProps } from 'element-plus'
+import { dayMonthFormat } from '@/app/utils/dateFormat.ts'
+import { Delete } from '@element-plus/icons-vue'
+import { timelineStore } from '@/app/store/line.ts'
 
 export interface Activities {
 	content: string
@@ -9,21 +12,32 @@ export interface Activities {
 }
 
 const proActivity = defineProps<{
-	activity: Activities[]
+	activity?: Activities[]
 }>()
 const mode = ref<TimelineProps['mode']>('alternate-reverse')
+const timeline = timelineStore()
+const removeItem = (id: number) => {
+	timeline.delete(id)
+	ElMessage({
+		message: 'Remove timeline',
+		type: 'success',
+	})
+}
 </script>
 
 <template>
-	<el-timeline class="mt-4" :mode="mode">
+	<el-timeline :mode="mode" :v-model="proActivity.activity">
 		<el-timeline-item
-			v-for="(activity, index) in proActivity.activity"
+			v-for="(element, index) in proActivity.activity"
 			:key="index"
-			:color="activity.color"
-			:timestamp="activity.timestamp"
-			class="text-start font-bold font-mono"
+			:color="element.color"
+			:timestamp="dayMonthFormat(element.timestamp)"
+			class="text-start font-bold font-mono hover:rounded-xl focus:border-b-gray-600 duration-100 transition-all py-2"
 		>
-			<Transition> {{ activity.content }}</Transition>
+			<Transition> {{ element.content }}</Transition>
+			<el-icon class="mx-2 opacity-40 hover:opacity-85 duration-100 transition-all cursor-pointer" @click="removeItem(index)">
+				<Delete />
+			</el-icon>
 		</el-timeline-item>
 	</el-timeline>
 </template>
