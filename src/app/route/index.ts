@@ -8,6 +8,7 @@ import Login from '@/app/view/Login.vue'
 import { ElMessage } from 'element-plus'
 import PurchaseStrip from '@/modules/payment/layout/strip/Purchase.vue'
 import PurchaseABA from '@/modules/payment/layout/aba/Purchase.vue'
+import UploadProgressLayout from '@/modules/uploadFile/layout/UploadProgressLayout.vue'
 
 const route: Router = createRouter({
 	history: createWebHistory(),
@@ -55,6 +56,12 @@ const route: Router = createRouter({
 					component: CryptoPayment,
 				},
 			],
+		},
+		{
+			path: '/upload',
+			name: 'Upload',
+			meta: { requireAuth: true },
+			component: UploadProgressLayout,
 		},
 	],
 })

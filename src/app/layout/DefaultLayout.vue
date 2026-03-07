@@ -4,7 +4,7 @@ import { loginStore, type User } from '@/app/store/auth.ts'
 import { onMounted, ref } from 'vue'
 import route from '@/app/route'
 import Cardbox from '@/app/components/card/Cardbox.vue'
-import { DataLine, DocumentAdd } from '@element-plus/icons-vue'
+import { DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
 import Timeline, { type Activities } from '@/app/components/card/Timeline.vue'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { timelineStore } from '@/app/store/line.ts'
@@ -56,31 +56,38 @@ const addTimeline = async () => {
 	timeStore.isSave({ ...timelineModel.value })
 	ElMessage({
 		message: 'Add Successfully!',
-		type: 'success'
+		type: 'success',
 	})
 }
 
 // load timeline
-onMounted(()=> timeStore.load())
-
+onMounted(() => timeStore.load())
 </script>
 <template>
 	<div class="w-[100%] flex gap-1 px-3 py-5 text-[#112a46]">
 		<!--	implement timeline studied-->
-		<div class="w-0 2xl:w-[20%] max-h-[90vh] bg-gray-100 rounded-b-2xl px-2 py-5 hidden 2xl:flex flex-col items-end justify-start overflow-y-auto">
+		<div
+			class="w-0 2xl:w-[20%] max-h-[90vh] bg-gray-100 rounded-b-2xl px-2 py-5 hidden 2xl:flex flex-col items-end justify-start overflow-y-auto"
+		>
 			<ButtonGlobal
 				@click="isTimelineShow = true"
-				value="Input Timeline"
-				class="bg-gray-800  text-white z-100  top-15 hover:bg-gray-600"
+				value="Input now"
+				class="bg-gray-800 text-white z-100 top-15 hover:bg-gray-600"
 			/>
 			<Timeline class="w-full" :activity="timeStore.activities" />
 		</div>
 		<div class="2xl:w-[80%] w-[100%]">
-			<div class="mx-auto lg:w-[100%] xl:w-[80%] sm:w-[100%] md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent">
-				<p class="uppercase font-bold lg:text-center text-start sm:text-start text-sm mb-3">
+			<div
+				class="mx-auto lg:w-[100%] xl:w-[80%] sm:w-[100%] md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent"
+			>
+				<p
+					class="uppercase font-bold lg:text-center text-start sm:text-start text-sm mb-3"
+				>
 					Vue 3 Learning Tutorial
 				</p>
-				<p class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold">
+				<p
+					class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold"
+				>
 					From Zero to Expert
 				</p>
 			</div>
@@ -107,6 +114,13 @@ onMounted(()=> timeStore.load())
 					content="Learned the structure and fields should be have when implement payment feature into project"
 					path="/payment"
 					:icon="DataLine"
+				/>
+				<!-- upload with progress -->
+				<Cardbox
+					title="Upload Files"
+					content="Build a view to upload files with multiple types and loading progress base image uploaded"
+					path="/upload"
+					:icon="UploadFilled"
 				/>
 			</div>
 		</div>
