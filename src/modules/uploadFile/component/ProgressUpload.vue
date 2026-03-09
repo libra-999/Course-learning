@@ -18,7 +18,7 @@ const handleDeleteImage = (fileName: string, index: string) => {
 	<div class="mb-5">
 		<span class="text-5xl font-bold font-mono"> Upload With Progress</span>
 		<el-upload
-			class="mt-5"
+			class="mt-5 custom-upload"
 			drag
 			multiple
 			:show-file-list="false"
@@ -29,7 +29,7 @@ const handleDeleteImage = (fileName: string, index: string) => {
 			</el-icon>
 			<p>
 				Drop directory here or
-				<em class="text-blue-700">click to upload</em>
+				<em class="text-[#213547] font-bold">click to upload</em>
 			</p>
 		</el-upload>
 	</div>
@@ -84,4 +84,8 @@ const handleDeleteImage = (fileName: string, index: string) => {
 	</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.custom-upload .el-upload-dragger) {
+	border: 1px dashed #213547;
+}
+</style>
