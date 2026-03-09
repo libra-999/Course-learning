@@ -1,12 +1,20 @@
+import axios from 'axios'
 
+const SERVER_ADDRESS = import.meta.env.VITE_SERVER_URL
 
-// const SERVER_ADDRESS_RUSTFS = import.meta.env.VITE_RUSTFS_URL
-// const API_KEY = import.meta.env.VITE_RUSTFS_API_KEY
-// const SECRET_KEY = import.meta.env.VITE_RUSTFS_SECRET_KEY
-
-
-export async function createUploadFiles(files: File[]) {
-	// const upload = await axios.post(SERVER_ADDRESS_RUSTFS);
-	console.log(files)
-	// return upload.data
+export async function createUploadFiles(
+	files: FormData,
+	onProgress: (percent: number) => void,
+) {
+	const upload = await axios.post(`${SERVER_ADDRESS}/file/api/upload`, files, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+		onUploadProgress: (event) => {
+			if (!event.total) return
+			const percent = Math.round((event.loaded * 100) / event.total)
+			onProgress(percent)
+		},
+	})
+	return upload.data
 }

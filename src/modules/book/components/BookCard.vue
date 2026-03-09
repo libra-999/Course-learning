@@ -12,7 +12,7 @@ const props = defineProps<{
 const data = ref<object>()
 const dialogDetail = ref(false);
 const loading = ref(false)
-const rating = ref(props.bookData.volumeInfo.ratingsCount);
+const rating = ref(props.bookData.volumeInfo.averageRating);
 const getBook = async (id : string) =>{
     loading.value = true
     dialogDetail.value = true

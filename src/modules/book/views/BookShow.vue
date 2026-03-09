@@ -57,6 +57,7 @@ watch(search, () => {
         </div>
         <div class="overflow-auto flex flex-wrap gap-4 p-3">
             <BookCard v-for="book in dataBook" :key="book.id" :book-data="book" />
+			  <div v-if="dataBook.length === 0" class="w-full h-full text-center"><p class="text-gray-200 font-bold italic">Empty Data Book ... </p></div>
         </div>
         <div class=" flex justify-end mt-4">
             <Pagination :total="totals" :size="size" v-model="page" />

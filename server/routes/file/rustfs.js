@@ -1,0 +1,40 @@
+import express from 'express'
+import dotenv from 'dotenv'
+import multer from 'multer'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+
+dotenv.config()
+const router = express.Router()
+const mulUpload = multer()
+const s3Client = new S3Client({
+	region: "us-east-1",
+	endpoint: "http://192.168.15.50:9000",
+	credentials: {
+		// eslint-disable-next-line no-undef
+		accessKeyId: process.env.RUSTFS_API_KEY,
+		// eslint-disable-next-line no-undef
+		secretAccessKey: process.env.RUSTFS_SECRET_KEY
+	},
+	forcePathStyle: true
+})
+
+
+router.post("/api/upload", mulUpload.single("file"), async (req , resp) => {
+	const file = req.file
+	const bucketFile = {
+		Bucket: 'hrbucket',
+		Key: file.originalname,
+		Body: file.buffer,
+		ContentType: file.mimetype
+	}
+
+	try {
+		const command = new PutObjectCommand(bucketFile);
+		const upload = await s3Client.send(command)
+		resp.status(200).json(upload)
+	}catch (error) {
+		resp.status(500).json((error))
+	}
+})
+
+export default router;
