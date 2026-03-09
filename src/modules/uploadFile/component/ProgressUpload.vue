@@ -5,16 +5,25 @@ import type { UploadItem } from '@/modules/uploadFile/types'
 const prop = defineProps<{
 	pictures: UploadItem[]
 }>()
-const emit = defineEmits(['uploadSubmit'])
+const emit = defineEmits(['uploadSubmit', 'removeImage'])
 const handleEmit = (file: any) => {
 	emit('uploadSubmit', file.file)
+}
+const handleDeleteImage = (fileName: string, index: string) => {
+	emit('removeImage', fileName, index)
 }
 </script>
 
 <template>
 	<div class="mb-5">
 		<span class="text-5xl font-bold font-mono"> Upload With Progress</span>
-		<el-upload class="mt-5" drag multiple :show-file-list="false" :http-request="handleEmit">
+		<el-upload
+			class="mt-5"
+			drag
+			multiple
+			:show-file-list="false"
+			:http-request="handleEmit"
+		>
 			<el-icon class="el-icon--upload">
 				<UploadFilled />
 			</el-icon>
@@ -46,23 +55,27 @@ const handleEmit = (file: any) => {
 			<div
 				class="w-full justify-center gap-x-3 whitespace-nowrap my-5"
 				v-for="file in prop.pictures"
-				:key="file.name"
+				:key="file.id"
 			>
 				<p class="text-start italic overflow-hidden w-full">
 					{{ file.name }}
 				</p>
 				<!-- progress -->
 				<div class="flex justify-between items-center gap-1 w-full">
-					<div class="bg-gray-300 w-[90%] duration-200 transition-all h-2 rounded-2xl ">
+					<div
+						class="bg-gray-300 w-[90%] duration-200 transition-all h-2 rounded-2xl"
+					>
 						<div
 							class="bg-green-500 duration-200 transition-all h-2 rounded-2xl"
 							:style="{ width: file.percent + '%' }"
 						/>
 					</div>
 					<span
-						class="cursor-pointer w-[5%] duration-200 transition-all  text-center"
-						><el-icon size="15" style="font-weight: bolder"
-							><Close /></el-icon
+						class="cursor-pointer w-[5%] duration-200 transition-all text-center"
+						@click="handleDeleteImage(file.name, file.id)"
+					>
+						<el-icon size="15" style="font-weight: bolder"
+							><Close /> </el-icon
 					></span>
 				</div>
 				<p class="text-end w-full">{{ file.percent }}%</p>

@@ -18,3 +18,10 @@ export async function createUploadFiles(
 	})
 	return upload.data
 }
+
+export async function removeFile(fileName: string) {
+	const remove = await axios.post(`${SERVER_ADDRESS}/file/api/delete`, {
+		fileName: fileName // no obeject container , so it is raw body
+	})
+	return remove.data
+}
