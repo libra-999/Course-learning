@@ -30,7 +30,7 @@ const getData = async () => {
 onMounted(() => {
     getData();
 })
-// watch searcn & pagination
+// watch search & pagination
 watch([page ,size], ()=> {
     getData();
 })

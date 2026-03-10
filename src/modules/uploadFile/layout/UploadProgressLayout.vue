@@ -36,7 +36,6 @@ const progressSubmit = async (file: File) => {
 	// assign formData to api
 	const form = new FormData()
 	form.append('file', file) // assign into file
-
 	try {
 		const data = await createUploadFiles(form, (percent: number) => {
 			const item = getItems()

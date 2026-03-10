@@ -1,18 +1,26 @@
-# VUE 3 
+# VUE 3 Document
+
 ## Format the whole project with prettier format by using husky script 
-*_pnpm format
-
+```
+ pnpm format 
+ npm format
+```
 ## Wizard eslint config asking
-*_pnpm create @eslint/config@latest
-
+```
+pnpm create @eslint/config@latest
+```
 ## Prevent prettier conflict with eslint
-*_pnpm add -D eslint-config-prettier
+```
+pnpm add -D eslint-config-prettier
+```
 
-# NODE
-## Packages
+# NODE PACKAGE
+### Installation dependencies that most common to used
+```
 pnpm add dotenv
 pnpm add express
 pnpm add cors
 pnpm add body-parser
+```
 
 

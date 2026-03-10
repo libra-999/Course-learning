@@ -12,7 +12,7 @@ export async function createUploadFiles(
 		},
 		onUploadProgress: (event) => {
 			if (!event.total) return
-			const percent = Math.round((event.loaded * 100) / event.total)
+			const percent = Math.round((event.loaded * 100) / event.total) // decimal output
 			onProgress(percent)
 		},
 	})
@@ -21,7 +21,7 @@ export async function createUploadFiles(
 
 export async function removeFile(fileName: string) {
 	const remove = await axios.post(`${SERVER_ADDRESS}/file/api/delete`, {
-		fileName: fileName // no obeject container , so it is raw body
+		fileName: fileName, // no object container , so it is raw body
 	})
 	return remove.data
 }
