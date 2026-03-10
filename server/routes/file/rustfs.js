@@ -22,7 +22,7 @@ const s3Client = new S3Client({
 
 router.post("/api/upload", mulUpload.single("file"), async (req , resp) => {
 	const file = req.file
-	const fileNameHash = generateSign(file.originalname)
+	const fileNameHash = generateSign(file.buffer) // even same file name but different content
 	const bucketFile = {
 		Bucket: 'hrbucket',
 		Key: fileNameHash ,

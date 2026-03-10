@@ -19,7 +19,7 @@ export const UploadRuleForm: UploadRule[] = [
 	},
 	{
 		label: 'document',
-		minSize: 5 * 1024 * 1024,
+		minSize: 5 * 1024,
 		maxSize: 100 * 1024 * 1024,
 		types: [
 			'application/vnd.openxmlformats-officedocument.presentationml.presentation',
@@ -27,6 +27,7 @@ export const UploadRuleForm: UploadRule[] = [
 			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			'application/vnd.ms-wpl',
 			'application/msword',
+			'text/rtf'
 		],
 	},
 	{
