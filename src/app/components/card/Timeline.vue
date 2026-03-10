@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { ElMessage, type TimelineProps } from 'element-plus'
 import { dayMonthFormat } from '@/app/utils/dateFormat.ts'
 import { Delete } from '@element-plus/icons-vue'
-import { timelineStore } from '@/app/store/line.ts'
+import { timelineStore } from '@/modules/store/line.ts'
 
 export interface Activities {
 	content: string

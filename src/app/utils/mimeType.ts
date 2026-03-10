@@ -1,5 +1,5 @@
 // file validation
-import type { UploadRule } from '@/modules/uploadFile/types'
+import type { UploadRule } from '@/modules/types/uploadFile'
 
 export type UploadErrorResp = {
 	error?: string // easy to apply with ElMessage
