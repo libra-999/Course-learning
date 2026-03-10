@@ -21,7 +21,7 @@ sever/
         └── CryptoPayment.js
         └── NowPayment.js
         └── StripPayment.js
-    └── paths.js # controll all routes in file & payment
+    └── paths.js # controll all routes
 ├── utils
     └── cryptoUtil.js
 # App

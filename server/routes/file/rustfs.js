@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import multer from 'multer'
 import {  DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { generateSign } from '../../utils/cryptoUtil.js'
 
 dotenv.config()
 const router = express.Router()
@@ -21,9 +22,10 @@ const s3Client = new S3Client({
 
 router.post("/api/upload", mulUpload.single("file"), async (req , resp) => {
 	const file = req.file
+	const fileNameHash = generateSign(file.originalname)
 	const bucketFile = {
 		Bucket: 'hrbucket',
-		Key: file.originalname,
+		Key: fileNameHash ,
 		Body: file.buffer,
 		ContentType: file.mimetype
 	}
