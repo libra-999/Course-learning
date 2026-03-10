@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory, type Router } from 'vue-router'
 import PaymentLayout from '@/modules/layout/payment/PaymentLayout.vue'
-import CryptoPayment from '@/modules/layout/payment/crypto/CryptoPayment.vue'
+import CryptoPayment from '@/modules/view/payment/crypto/CryptoPayment.vue'
 import DefaultLayout from '@/modules/layout/DefaultLayout.vue'
 import BookStoreDefault from '@/modules/layout/book/BookStoreDefault.vue'
 import TestDefault from '@/modules/layout/test/TestDefault.vue'
 import Login from '@/modules/view/Login.vue'
 import { ElMessage } from 'element-plus'
-import PurchaseStrip from '@/modules/layout/payment/strip/Purchase.vue'
-import PurchaseABA from '@/modules/layout/payment/aba/Purchase.vue'
+import PurchaseStrip from '@/modules/view/payment/strip/Purchase.vue'
+import PurchaseABA from '@/modules/view/payment/aba/Purchase.vue'
 import UploadProgressLayout from '@/modules/layout/uploadFile/UploadProgressLayout.vue'
 
 const route: Router = createRouter({
