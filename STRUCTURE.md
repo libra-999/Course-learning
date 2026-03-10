@@ -17,10 +17,10 @@ sever/
     ├── file/
         └── rustfs.js # S3
     ├── payment/ 
-        └── ABAPayment.js
-        └── CryptoPayment.js
-        └── NowPayment.js
-        └── StripPayment.js
+        └── abaPayment.js
+        └── cryptoPayment.js
+        └── nowPayment.js
+        └── stripPayment.js
     └── paths.js # controll all routes
 ├── utils
     └── cryptoUtil.js
