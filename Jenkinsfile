@@ -57,7 +57,7 @@ def getValidTag() {
         error("❌ No tag found on this commit. Docker build requires a release tag.")
     }
 //     ex: prod-v0.0.2 or dev-v0.0.2 or uat-v0.0.2 , ex: if tag 'v0.2.1' it mean release new version
-    if ( tag ==~ /^prod-v?\d+\.\d+\.\d+$/ || tag ==~ /^uat-v?\d+\.\d+\.\d+$/ || tag ==~ /^dev-v?\d+\.\d+\.\d+$/ || tag ==~ /^v?\d+\.\d+\.\d+$/) {
+    if ( tag ==~ /^prod-v?\d+\.\d+\.\d+$/ || tag ==~ /^uat-v?\d+\.\d+\.\d+$/ || tag ==~ /^dev-v?\d+\.\d+\.\d+$/) {
         return tag
     }else if (tag ==~ /^v?\d+\.\d+\.\d+$/) {
         APP_IMAGE = "xemon99/vue-course-app"
