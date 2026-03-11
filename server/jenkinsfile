@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         APP_IMAGE  = "xemon99/vue-api"
-        APP = "VUE_API"
         EXCEPTION_MSG = ""
     }
     // ** building stages **
@@ -59,6 +58,9 @@ def getValidTag() {
 //     ex: prod-v0.0.2 or dev-v0.0.2 or uat-v0.0.2 , ex: if tag 'v0.2.1' it mean release new version
     if ( tag ==~ /^prod-v?\d+\.\d+\.\d+$/ || tag ==~ /^uat-v?\d+\.\d+\.\d+$/ || tag ==~ /^dev-v?\d+\.\d+\.\d+$/ || tag ==~ /^v?\d+\.\d+\.\d+$/) {
         return tag
+    }else if (tag ==~ /^v?\d+\.\d+\.\d+$/) {
+       APP_IMAGE = "xemon99/vue-course-api"
+       return tag
     }else {
         error("❌ Invalid tag format: ${tag}")
     }
@@ -72,18 +74,24 @@ def dockerBuildAndPush(imageName, version) {
             passwordVariable: 'DOCKER_PASS'
         )
     ]) {
+        if(env.VERSION ==~ /^dev-v.*/ || env.VERSION ==~ /^prod-v.*/ || env.VERSION ==~ /^uat-v.*/){
             sh """
-                    set -e
-                    echo "🐳 Building ${imageName}:${version}"
-                    echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
-
-                    # single platform
-                     docker build -t ${imageName}:${version} .
-                    # tag same image as latest version
-                     docker tag ${imageName}:${version} ${imageName}:lts
-                     docker push ${imageName}:${version}
-                     docker push ${imageName}:lts
-                    """
-
+                  set -e
+                  echo "🐳 Building ${imageName}:${version}"
+                  echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                  docker build -t ${imageName}:${version} .
+                  docker tag ${imageName}:${version} ${imageName}:lts
+                  docker push ${imageName}:${version}
+                  docker push ${imageName}:lts
+            """
+        }else if (env.VERSION ==~ /^v.*/){
+            sh """
+                  set -e
+                  echo "🐳 Building ${imageName}:${version}"
+                  echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                  docker build -t ${imageName}:${version} .
+                  docker push ${imageName}:${version}
+               """
+        }
     }
 }
