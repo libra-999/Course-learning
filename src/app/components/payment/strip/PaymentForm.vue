@@ -5,7 +5,7 @@ import {
 } from '@vue-stripe/vue-stripe'
 import { ref } from 'vue'
 import Loading from '@/app/components/Loading.vue'
-import { ElMessage } from 'element-plus'
+import { useMessage } from '@/app/utils/message.ts'
 
 const { confirmPayment } = usePaymentIntent()
 const paymentProp = defineProps<{
@@ -13,7 +13,7 @@ const paymentProp = defineProps<{
 	optionPayment: object
 }>()
 const loading = ref(false)
-
+const message = useMessage()
 const handleSubmit = async () => {
 	loading.value = true
 	try {
@@ -24,21 +24,21 @@ const handleSubmit = async () => {
 			},
 		})
 		if (error)
-			return ElMessage({
-				message: error.error.message,
-				type: 'error',
-			})
+			return message.messageBox(
+				`${error.error.message}`,
+				'error'
+			)
 		else {
-			return  ElMessage({
-				message: 'Payment successful',
-				type: 'success',
-			})
+			return message.messageBox(
+				'Payment successful',
+				'success'
+			)
 		}
 	} catch (err) {
-		throw ElMessage({
-			message: `Invalid Payment, \`${err}\``,
-			type: 'error',
-		})
+		throw message.messageBox(
+			`${err}`,
+			'error'
+		)
 	} finally {
 		loading.value = false
 	}

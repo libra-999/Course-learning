@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {  ref } from 'vue';
-import type { Book } from '../../../modules/types/book';
-import { viewBook } from '../../../modules/api/book';
+import type { Book } from '@/modules/types/book';
+import { viewBook } from '@/modules/api/book';
 import Loading from '@/app/components/Loading.vue';
 import Rating from '@/app/components/button/Rating.vue';
 
@@ -17,8 +17,7 @@ const getBook = async (id : string) =>{
     loading.value = true
     dialogDetail.value = true
     try{
-        const detailBook = await viewBook(id);
-        data.value = detailBook 
+        data.value = await viewBook(id);
     }catch(error){
         console.log(error);
     }finally {

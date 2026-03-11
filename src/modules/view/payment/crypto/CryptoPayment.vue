@@ -4,9 +4,10 @@ import Product from '@/app/components/payment/crypto/Product.vue'
 import { ref } from 'vue'
 import type { NowpaymentModel } from '@/modules/types/payment/crypto'
 import { createInvoice } from '@/modules/api/payment/crypto'
-import { ElMessage } from 'element-plus'
 import Loading from '@/app/components/Loading.vue'
+import { useMessage } from '@/app/utils/message.ts'
 
+const errorMessage = useMessage()
 const loading = ref(false)
 const data = ref<NowpaymentModel>({
 	order_id: `PDO-${Math.floor(Math.random() * 1000)}`,
@@ -23,22 +24,19 @@ const submit = async ()=> {
 		const req = await createInvoice(data.value);
 		const link = req?.invoice_url;
 		if (link && link.trim() !== '') {
-			ElMessage({
-				message: 'You paid successfully , please scan this QR in your wallet crypto .',
-				type: 'success',
-			});
+			errorMessage.messageBox('You paid successfully , please scan this QR in your wallet crypto', 'success')
 			window.location.href = link
 		} else {
-			ElMessage({
-				message: 'Invalid Payment',
-				type: 'error',
-			});
+			errorMessage.messageBox(
+				'Invalid Payment',
+				'error'
+			)
 		}
 	}catch (error: any){
-		throw ElMessage({
-			message: error.response?.message ,
-			type: 'error',
-		})
+		throw errorMessage.messageBox(
+			error.response?.message,
+			'error'
+		)
 	}finally {
 		loading.value = false
 	}

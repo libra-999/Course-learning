@@ -2,9 +2,10 @@
 import { ref } from 'vue'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { loginStore, type User } from '@/modules/store/auth.ts'
-import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-import { createHash } from '@/app/utils/hash.ts'
+import {  type FormInstance, type FormRules } from 'element-plus'
+import { createHash } from '@/app/utils/crypto.ts'
 import route from '@/modules/route'
+import { useMessage } from '@/app/utils/message.ts'
 
 // dump data
 const dumpData = ref<User>({
@@ -13,6 +14,7 @@ const dumpData = ref<User>({
 })
 
 const router = route
+const errorMessage = useMessage()
 const userStore = loginStore()
 const userRefInstance = ref<FormInstance>()
 const userRef = ref<any>({
@@ -57,19 +59,13 @@ const submit = () => {
 		dumpData.value.username === userRef.value.username
 	) {
 		userStore.login(userRef.value, userRef.value.isRemember)
-		ElMessage({
-			message: '厉害，请进',
-			type: 'success',
-		})
+		errorMessage.messageBox("厉害，请进", "success")
 		router.replace({
 			path: '/',
 		})
 	} else {
 		userStore.logout()
-		ElMessage({
-			message: '无效账户，您目前是匿名用户',
-			type: 'error',
-		})
+		errorMessage.messageBox("无效账户，您目前是匿名用户", "error")
 	}
 }
 </script>

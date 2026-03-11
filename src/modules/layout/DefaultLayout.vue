@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { decrypt } from '@/app/utils/hash.ts'
+import { decrypt } from '@/app/utils/crypto.ts'
 import { loginStore, type User } from '@/modules/store/auth.ts'
 import { onMounted, ref } from 'vue'
 import route from '@/modules/route'
@@ -8,13 +8,15 @@ import { DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
 import Timeline, { type Activities } from '@/app/components/card/Timeline.vue'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { timelineStore } from '@/modules/store/line.ts'
-import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { type FormInstance, type FormRules } from 'element-plus'
+import { useMessage } from '@/app/utils/message.ts'
 
 const checkLocalstorage = localStorage.getItem('userLogin')
 const userData = ref<User>({ username: '', password: '' })
 const router = route
 const userStore = loginStore()
 const objUserData = Object.keys(userData.value)
+const message = useMessage()
 
 //  manage key user with exact the value in localstorage
 try {
@@ -33,6 +35,7 @@ try {
 } catch (error) {
 	userStore.logout()
 	router.back()
+	throw message.messageBox(`${error}`,'error')
 }
 // timeline activity
 const isTimelineShow = ref(false)
@@ -41,7 +44,9 @@ const timelineRule: FormRules<Activities> = {
 	content: [
 		{ required: true, message: 'Please input content', trigger: 'blur' },
 	],
-	color: [{ required: true, message: 'Please pick a color', trigger: 'blur' }],
+	color: [
+		{ required: true, message: 'Please pick a color', trigger: 'blur' }
+	],
 	timestamp: [
 		{ required: true, message: 'Please select date', trigger: 'blur' },
 	],
@@ -54,10 +59,7 @@ const timelineModel = ref<Activities>({
 })
 const addTimeline = async () => {
 	timeStore.isSave({ ...timelineModel.value })
-	ElMessage({
-		message: 'Add Successfully!',
-		type: 'success',
-	})
+	message.messageBox('Add Successfully','success')
 }
 
 // load timeline

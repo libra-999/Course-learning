@@ -6,17 +6,15 @@ import { createUploadFiles, removeFile } from '@/modules/api/uploadFile'
 import { ElMessage } from 'element-plus'
 import { v4 as uuidV4 } from 'uuid'
 import { FileRuleResp } from '@/app/utils/mimeType.ts'
+import { useMessage } from '@/app/utils/message.ts'
 
 const pictures = ref<UploadItem[]>([])
+const message = useMessage()
 // validation file type
 const validateFile = (file: File) => {
 	const getFile = FileRuleResp(file)
 	if (getFile.error) {
-		ElMessage({
-			message: getFile.error,
-			type: 'error',
-		})
-		throw new Error(getFile.error)
+		throw message.notificationBox(`${getFile.error}`, 'error')
 	}
 }
 // upload file
@@ -58,16 +56,9 @@ const progressSubmit = async (file: File) => {
 		const item = getItems()
 		if (data && item) {
 			item.percent = 100
-			ElMessage({
-				message: 'Uploaded Successfully',
-				type: 'success',
-			})
+			message.messageBox('Uploaded Successfully','success')
 		}else {
-			ElMessage({
-				message: 'Upload Service have something wrong',
-				type: 'error',
-			})
-			return
+			return message.messageBox('Upload Service have something wrong', 'error')
 		}
 	} catch (e) {
 		clearInterval(timer)
@@ -75,7 +66,7 @@ const progressSubmit = async (file: File) => {
 		if (item) {
 			item.percent = 0
 		}
-		console.log(e)
+		throw message.messageBox(`${e}`,'error')
 	}
 }
 // remove file
@@ -85,10 +76,7 @@ const progressRemoveFile = async (fileName: string, id: string) => {
 	try {
 		await removeFile(fileName)
 		pictures.value.splice(actualIndex, 1) // remove UI
-		ElMessage({
-			message: 'Deleted',
-			type: 'success',
-		})
+		message.messageBox('Deleted File', 'success')
 	} catch (error) {
 		console.log(error)
 	}

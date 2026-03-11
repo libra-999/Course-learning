@@ -9,6 +9,7 @@ import {
 	getTransaction,
 	manageCard,
 } from '@/modules/api/payment/aba'
+import { useMessage } from '@/app/utils/message.ts'
 
 const buildReqTime = () => {
 	const now = new Date()
@@ -79,6 +80,7 @@ const qrImage = ref()
 const dataResp = ref<object>()
 const rateXML = ref()
 const openDialog = ref(false)
+const errorMessage = useMessage()
 
 const submitForm = async () => {
 	if (!ruleFormRef.value) return
@@ -107,14 +109,13 @@ const submitForm = async () => {
 					generateKHQR.data
 				openDialog.value = true
 			} else {
-				console.log('Generate QR failed')
+				errorMessage.messageBox('Generate QR Error', 'error')
 			}
-			// qrImage.value = signedPayload.qrImage
 		} else {
-			console.log('error sign payload')
+			errorMessage.messageBox('error sign payload', 'error')
 		}
 	} catch (error) {
-		console.log('Error or validation failed:', error)
+		throw errorMessage.messageBox(`Error or validation failed ${error}`,'error')
 	}
 }
 
@@ -129,10 +130,9 @@ const getTrans = async () => {
 		const req = await getTransaction(transaction.value)
 		if (req.status.code === '00') {
 			dataResp.value = req.data
-			// console.log(req.data)
 		}
 	} catch (error) {
-		console.log(error)
+		throw errorMessage.messageBox(`${error}`,'error')
 	}
 }
 
@@ -148,12 +148,11 @@ const getExchangeRate = async () => {
 		if (req.status.code === '00') {
 			rateXML.value = req.exchange_rates.OclResposne.io_rates
 			const parser = new DOMParser()
-			const newDocRate = parser.parseFromString(rateXML.value, 'text/xml')
-			console.log(newDocRate)
+			parser.parseFromString(rateXML.value, 'text/xml')
 			dataResp.value = req
 		}
 	} catch (err) {
-		console.log(err)
+		throw errorMessage.messageBox(`${err}`,'error')
 	}
 }
 
@@ -168,7 +167,7 @@ const createQR = async () => {
 			openDialog.value = true
 		}
 	} catch (error) {
-		console.log(error)
+		throw errorMessage.messageBox(`${error}`,'error')
 	}
 }
 
@@ -186,7 +185,7 @@ const linkCard = async () => {
 		newWindow?.document.write(req)
 		newWindow?.document.close()
 	} catch (error) {
-		console.log(error)
+		throw errorMessage.messageBox(`${error}`,'error')
 	}
 }
 </script>

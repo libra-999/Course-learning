@@ -1,4 +1,4 @@
-import { encrypt } from '@/app/utils/hash.ts'
+import { encrypt } from '@/app/utils/crypto.ts'
 
 export const isLogin = (isRemember: boolean, data: any) => {
 	const expireDateSession = new Date()
