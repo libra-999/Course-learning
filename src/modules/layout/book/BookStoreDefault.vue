@@ -9,7 +9,7 @@ import BookShow from '../../view/book/BookShow.vue';
 </template>
 <style scoped>
 .book-layout{
-    color: #333;
+    color: var(--text-color);
     overflow: hidden;
 }
 </style>

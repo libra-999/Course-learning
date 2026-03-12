@@ -28,11 +28,11 @@ const getData = async () => {
         loading.value = false;
     }
 }
-// watch data book 
+/* watch data book  */
 onMounted(() => {
     getData();
 })
-// watch search & pagination
+/* watch search & pagination */
 watch([page ,size], ()=> {
     getData();
 })
@@ -65,6 +65,5 @@ watch(search, () => {
             <Pagination :total="totals" :size="size" v-model="page" />
         </div>
     </div>
-   
 </template>
 <style scoped></style>

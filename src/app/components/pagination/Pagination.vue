@@ -77,7 +77,7 @@ const nextPage = (page: number | string) => {
     'px-3 py-1 border rounded mx-1 cursor-pointer',
     p === modelValue
       ? 'bg-blue-500 text-white'
-      : ' bg-gray-100 border-none',
+      : ' bg-gray-100 border-none text-[#213547]',
     p === '...' ? 'cursor-default border-none bg-transparent' : ''
   ]">
     {{ p }}

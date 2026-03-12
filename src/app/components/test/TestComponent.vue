@@ -20,13 +20,13 @@ const handleClickAdd = () => {
 </script>
 
 <template>
-	<div class="flex flex-col items-center">
+	<div class="flex flex-col items-center text-white">
 		<div class="flex justify-center align-middle">
 			<KeepAlive>
 				<span
 					v-for="(key, index) in boxValue"
 					:key="index"
-					class="bg-center bg-blue-500 w-8 p-2 mx-2 rounded-xl"
+					class="bg-center bg-blue-500 w-8 p-2 mx-2 rounded-xl text"
 				>
 					{{ key }}</span
 				>
@@ -47,4 +47,5 @@ const handleClickAdd = () => {
 		/>
 	</div>
 </template>
-<style scoped></style>
+<style scoped>
+</style>

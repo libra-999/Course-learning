@@ -26,8 +26,7 @@ const getBook = async (id : string) =>{
 }
 </script>
 <template>
-    <div
-        class="w-full max-w-full p-1 md:max-w-xs  text-black border-card relative hover:translate-y-0.5 transition-transform duration-300">
+    <div class="w-full max-w-full p-1 md:max-w-xs border-card relative hover:translate-y-0.5 transition-transform duration-300">
         <!-- Info author -->
         <div class="pt-5 px-3">
             <div class="flex items-center gap-3">
@@ -79,10 +78,11 @@ const getBook = async (id : string) =>{
 </template>
 <style scoped>
 .border-card {
-    border: 0.4px solid #E0E0E0;
-    border-radius: 20px;
+    border: 0.8px solid rgba(224, 224, 224, 0.3);
+    border-radius: 14px;
     font-family: Courier;
     overflow: hidden;
+	 color: var(--text-color);
     & .etag {
         position: absolute;
         right: 1rem;

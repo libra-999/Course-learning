@@ -32,10 +32,10 @@ const removeItem = (id: number) => {
 			:key="index"
 			:color="element.color"
 			:timestamp="dayMonthFormat(element.timestamp)"
-			class="text-start font-bold font-mono hover:rounded-xl focus:border-b-gray-600 duration-100 transition-all py-2"
+			class="text-start font-bold font-mono hover:rounded-xl focus:border-b-gray-600  duration-100 transition-all py-2"
 		>
-			<Transition> {{ element.content }}</Transition>
-			<el-icon class="mx-2 opacity-40 hover:opacity-85 duration-100 transition-all cursor-pointer" @click="removeItem(index)">
+			<span style="color: var(--text-color)">{{ element.content }}</span>
+			<el-icon style="color: var(--text-color)" class="mx-2 opacity-40 hover:opacity-85 duration-100 transition-all cursor-pointer" @click="removeItem(index)">
 				<Delete />
 			</el-icon>
 		</el-timeline-item>

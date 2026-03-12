@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Notebook } from '@element-plus/icons-vue'
 import type { Component } from 'vue'
+import { useTheme } from '@/modules/store/theme.ts'
 
 defineProps<{
 	title: string
@@ -8,12 +9,12 @@ defineProps<{
 	path: string
 	icon?: Component
 }>()
-defineModel()
+const themeStore = useTheme()
 </script>
 
 <template>
 	<RouterLink :to="path">
-		<div class="relative overflow-hidden rounded-sm border border-gray-200 transition-all duration-150 hover:-translate-y-2 hover:shadow-xl hover:bg-gray-100/70 bg-gray-100/50 p-2 text-start">
+		<div :class="`${themeStore.settings.themeSchema != 'dark'? 'border-gray-200 hover:bg-gray-100/70 bg-gray-100/50': 'border-blue-400 hover:bg-blue-400 hover:shadow-blue-100/40 hover:-translate-y-1 '} relative overflow-hidden rounded-sm border transition-all duration-150 hover:-translate-y-2 hover:shadow-xl  p-2 text-start`">
 			<div class="flex h-[180px] flex-col justify-between rounded-md p-6">
 				<el-icon size="48">
 					<component v-if="icon" :is="icon"/>

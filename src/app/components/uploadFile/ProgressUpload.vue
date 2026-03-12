@@ -15,7 +15,7 @@ const handleDeleteImage = (fileName: string, index: string) => {
 </script>
 
 <template>
-	<div class="mb-5">
+	<div class="mb-5 color-text-theme ">
 		<span class="text-5xl font-bold font-mono"> Upload With Progress</span>
 		<el-upload
 			class="mt-5 custom-upload"
@@ -29,19 +29,18 @@ const handleDeleteImage = (fileName: string, index: string) => {
 			</el-icon>
 			<p>
 				Drop directory here or
-				<em class="text-[#213547] font-bold">click to upload</em>
+				<em class="font-bold">click to upload</em>
 			</p>
 		</el-upload>
 	</div>
-	<div
-		class="font-sans border border-t-gray-200 border-l-0 border-r-0 border-b-0"
-	>
+	<div class="font-sans border color-text-theme  border-t-gray-200 border-l-0 border-r-0 border-b-0">
 		<p class="font-bold text-xl text-start mt-2 py-5">
 			Current upload in progress
 		</p>
 		<div
 			v-if="!prop.pictures?.length"
 			class="text-gray-300 duration-200 flex flex-col justify-center italic font-normal rounded-sm py-3 px-3 w-full bg-gray-100 text-center"
+			style="background: var(--bg-color-blue-2)"
 		>
 			<span>
 				<el-icon size="40">
@@ -87,5 +86,9 @@ const handleDeleteImage = (fileName: string, index: string) => {
 <style scoped>
 :deep(.custom-upload .el-upload-dragger) {
 	border: 1px dashed #213547;
+	background: var(--bg-color-blue-2);
+}
+.color-text-theme {
+	color: var(--text-color);
 }
 </style>
