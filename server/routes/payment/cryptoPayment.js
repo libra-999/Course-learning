@@ -4,9 +4,9 @@ import axios from 'axios'
 import { generateSign } from '../../utils/cryptoUtil.js'
 
 // step of payment crypto
-// 1. webhook (done)
-// 2. create-payment (done)
-// 3. plugin sdk with woocommerce or other service
+// 1. webhook ✅
+// 2. create-payment ✅
+// 3. plugin sdk with woocommerce or other service ✅
 
 dotenv.config()
 const router = express.Router();
@@ -16,7 +16,7 @@ const SERVER_URL = process.env.CRYPTO_URL;
 const MERCHATN_ID= process.env.CRYPTO_MERCHANT_UUID;
 
 
-// create payment
+/* create payment */
 router.post("/api/payment", async (req, resp) => {
 	const sign = generateSign(req.body)
 	try {
@@ -33,7 +33,7 @@ router.post("/api/payment", async (req, resp) => {
 		return resp.send(error.response.data)
 	}
 })
-// get payment info
+/* get payment info */
 router.post("/api/payment", async (req, resp) => {
 	const sign = generateSign(req.body)
 	try {
@@ -51,7 +51,7 @@ router.post("/api/payment", async (req, resp) => {
 	}
 })
 
-// payment failed resent
+/* payment failed resent */
 router.post("/api/payment/callback", async (req , resp )=> {
 	const sign = generateSign(req.body);
 	try {
@@ -69,7 +69,7 @@ router.post("/api/payment/callback", async (req , resp )=> {
 	}
 })
 
-// wallet QR
+/* wallet QR */
 router.post("/api/wallet/qr", async (req , resp) => {
 	const sign  = generateSign(req.body);
 	try {
@@ -87,7 +87,7 @@ router.post("/api/wallet/qr", async (req , resp) => {
 	}
 })
 
-// payment QR
+/* payment QR */
 router.post("/api/payment/qr" , async (req , resp) => {
 	const sign  = generateSign(req.body);
 	try {

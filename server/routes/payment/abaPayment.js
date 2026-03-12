@@ -11,7 +11,7 @@ const API_URL = process.env.ABA_URL
 // eslint-disable-next-line no-undef
 const API_KEY = process.env.ABA_API_KEY
 
-// static path payway of aba
+
 router.post('/api/create-payment', async (req, resp) => {
 	const data = req.body
 	const dataToHash =
@@ -26,7 +26,6 @@ router.post('/api/create-payment', async (req, resp) => {
 		data.phone +
 		data.currency
 	data.hash = generateHmac(dataToHash, API_KEY)
-	// resp.send(data)
 	try {
 		const payment = await axios.post(
 			`${API_URL}/${ABA_PATH.PURCHASE}`,

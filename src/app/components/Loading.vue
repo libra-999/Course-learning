@@ -1,7 +1,7 @@
 <script setup lang="ts">
 </script>
 <template>
-    <div class="loader"></div>
+    <div class="loader" ></div>
 </template>
 <style scoped>
 .loader {
@@ -16,9 +16,9 @@
     content: "";
     flex: 1;
     aspect-ratio: 1;
-    --g: conic-gradient(from -90deg at 10px 10px, #000 90deg, #0000 0);
+    --g: conic-gradient(from -90deg at 10px 10px, var(--text-color) 90deg, #0000 0);
     background: var(--g), var(--g), var(--g);
-    filter: drop-shadow(30px 30px 0 #000);
+    filter: drop-shadow(30px 30px 0 var(--text-color));
     animation: l20 1s infinite;
 }
 

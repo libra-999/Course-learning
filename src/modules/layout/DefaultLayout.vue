@@ -10,6 +10,8 @@ import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { timelineStore } from '@/modules/store/line.ts'
 import { type FormInstance, type FormRules } from 'element-plus'
 import { useMessage } from '@/app/utils/message.ts'
+import ThemeSwitch from '@/app/components/theme/ThemeSwitch.vue'
+import { useTheme } from '@/modules/store/theme.ts'
 
 const checkLocalstorage = localStorage.getItem('userLogin')
 const userData = ref<User>({ username: '', password: '' })
@@ -18,7 +20,7 @@ const userStore = loginStore()
 const objUserData = Object.keys(userData.value)
 const message = useMessage()
 
-//  manage key user with exact the value in localstorage
+/*  manage key user with exact the value in localstorage */
 try {
 	let data = decrypt(checkLocalstorage)
 	const objData = Object.keys(data)
@@ -35,18 +37,16 @@ try {
 } catch (error) {
 	userStore.logout()
 	router.back()
-	throw message.messageBox(`${error}`,'error')
+	throw message.messageBox(`${error}`, 'error')
 }
-// timeline activity
+/* timeline activity*/
 const isTimelineShow = ref(false)
 const timelineInstance = ref<FormInstance>()
 const timelineRule: FormRules<Activities> = {
 	content: [
 		{ required: true, message: 'Please input content', trigger: 'blur' },
 	],
-	color: [
-		{ required: true, message: 'Please pick a color', trigger: 'blur' }
-	],
+	color: [{ required: true, message: 'Please pick a color', trigger: 'blur' }],
 	timestamp: [
 		{ required: true, message: 'Please select date', trigger: 'blur' },
 	],
@@ -59,18 +59,19 @@ const timelineModel = ref<Activities>({
 })
 const addTimeline = async () => {
 	timeStore.isSave({ ...timelineModel.value })
-	message.messageBox('Add Successfully','success')
+	message.messageBox('Add Successfully', 'success')
 }
 
-// load timeline
+/* load timeline */
 onMounted(() => timeStore.load())
+
+/* Theme */
+const themeStore = useTheme()
 </script>
 <template>
-	<div class="w-[100%] flex gap-1 px-3 py-5 text-[#112a46]">
+	<div class="w-[100%] flex gap-1 px-3 py-5">
 		<!--	implement timeline studied-->
-		<div
-			class="w-0 2xl:w-[20%] max-h-[90vh] bg-gray-100 rounded-b-2xl px-2 py-5 hidden 2xl:flex flex-col items-end justify-start overflow-y-auto"
-		>
+		<div class="w-0 2xl:w-[20%] max-h-[90vh] bg-gray-100 rounded-b-2xl px-2 py-5 hidden 2xl:flex flex-col items-end justify-start overflow-y-auto">
 			<ButtonGlobal
 				@click="isTimelineShow = true"
 				value="Input now"
@@ -79,23 +80,20 @@ onMounted(() => timeStore.load())
 			<Timeline class="w-full" :activity="timeStore.activities" />
 		</div>
 		<div class="2xl:w-[80%] w-[100%]">
-			<div
-				class="mx-auto lg:w-[100%] xl:w-[80%] sm:w-[100%] md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent"
-			>
-				<p
-					class="uppercase font-bold lg:text-center text-start sm:text-start text-sm mb-3"
-				>
+			<div class="mx-auto lg:w-[100%] xl:w-[80%] sm:w-[100%] md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent">
+				<p class="uppercase font-bold lg:text-center text-start sm:text-start text-sm mb-3">
 					Vue 3 Learning Tutorial
 				</p>
-				<p
-					class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold"
-				>
+				<p class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold">
 					From Zero to Zero 🤔
 				</p>
+				<ThemeSwitch
+					:theme-schema="themeStore.settings.themeSchema"
+					:is-dark="themeStore.darkMode"
+					@switch="themeStore.toggleThemeSchema"
+				/>
 			</div>
-			<div
-				class="lg:w-[100%] xl:w-[80%] md:w-[95%] sm:w-[100%] mx-auto mt-5 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:grid-cols-4 gap-4 overflow-hidden"
-			>
+			<div class="lg:w-[100%] xl:w-[80%] md:w-[95%] sm:w-[100%] mx-auto mt-5 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:grid-cols-4 gap-4 overflow-hidden">
 				<!-- Test -->
 				<Cardbox
 					title="Test"

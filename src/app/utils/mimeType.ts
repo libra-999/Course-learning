@@ -1,4 +1,4 @@
-// file validation
+/* file validation */
 import type { UploadRule } from '@/modules/types/uploadFile'
 
 export type UploadErrorResp = {
@@ -47,19 +47,19 @@ export const FileRuleResp = (file: File): UploadErrorResp => {
 	const checkFileType = UploadRuleForm.find((item) =>
 		item.types.includes(file.type.toLowerCase()),
 	)
-	// condition type of mime
+	/* condition type of mime */
 	if (!checkFileType) {
 		return {
 			error: 'Unsupported type of files!',
 		}
 	}
-	// condition filesize minimum
+	/* condition filesize minimum */
 	if (checkFileType.minSize && file.size < checkFileType.minSize) {
 		return {
 			error: `File is too small, Please upload at least ${Math.round(checkFileType.minSize / 1024)}KB`,
 		}
 	}
-	// condition filesize maximum
+	/* condition filesize maximum */
 	if (checkFileType.maxSize < file.size) {
 		return {
 			error: `File is too large , Please upload with below ${Math.round(checkFileType.maxSize) / (1024 * 1024)}MB`,

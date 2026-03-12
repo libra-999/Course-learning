@@ -13,8 +13,21 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --bg-color: #ffffff;
+  --border-color: #000000;
+  --text-color:  #213547;
+  transition: all ease-in-out;
 }
 
+/* Dark mode */
+html.dark {
+  --bg-color: #000000;
+  --border-color: #ffffff;
+  --text-color: #ffffff;
+  transition: all ease-in-out;
+}
+/* Dark mode */
 a {
   text-decoration: none;
 }
@@ -23,6 +36,8 @@ body {
   margin: 0;
   display: flex;
   min-height: 100vh;
+  background: var(--bg-color);
+  color: var(--text-color);
 }
 
 #app {

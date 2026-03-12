@@ -68,12 +68,12 @@ const route: Router = createRouter({
 
 route.beforeEach((to, _from, next) => {
 	const isAuth = !!localStorage.getItem('userLogin')
-	// no auth is required
+	/* no auth is required */
 	if (to.meta.requireAuth && !isAuth) {
 		next({
 			path: '/login',
 		})
-		// return to route
+		/* return to route */
 		ElMessage({
 			message: '未经授权，请重新登录',
 			type: 'error',
