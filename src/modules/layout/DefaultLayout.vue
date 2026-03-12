@@ -126,8 +126,11 @@ const themeStore = useTheme()
 		</div>
 	</div>
 	<!-- Timeline form-->
-	<el-dialog width="500" style="background: var(--bg-color-blue-2)" v-model="isTimelineShow" :show-close="true">
-		<p :class="`${themeStore.settings.themeSchema == 'dark'? 'text-white text-2xl font-bold':''}text-2xl font-bold`">Timeline Add</p>
+	<el-dialog
+		width="500"
+		v-model="isTimelineShow"
+		:show-close="true">
+		<p :class="`${themeStore.settings.themeSchema == 'dark'? 'text-white text-2xl font-bold':''}text-2xl font-bold`">Timeline</p>
 		<el-form
 			class="mt-6 font-bold w-full"
 			:class="`${themeStore.settings.themeSchema != 'dark'? '':'text-white'}`"
@@ -142,8 +145,7 @@ const themeStore = useTheme()
 						justify-content: space-between;
 						align-content: center;
 					"
-					prop="timestamp"
-				>
+					prop="timestamp">
 					<div class="w-max">
 						<span class="mr-4">Date Timeline</span>
 						<el-date-picker
@@ -154,7 +156,7 @@ const themeStore = useTheme()
 						/>
 					</div>
 				</el-form-item>
-				<el-form-item prop="color">
+				<el-form-item prop="color" >
 					<div class="w-[15%]">
 						<el-color-picker name="color" v-model="timelineModel.color" />
 					</div>
@@ -167,7 +169,6 @@ const themeStore = useTheme()
 					name="content"
 					v-model="timelineModel.content"
 					placeholder="Please input title"
-					class="w-[100px]"
 					type="textarea"
 					style="width: 240px"
 				/>
@@ -182,4 +183,5 @@ const themeStore = useTheme()
 	<RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

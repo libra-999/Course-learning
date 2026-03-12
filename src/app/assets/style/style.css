@@ -27,6 +27,8 @@ html.dark {
   --text-color: #ffffff;
   --bg-color-blue: oklch(70.7% 0.165 254.624);
   --bg-color-blue-2: oklch(27.8% 0.033 256.848);
+  --el-bg-color: var(--bg-color-blue-2);
+  --el-fill-color-blank: var(--bg-color-blue-2);
   transition: all ease-in-out;
 }
 /* Dark mode */
