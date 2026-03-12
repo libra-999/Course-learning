@@ -36,12 +36,14 @@ const icon = computed(() => icons[prop.themeSchema])
 <template>
 	<el-tooltip
 		v-if="prop.showTool"
-		content="Switch theme"
 		:placement="prop.placementTool"
 	>
 		<button class="icon-btn" @click="handleClick">
 			<component :is="icon" class="w-5 h-5 m-2" />
 		</button>
+		<template #content>
+			<span class="text-white">{{ prop.themeSchema.toUpperCase()}}</span>
+		</template>
 	</el-tooltip>
 	<button v-else class="icon-btn" @click="handleClick">
 		<component :is="icon" class="w-5 h-5 m-2" />
