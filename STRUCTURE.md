@@ -15,15 +15,15 @@
 sever/
 ├── routes/
     ├── file/
-        └── rustfs.js # S3
+        └── rustfs.ts # S3
     ├── payment/ 
-        └── abaPayment.js
-        └── cryptoPayment.js
-        └── nowPayment.js
-        └── stripPayment.js
-    └── paths.js # controll all routes
+        └── abaPayment.ts
+        └── cryptoPayment.ts
+        └── nowPayment.ts
+        └── stripPayment.ts
+    └── paths.ts # controll all routes
 ├── utils
-    └── cryptoUtil.js
+    └── cryptoUtil.ts
 # App
 src/
 ├── app/

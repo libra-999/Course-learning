@@ -1,11 +1,11 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
-import ABAPayment from './routes/payment/abaPayment.js'
-import StripPayment from './routes/payment/stripPayment.js'
-import CryptoPayment from './routes/payment/cryptoPayment.js'
-import NowPayment from './routes/payment/nowPayment.js'
-import Rustfs from './routes/file/rustfs.js'
+import ABAPayment from './application/routes/payment/abaPayment.ts'
+import StripPayment from './application/routes/payment/stripPayment.ts'
+import CryptoPayment from './application/routes/payment/cryptoPayment.ts'
+import NowPayment from './application/routes/payment/nowPayment.ts'
+import Rustfs from './application/routes/file/rustfs.ts'
 
 const app = express();
 app.use(cors())

@@ -1,14 +1,11 @@
-import dotenv from 'dotenv'
-import express from 'express'
+import express, { type Router } from 'express'
 import axios from 'axios'
-import { NOWPAYMENT_PATH } from '../paths.js'
+import { NOWPAYMENT_PATH } from '../paths.ts'
+import { env } from '@/domain/config/app.environment.js'
 
-dotenv.config();
-const router = express.Router();
-// eslint-disable-next-line no-undef
-const URL_SERVER = process.env.NOWPAYMENT_URL
-// eslint-disable-next-line no-undef
-const SECRET_KEY = process.env.NOWPAYMENT_SECRET_API_KEY
+const router: Router = express.Router();
+const URL_SERVER = env.NOWPAYMENT_URL
+const SECRET_KEY = env.NOWPAYMENT_SECRET_API_KEY
 
 router.post("/api/invoice", async (req , resp) => {
 	const data = req.body;
@@ -21,7 +18,7 @@ router.post("/api/invoice", async (req , resp) => {
 		if (invoiceReq.status === 200) {
 			return resp.send(invoiceReq.data)
 		}
-	}catch (error){
+	}catch (error: any){
 		return error.response.data
 	}
 })
@@ -36,7 +33,7 @@ router.post("/api/payment", async (req , resp) => {
 		if (paymentReq.status === 201) {
 			return resp.send(paymentReq.data)
 		}
-	}catch (error){
+	}catch (error: any){
 		return error.response.data
 	}
 })

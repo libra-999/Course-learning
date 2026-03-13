@@ -1,16 +1,12 @@
-import express from 'express'
-import dotenv from 'dotenv'
+import express, { type Router } from 'express'
 import axios from 'axios'
-import { ABA_PATH } from '../paths.js'
-import { generateHmac } from '../../utils/cryptoUtil.js'
+import { ABA_PATH } from '../paths.ts'
+import { env } from '@/domain/config/app.environment.js'
+import { generateHmac } from '@/share/utils/cryptoUtil.js'
 
-dotenv.config()
-const router = express.Router()
-// eslint-disable-next-line no-undef
-const API_URL = process.env.ABA_URL
-// eslint-disable-next-line no-undef
-const API_KEY = process.env.ABA_API_KEY
-
+const router: Router = express.Router()
+const API_URL = env.ABA_URL
+const API_KEY = env.ABA_API_KEY
 
 router.post('/api/create-payment', async (req, resp) => {
 	const data = req.body
