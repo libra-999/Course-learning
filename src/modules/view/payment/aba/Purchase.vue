@@ -166,6 +166,7 @@ const createQR = async () => {
 			qrImage.value = req.qrImage
 			openDialog.value = true
 		}
+		return
 	} catch (error) {
 		throw errorMessage.messageBox(`${error}`,'error')
 	}
@@ -472,7 +473,7 @@ const linkCard = async () => {
 					</span>
 					<span class="response-tag">JSON</span>
 				</div>
-				<pre class="text-left overflow-y-auto">{{
+				<pre class="text-left overflow-y-auto text-white">{{
 					JSON.stringify(dataResp, null, 2)
 				}}</pre>
 			</div>

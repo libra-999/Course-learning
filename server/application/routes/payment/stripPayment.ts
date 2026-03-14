@@ -1,6 +1,7 @@
 import express, { type Router } from 'express'
 import Stripe from 'stripe'
 import { env } from '@/domain/config/app.environment.js'
+import { errorResp } from '@/share/utils/response.js'
 
 const router: Router = express.Router();
 const SECRET_KEY = env.STRIPE_SECRET_KEY
@@ -16,9 +17,9 @@ router.post('/api/strip/payment', async  (req, resp) => {
 			currency: 'usd',
 			automatic_payment_methods: {enabled: true}
 		})
-		resp.send({clientSecret: createPayment.client_secret})
+		return resp.send({clientSecret: createPayment.client_secret})
 	}catch (error: any){
-		resp.status(500).json({error: error.message})
+		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
 

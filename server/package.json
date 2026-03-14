@@ -5,8 +5,9 @@
   "main": "main.ts",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev tsx -r tsconfig-paths/register main.ts",
-    "build": "cross-env NODE_ENV=prod tsx -r tsconfig-paths/register dist/main.ts "
+    "start": "cross-env NODE_ENV=prod node dist/main.js",
+    "build": "tsc",
+    "dev": "cross-env NODE_ENV=dev tsx main.ts"
   },
   "keywords": [],
   "author": "",

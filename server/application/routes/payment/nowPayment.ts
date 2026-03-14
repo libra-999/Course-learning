@@ -1,7 +1,8 @@
 import express, { type Router } from 'express'
 import axios from 'axios'
-import { NOWPAYMENT_PATH } from '../paths.ts'
 import { env } from '@/domain/config/app.environment.js'
+import { NOWPAYMENT_PATH } from '@/application/routes/paths.js'
+import { errorResp } from '@/share/utils/response.js'
 
 const router: Router = express.Router();
 const URL_SERVER = env.NOWPAYMENT_URL
@@ -19,7 +20,7 @@ router.post("/api/invoice", async (req , resp) => {
 			return resp.send(invoiceReq.data)
 		}
 	}catch (error: any){
-		return error.response.data
+		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
 router.post("/api/payment", async (req , resp) => {
@@ -34,7 +35,7 @@ router.post("/api/payment", async (req , resp) => {
 			return resp.send(paymentReq.data)
 		}
 	}catch (error: any){
-		return error.response.data
+		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
 export default router;

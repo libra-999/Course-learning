@@ -2,6 +2,7 @@ import express, { type Router } from 'express'
 import axios from 'axios'
 import { generateSign } from '@/share/utils/cryptoUtil.js'
 import { env } from '@/domain/config/app.environment.js'
+import { errorResp } from '@/share/utils/response.js'
 
 
 const router: Router = express.Router();
@@ -22,7 +23,7 @@ router.post("/api/payment", async (req, resp) => {
 			return resp.send(createPayment.data)
 		}
 	}catch (error: any){
-		return resp.send(error.response.data)
+		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
 /* get payment info */
@@ -39,7 +40,7 @@ router.post("/api/payment", async (req, resp) => {
 			return resp.send(getPaymentInfo.data)
 		}
 	}catch (error: any) {
-		return error.response.data()
+		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
 
@@ -57,7 +58,7 @@ router.post("/api/payment/callback", async (req , resp )=> {
 			return resp.send(paymentCallback.data)
 		}
 	}catch (error: any) {
-		return error.response.data;
+		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
 
@@ -75,7 +76,7 @@ router.post("/api/wallet/qr", async (req , resp) => {
 			return resp.send(generateWalletQR.data)
 		}
 	}catch (error: any) {
-		return error.response.data()
+		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
 
@@ -93,7 +94,7 @@ router.post("/api/payment/qr" , async (req , resp) => {
 			return resp.send(generatePaymentQR.data)
 		}
 	}catch (error: any) {
-		return error.response.data
+		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
 

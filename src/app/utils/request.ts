@@ -14,7 +14,6 @@ apiRequest.interceptors.request.use(
 		return config
 	},
 	(error: AxiosError) => {
-		console.log(error)
 		return Promise.reject(error)
 	},
 )
@@ -24,12 +23,10 @@ apiRequest.interceptors.response.use(
 		if (resp.status === 200 || resp.status === 201) {
 			return resp
 		} else {
-			console.log(resp.status)
 			return resp
 		}
 	},
 	(error: AxiosError) => {
-		console.log(error)
 		return Promise.reject(error)
 	},
 )
