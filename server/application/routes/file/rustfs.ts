@@ -14,10 +14,10 @@ const ENDPOINT = env.RUST_ENDPOINT
 
 const s3Client = new S3Client({
 	region: 'us-east-1',
-	endpoint: ENDPOINT,
+	endpoint: ENDPOINT ?? '',
 	credentials: {
-		accessKeyId: ACCESS_KEY,
-		secretAccessKey: SECRET_KEY
+		accessKeyId: ACCESS_KEY ?? '',
+		secretAccessKey: SECRET_KEY ?? ''
 	},
 	forcePathStyle: true,
 })
@@ -26,7 +26,7 @@ const s3Client = new S3Client({
 router.post('/api/upload', mulUpload.single('file'), async (req, resp) => {
 	const file = req.file
 	if(!file){
-		return resp.json(errorResp(httpConstant.ERROR_BAD_REQUEST.code, "Invalid File", null))
+		return resp.json(errorResp(httpConstant.ERROR_BAD_REQUEST.code, "Invalid File", ''))
 	}
 	const fileNameHash = generateSign(file.buffer) // even same file name but different content
 	const bucketFile = {
@@ -40,7 +40,7 @@ router.post('/api/upload', mulUpload.single('file'), async (req, resp) => {
 		const uploadObject = new PutObjectCommand(bucketFile)
 		const upload = await s3Client.send(uploadObject)
 		return resp.status(200).json(upload)
-	} catch (error) {
+	} catch (error: any) {
 		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
@@ -53,7 +53,7 @@ router.post('/api/delete', async (req, resp) => {
 	try {
 		const remove = await s3Client.send(removeObject)
 		return resp.status(200).json(remove)
-	} catch (error) {
+	} catch (error: any) {
 		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })

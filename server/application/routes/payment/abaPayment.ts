@@ -29,7 +29,7 @@ router.post('/api/create-payment', async (req, resp) => {
 			data,
 		)
 		return resp.status(200).json(payment.data)
-	} catch (error) {
+	} catch (error: any) {
 		return  resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
@@ -44,7 +44,7 @@ router.post('/api/check-transaction', async (req, resp) => {
 			data,
 		)
 		return resp.status(200).json(checkTrans.data)
-	} catch (error) {
+	} catch (error: any) {
 		return  resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
@@ -59,7 +59,7 @@ router.post('/api/check-rate', async (req, resp) => {
 			data,
 		)
 		return resp.status(200).json(checkRate.data)
-	} catch (error) {
+	} catch (error: any) {
 		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })
@@ -91,7 +91,7 @@ router.post('/api/generate-qr', async (req, resp) => {
 			data,
 		)
 		return resp.status(200).json(genQR.data)
-	} catch (error) {
+	} catch (error: any) {
 		return resp.status(500).json(errorResp(error.status, error.message, error.code))
 	}
 })
@@ -106,7 +106,7 @@ router.post('/api/link-card', async (req, resp) => {
 			data,
 		)
 		return resp.status(200).json(link_card.data)
-	} catch (error) {
+	} catch (error: any) {
 		return resp.json(errorResp(error.status, error.message, error.code))
 	}
 })

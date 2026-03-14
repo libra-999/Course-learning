@@ -62,8 +62,8 @@ export const pagingResp = <T>(
 }
 export const errorResp = (
 	code: number,
-	message?: string,
-	errorType?: string,
+	message: string,
+	errorType: string,
 ): ErrorResp => {
 	return {
 		code,
