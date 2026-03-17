@@ -60,6 +60,7 @@ export const pagingResp = <T>(
 		pagination,
 	}
 }
+// error resp
 export const errorResp = (
 	code: number,
 	message: string,
