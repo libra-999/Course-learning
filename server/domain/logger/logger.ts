@@ -1,6 +1,5 @@
 import pino from 'pino'
 import path from 'path'
-import { fileURLToPath } from 'node:url'
 
 const logger = pino({
 	formatters: {
@@ -20,8 +19,6 @@ const logger = pino({
 		}
 	}
 })
-
-export const _dirname = fileURLToPath(import.meta.url)
 export const log4j = (filename: string) => {
 	return logger.child({
 		module: path.basename(filename)
