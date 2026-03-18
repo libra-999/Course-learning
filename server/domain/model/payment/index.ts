@@ -14,6 +14,8 @@ export interface PaymentDTO extends Base {
 	email: string
 	phone: string
 	currency: string
+	type: string,
+	payment_option: string
 }
 
 export interface QrDTO extends Base {

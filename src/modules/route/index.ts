@@ -9,6 +9,8 @@ import { ElMessage } from 'element-plus'
 import PurchaseStrip from '@/modules/view/payment/strip/Purchase.vue'
 import PurchaseABA from '@/modules/view/payment/aba/Purchase.vue'
 import UploadProgressLayout from '@/modules/layout/uploadFile/UploadProgressLayout.vue'
+import { invalidPage } from '@/modules/route/error.ts'
+import PurchaseABACheckout from '@/modules/layout/payment/PurchaseABACheckout.vue'
 
 const route: Router = createRouter({
 	history: createWebHistory(),
@@ -54,7 +56,10 @@ const route: Router = createRouter({
 				{
 					path: 'crypto',
 					component: CryptoPayment,
-				},
+				},{
+					path: 'checkout-aba',
+					component: PurchaseABACheckout
+				}
 			],
 		},
 		{
@@ -63,6 +68,7 @@ const route: Router = createRouter({
 			meta: { requireAuth: true },
 			component: UploadProgressLayout,
 		},
+		... invalidPage
 	],
 })
 

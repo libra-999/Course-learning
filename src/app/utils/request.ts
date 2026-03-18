@@ -4,11 +4,11 @@ import axios, {
 	type AxiosResponse,
 	type InternalAxiosRequestConfig,
 } from 'axios'
+import route from '@/modules/route'
 
 const apiRequest: AxiosInstance = axios.create({
 	timeout: 10000,
 })
-
 apiRequest.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
 		return config
@@ -20,15 +20,22 @@ apiRequest.interceptors.request.use(
 
 apiRequest.interceptors.response.use(
 	(resp: AxiosResponse) => {
-		if (resp.status === 200 || resp.status === 201) {
-			return resp
-		} else {
-			return resp
-		}
+		return resp
 	},
 	(error: AxiosError) => {
+		const status = error.status // code error
+		const errorType = error.code // type of error
+
+		if (status === 500 || errorType === "ERR_NETWORK" ) {
+			route.push("/server-error")
+			return Promise.reject(error)
+		}
+		if (status === 401) {
+			route.push('/login')
+			return Promise.reject(error)
+		}
 		return Promise.reject(error)
-	},
+	}
 )
 
-export default apiRequest;
+export default apiRequest

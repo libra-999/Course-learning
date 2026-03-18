@@ -1,4 +1,4 @@
-import type { Base, PaymentDTO, QrDTO } from '@/domain/model/payment/index.js'
+import type { Base, QrDTO } from '@/domain/model/payment/index.js'
 import { generateHmac } from '@/share/utils/cryptoUtil.js'
 import { env } from '@/domain/config/app.environment.js'
 import axios from 'axios'
@@ -8,25 +8,46 @@ const API_URL = env.ABA_URL
 const API_KEY = env.ABA_API_KEY
 
 export const abaService = {
-	async createPayment(payload: PaymentDTO) {
+	async createPayment(payload: any) {
+		const item = [
+			{
+				name: "Apple MacBook Pro M5",
+				quantity: 1,
+				price: 22.2
+			}
+		]
+		const data = {
+			firstname: 'li',
+			lastname: 'bra',
+			req_time: new Date("yyyyMMddHHmmss"),
+			tran_id: `TT-2201`,
+			merchant_id: 'ec463980',
+			email: 'libra1@gmail.com',
+			phone: '099284990',
+			amount: 22.2,
+			currency: 'USD',
+			hash: '',
+			items: '',
+			type: 'purchase',
+			payment_option: 'abapay_khqr',
+			view_type: 'popup',
+		}
+		data.items = Buffer.from(JSON.stringify(item)).toString("base64")
 		const dataToHash =
-			payload.req_time +
-			payload.merchant_id +
-			payload.tran_id +
-			payload.amount +
-			payload.items +
-			payload.firstname +
-			payload.lastname +
-			payload.email +
-			payload.phone +
-			payload.currency
+			data.req_time +
+			data.merchant_id +
+			data.tran_id +
+			data.amount +
+			data.items +
+			data.firstname +
+			data.lastname +
+			data.email +
+			data.phone +
+			data.currency
 
-		payload.hash = generateHmac(dataToHash, API_KEY)
-		const payment = await axios.post(
-			`${API_URL}/${ABA_PATH.PURCHASE}`,
-			payload,
-		)
-		return payment.data
+		data.hash = generateHmac(dataToHash, API_KEY)
+		// await axios.post(`${API_URL}/${ABA_PATH.PURCHASE}`, payload)
+		return {data: data, hash: data.hash}
 	},
 	async viewTransaction(payload: Base) {
 		const dataToHash =

@@ -115,6 +115,12 @@ const themeStore = useTheme()
 					path="/payment"
 					:icon="DataLine"
 				/>
+				<Cardbox
+					title="Check out"
+					content="..."
+					path="/payment/checkout-aba"
+					:icon="DataLine"
+				/>
 				<!-- upload with progress -->
 				<Cardbox
 					title="Upload Files"

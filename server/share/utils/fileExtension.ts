@@ -27,7 +27,6 @@ export const s3File = () => {
 			Key: fileName,
 		}
 	}
-
 	return {
 		s3Connection,
 		addObject,

@@ -25,7 +25,7 @@ export interface PaywayABA {
     additional_params?: string,
     lifetime?: number,
     google_pay_token?: string,
-		purchase_type?: string
+	purchase_type?: string
     hash: string,
 	qr_image_template?: string
 }
