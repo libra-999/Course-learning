@@ -16,6 +16,7 @@ export interface PaymentDTO extends Base {
 	currency: string
 	type: string,
 	payment_option: string
+	view_type: string
 }
 
 export interface QrDTO extends Base {
@@ -44,3 +45,27 @@ export interface CryptoInvoice {
 }
 /** Payment **/
 
+export const TransactionDTO = (
+    merchantID: string,
+	reqTime: string,
+	date: string,
+	amount: any,
+	item: string,
+): PaymentDTO => {
+	return {
+		hash: '',
+		tran_id: `TT${date}`,
+		amount,
+		merchant_id: merchantID,
+		req_time: reqTime,
+		payment_option: 'abapay',
+		currency: 'USD',
+		firstname: 'Libra',
+		lastname: 'Libra',
+		email: 'libra1@gmail.com',
+		phone: '099284990',
+		type: 'purchase',
+		items: item,
+		view_type: 'popup',
+	}
+}

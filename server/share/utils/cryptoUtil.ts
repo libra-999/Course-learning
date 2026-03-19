@@ -7,3 +7,6 @@ export function generateSign(payload: any){
 export function generateHmac(payload: any, apiKey: any){
 	return crypto.createHmac('sha512',apiKey).update(payload).digest('base64')
 }
+export function convertToBase64Arr(items: any){
+	return Buffer.from(JSON.stringify(items)).toString('base64')
+}

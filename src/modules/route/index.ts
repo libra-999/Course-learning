@@ -57,7 +57,7 @@ const route: Router = createRouter({
 					path: 'crypto',
 					component: CryptoPayment,
 				},{
-					path: 'checkout-aba',
+					path: 'aba-checkout',
 					component: PurchaseABACheckout
 				}
 			],
@@ -68,6 +68,7 @@ const route: Router = createRouter({
 			meta: { requireAuth: true },
 			component: UploadProgressLayout,
 		},
+		
 		... invalidPage
 	],
 })

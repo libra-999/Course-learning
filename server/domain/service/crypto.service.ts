@@ -37,7 +37,11 @@ export const cryptoService = {
 		if (invoice.status === 201) {
 			return invoice.data
 		} else {
-			return errorResp(invoice.status,"Payment Failed", "PAYMENT_INEFFICIENT")
+			return errorResp(
+				invoice.status,
+				'Payment Failed',
+				'PAYMENT_INEFFICIENT',
+			)
 		}
 	},
 }

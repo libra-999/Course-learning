@@ -1,38 +1,27 @@
-import type { Base, QrDTO } from '@/domain/model/payment/index.js'
-import { generateHmac } from '@/share/utils/cryptoUtil.js'
+import { TransactionDTO, type Base, type QrDTO } from '@/domain/model/payment/index.js'
+import { convertToBase64Arr, generateHmac } from '@/share/utils/cryptoUtil.js'
 import { env } from '@/domain/config/app.environment.js'
 import axios from 'axios'
 import { ABA_PATH } from '@/presentation/routes/paths.js'
+import { dateTimeFormat } from '@/share/utils/data.js'
 
 const API_URL = env.ABA_URL
 const API_KEY = env.ABA_API_KEY
+const MERCHANT_ID = env.ABA_MERCHANT_ID ?? ''
 
 export const abaService = {
-	async createPayment(payload: any) {
-		const item = [
+	async createPayment(_payload: any) {
+		const payload = _payload.data
+		const reqTime = dateTimeFormat()
+		const arrItem = [
 			{
-				name: "Apple MacBook Pro M5",
-				quantity: 1,
-				price: 22.2
-			}
+				name: payload.name,
+				quantity: payload.quantity,
+				price: payload.price,
+			},
 		]
-		const data = {
-			firstname: 'li',
-			lastname: 'bra',
-			req_time: new Date("yyyyMMddHHmmss"),
-			tran_id: `TT-2201`,
-			merchant_id: 'ec463980',
-			email: 'libra1@gmail.com',
-			phone: '099284990',
-			amount: 22.2,
-			currency: 'USD',
-			hash: '',
-			items: '',
-			type: 'purchase',
-			payment_option: 'abapay_khqr',
-			view_type: 'popup',
-		}
-		data.items = Buffer.from(JSON.stringify(item)).toString("base64")
+		const total = arrItem.reduce((sum, i) => sum + i.price * i.quantity, 0).toFixed(2)
+		const data = TransactionDTO(MERCHANT_ID,reqTime,Date.now().toString().slice(-12),total, convertToBase64Arr(arrItem))
 		const dataToHash =
 			data.req_time +
 			data.merchant_id +
@@ -43,11 +32,12 @@ export const abaService = {
 			data.lastname +
 			data.email +
 			data.phone +
+			data.type +
+			data.payment_option +
 			data.currency
-
 		data.hash = generateHmac(dataToHash, API_KEY)
-		// await axios.post(`${API_URL}/${ABA_PATH.PURCHASE}`, payload)
-		return {data: data, hash: data.hash}
+		return {checkout: data}
+	
 	},
 	async viewTransaction(payload: Base) {
 		const dataToHash =
@@ -60,8 +50,7 @@ export const abaService = {
 		return transaction.data
 	},
 	async viewRate(payload: Base) {
-		const dataToHash =
-			payload.req_time + payload.merchant_id
+		const dataToHash = payload.req_time + payload.merchant_id
 		payload.hash = generateHmac(dataToHash, API_KEY)
 		const rate = await axios.post(
 			`${API_URL}/${ABA_PATH.EXCHANGE_RATE}`,
@@ -89,13 +78,10 @@ export const abaService = {
 			payload.lifetime +
 			payload.qr_image_template
 		payload.hash = generateHmac(dataToHash, API_KEY)
-		const qr = await axios.post(
-			`${API_URL}/${ABA_PATH.QR_IMAGE}`,
-			payload,
-		)
+		const qr = await axios.post(`${API_URL}/${ABA_PATH.QR_IMAGE}`, payload)
 		return qr.data
 	},
-	async card(payload: any){
+	async card(payload: any) {
 		const dataToHash =
 			payload.merchant_id + payload.ctid + payload.return_param
 		payload.hash = generateHmac(dataToHash, API_KEY)
@@ -103,6 +89,6 @@ export const abaService = {
 			`${API_URL}/${ABA_PATH.LINK_CARD}`,
 			payload,
 		)
-		return linkCard.data;
-	}
+		return linkCard.data
+	},
 }
