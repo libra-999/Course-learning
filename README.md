@@ -14,7 +14,11 @@ pnpm create @eslint/config@latest
 pnpm add -D eslint-config-prettier
 ```
 
-# NODE PACKAGE
+# NODE JS
+### Install node ts
+```
+pnpm init
+```
 ### Installation dependencies that most common to used
 ```
 pnpm add dotenv

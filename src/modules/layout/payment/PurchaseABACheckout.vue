@@ -11,12 +11,10 @@ const themeStore = useTheme()
 const checkoutPayload = ref<Record<string, string | number>>({})
 const config = ref({
 	URL : "https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase",
-	target_name : "aba_webservice",
-	method: "POST",
-	id: "aba_merchant_request"
+	target_name : "aba_webservice", // default name
+	method: "POST", 
+	id: "aba_merchant_request" // default ID from plugin
 })
-
-
 const item = ref({
 	name: 'Apple MacBook Pro M5',
 	quantity: 1,
@@ -28,12 +26,13 @@ const submit = async () => {
 		const req = await axios.post('http://localhost:8900/aba/api/create-payment', {
 			data: item.value
 		})
-		checkoutPayload.value = req.data.checkout
+		checkoutPayload.value = req.data.checkout // set value from server side to checkoutPayload
 	} catch (error: any) {
 		throw errorMessage.messageBox(error, 'error')
 	}
 }
 const openCheckout = async () => {
+	// if payload is empty
 	if (!Object.keys(checkoutPayload.value).length) {
 		await submit()
 	}
