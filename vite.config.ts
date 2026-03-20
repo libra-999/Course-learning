@@ -10,7 +10,7 @@ export default defineConfig({
     tailwindcss(),
   ],
   test: {
-    globals: true ,
+    globals: true , 
   },
   resolve: {
     alias: {
