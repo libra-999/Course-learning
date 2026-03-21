@@ -5,18 +5,19 @@ pipeline {
         APP = "VUE"
         EXCEPTION_MSG = ""
     }
-    // ** building stages **
+
     stages {
-        // ** checkout the Jenkinsfile **
+        /* checkout the Jenkinsfile */
         stage('Checkout') {
             steps {
+                echo"===> Checkout scm <==="
                 checkout scm
             }
         }
-        // ** check tag if it has or not **
+        /* check tag if it has or not */
         stage('Validate Tag') {
             steps {
-                echo "=== Validate Tag ==="
+                echo "===> Validate Tag <==="
                 script {
                     try {
                         env.VERSION = getValidTag()
@@ -29,10 +30,10 @@ pipeline {
                 }
             }
         }
-        // ** build to artifact and push to docker hub **
+        /* build to artifact and push to docker hub */
         stage('Build & Push Docker Images') {
             steps {
-                echo "=== Build admin image ==="
+                echo "===> Build image and push server <==="
                 script {
                      try {
                         dockerBuildAndPush(APP_IMAGE,env.VERSION)

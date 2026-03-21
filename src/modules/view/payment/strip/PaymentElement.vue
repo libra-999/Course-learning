@@ -50,7 +50,7 @@ const optionPaymentElement = {
 // fetch stripeSecret and env key
 onMounted(async () => {
 	const resp = await stripPayment()
-	clientSecret.value = resp.clientSecret
+	clientSecret.value = resp.data.clientSecret
 })
 </script>
 <template>
