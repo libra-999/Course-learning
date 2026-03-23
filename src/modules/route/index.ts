@@ -47,11 +47,11 @@ const route: Router = createRouter({
 			children: [
 				{
 					path: 'aba',
-					component: () => PurchaseABA,
+					component: PurchaseABA,
 				},
 				{
 					path: 'strip',
-					component: () => PurchaseStrip,
+					component: PurchaseStrip,
 				},
 				{
 					path: 'crypto',

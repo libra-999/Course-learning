@@ -15,7 +15,11 @@ RUN pnpm run build
 
 FROM node:22-alpine
 WORKDIR /app
-RUN npm install -g serve
+RUN npm install -g serve  \
+    && apk add --no-cache tzdata
 COPY --from=build /app/dist ./dist
+
+# Phnom Penh Timezone
+ENV TZ=Asia/Phnom_Penh 
 EXPOSE 5092
 CMD ["serve", "-s", "dist", "-l", "5092"]
