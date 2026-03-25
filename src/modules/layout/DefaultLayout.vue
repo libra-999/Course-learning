@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { decrypt } from '@/app/utils/crypto.ts'
-import { loginStore, type User } from '@/modules/store/auth.ts'
 import { onMounted, ref } from 'vue'
-import route from '@/modules/route'
 import Cardbox from '@/app/components/card/Cardbox.vue'
 import { DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
 import Timeline, { type Activities } from '@/app/components/card/Timeline.vue'
@@ -13,32 +10,8 @@ import { useMessage } from '@/app/utils/message.ts'
 import ThemeSwitch from '@/app/components/theme/ThemeSwitch.vue'
 import { useTheme } from '@/modules/store/theme.ts'
 
-const checkLocalstorage = localStorage.getItem('userLogin')
-const userData = ref<User>({ username: '', password: '' })
-const router = route
-const userStore = loginStore()
-const objUserData = Object.keys(userData.value)
 const message = useMessage()
 
-/*  manage key user with exact the value in localstorage */
-try {
-	let data = decrypt(checkLocalstorage)
-	const objData = Object.keys(data)
-	if (
-		objUserData.length !== objData.length &&
-		!objUserData.every((key) => objUserData.includes(key))
-	) {
-		userStore.logout()
-		router.replace({
-			path: '/login',
-			query: { isAuth: 'false' },
-		})
-	}
-} catch (error) {
-	userStore.logout()
-	router.back()
-	throw message.messageBox(`${error}`, 'error')
-}
 /* timeline activity*/
 const isTimelineShow = ref(false)
 const timelineInstance = ref<FormInstance>()
@@ -69,7 +42,7 @@ onMounted(() => timeStore.load())
 const themeStore = useTheme()
 </script>
 <template>
-	<div class="w-[100%] flex gap-1 px-3 py-5">
+	<div class="w-full flex gap-1 px-3 py-5">
 		<!--	implement timeline studied-->
 		<div :class=" `${themeStore.settings.themeSchema !== 'dark' ?' bg-gray-100 ': 'bg-gray-800'} w-0 2xl:w-[20%] max-h-[90vh] rounded-b-2xl px-2 py-5 hidden 2xl:flex flex-col items-end justify-start overflow-y-auto`">
 			<ButtonGlobal

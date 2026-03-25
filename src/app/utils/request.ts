@@ -5,12 +5,18 @@ import axios, {
 	type InternalAxiosRequestConfig,
 } from 'axios'
 import route from '@/modules/route'
+import { loginStore } from '@/modules/store/auth'
 
 const apiRequest: AxiosInstance = axios.create({
 	timeout: 10000,
 })
 apiRequest.interceptors.request.use(
+	// attached token to sign all routes
 	(config: InternalAxiosRequestConfig) => {
+		const authStore = loginStore()
+		if (authStore.access_token) {
+			config.headers.set('Authorization', `Bearer ${authStore.access_token}`)
+		}
 		return config
 	},
 	(error: AxiosError) => {
@@ -23,7 +29,7 @@ apiRequest.interceptors.response.use(
 		return resp
 	},
 	(error: AxiosError) => {
-		const status = error.status // code error
+		const status = error.response?.status // code error
 		const errorType = error.code // type of error
 
 		if (status === 500 || errorType === "ERR_NETWORK" ) {
@@ -31,6 +37,7 @@ apiRequest.interceptors.response.use(
 			return Promise.reject(error)
 		}
 		if (status === 401) {
+			loginStore().logout() // no token
 			route.push('/login')
 			return Promise.reject(error)
 		}

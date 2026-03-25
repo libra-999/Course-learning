@@ -1,12 +1,14 @@
+import apiRequest from '@/app/utils/request'
 import axios from 'axios'
 
 const SERVER_ADDRESS = import.meta.env.VITE_SERVER_URL
+const VERSION = import.meta.env.VITE_SERVER_VERSION
 
 export async function createUploadFiles(
 	files: FormData,
 	onProgress: (percent: number) => void,
 ) {
-	const upload = await axios.post(`${SERVER_ADDRESS}/file/api/upload`, files, {
+	const upload = await apiRequest.post(`${SERVER_ADDRESS}/api/${VERSION}/file/upload`, files, {
 		headers: {
 			'Content-Type': 'multipart/form-data',
 		},
@@ -16,12 +18,12 @@ export async function createUploadFiles(
 			onProgress(percent)
 		},
 	})
-	return upload.data
+	return upload.data.data
 }
 
 export async function removeFile(fileName: string) {
-	const remove = await axios.post(`${SERVER_ADDRESS}/file/api/delete`, {
+	const remove = await apiRequest.post(`${SERVER_ADDRESS}/api/${VERSION}/file/delete`, {
 		fileName: fileName, // no object container , so it is raw body
 	})
-	return remove.data
+	return remove.data.data
 }

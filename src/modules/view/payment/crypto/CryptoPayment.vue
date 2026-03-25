@@ -22,13 +22,13 @@ const submit = async ()=> {
 	loading.value = true
 	try {
 		const req = await createInvoice(data.value);
-		const link = req?.invoice_url;
+		const link = req?.data.invoice_url;
 		if (link && link.trim() !== '') {
 			errorMessage.messageBox('You paid successfully , please scan this QR in your wallet crypto', 'success')
 			window.location.href = link
 		} else {
 			errorMessage.messageBox(
-				'Invalid Payment',
+				req.message,
 				'error'
 			)
 		}

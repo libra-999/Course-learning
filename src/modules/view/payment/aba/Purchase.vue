@@ -162,8 +162,8 @@ const createQR = async () => {
 	qrForm.value.items = base64
 	try {
 		const req = await generateQRImage(qrForm.value)
-		if (req.status.code === '0') {
-			qrImage.value = req.qrImage
+		if (req.code === 200) {
+			qrImage.value = req.data.qrImage
 			openDialog.value = true
 		}
 		return

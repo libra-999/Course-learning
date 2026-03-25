@@ -1,29 +1,34 @@
 import { defineStore } from 'pinia'
-import { isLogin, isLogout } from '@/app/utils/session.ts';
-
-export interface User {
-	username: string // username ( less than 14 lengths )
-	password: string // hash password
+import type { User } from '../types/auth';
+import { isLogout } from '@/app/utils/authToken';
+interface Auth {
+  user: User | null;
+  access_token: string,
 }
-
 export const loginStore = defineStore('userLogin', {
-  state: (): User => ({
-    username: '',
-    password: ''
+  state: (): Auth => ({
+    user: null,
+    access_token: ''
   }),
   getters: {
-    isLoggedIn: (state) => !!state.username && !!state.password,
+    isLoggedIn: (state) => !!state.user
   },
   actions: {
-    login(user: User, remember: boolean = false) {
-      this.username = user.username;
-      this.password = user.password;
-      isLogin(remember, user);
+    login(user: User, token: string) {
+      this.user = user;
+      this.access_token = token
     },
     logout() {
-      this.username = '';
-      this.password = '';
+      this.user = null
+      this.access_token = ''
       isLogout();
     }
-  }
+  },
+
+  // localstorage pinia (safe than localstorage default)
+  persist: {
+    key: 'userLogin',
+    storage: sessionStorage,
+    pick: ['user', 'access_token'],
+  },
 });

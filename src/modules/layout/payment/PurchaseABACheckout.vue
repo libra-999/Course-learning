@@ -3,12 +3,14 @@ import { ref } from 'vue'
 import { useMessage } from '@/app/utils/message.ts'
 import axios from 'axios'
 import { useTheme } from '@/modules/store/theme.ts'
+import { createPayment } from '@/modules/api/payment/aba'
 
 const errorMessage = useMessage()
 const image = ref('https://www.techpowerup.com/img/QJEgChoZgK9jRxJG.jpg')
 const stars = ref(5)
 const themeStore = useTheme()
 const checkoutPayload = ref<Record<string, string | number>>({})
+
 const config = ref({
 	URL : "https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase",
 	target_name : "aba_webservice", // default name
@@ -23,9 +25,7 @@ const item = ref({
 
 const submit = async () => {
 	try {
-		const req = await axios.post('http://localhost:8900/aba/api/create-payment', {
-			data: item.value
-		})
+		const req = await createPayment({data: item.value})
 		checkoutPayload.value = req.data.checkout // set value from server side to checkoutPayload
 	} catch (error: any) {
 		throw errorMessage.messageBox(error, 'error')
