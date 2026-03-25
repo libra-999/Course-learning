@@ -50,10 +50,7 @@ pipeline {
 
 // ** validation tag repo **
 def getValidTag() {
-    def tag = sh(
-        script: "git describe --tags --exact-match 2>/dev/null || echo ''",
-        returnStdout: true
-    ).trim()
+    def tag = env.TAG_NAME.trim()
     if (!tag) {
         error("❌ No tag found on this commit. Docker build requires a release tag.")
     }
