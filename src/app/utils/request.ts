@@ -7,9 +7,14 @@ import axios, {
 import route from '@/modules/route'
 import { loginStore } from '@/modules/store/auth'
 
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
+const SERVER_VERSION = import.meta.env.VITE_SERVER_VERSION
+
 const apiRequest: AxiosInstance = axios.create({
+	baseURL: `${SERVER_URL}/${SERVER_VERSION}`,
 	timeout: 10000,
 })
+
 apiRequest.interceptors.request.use(
 	// attached token to sign all routes
 	(config: InternalAxiosRequestConfig) => {
@@ -32,8 +37,8 @@ apiRequest.interceptors.response.use(
 		const status = error.response?.status // code error
 		const errorType = error.code // type of error
 
-		if (status === 500 || errorType === "ERR_NETWORK" ) {
-			route.push("/server-error")
+		if (status === 500 || errorType === 'ERR_NETWORK') {
+			route.push('/server-error')
 			return Promise.reject(error)
 		}
 		if (status === 401) {
@@ -42,7 +47,7 @@ apiRequest.interceptors.response.use(
 			return Promise.reject(error)
 		}
 		return Promise.reject(error)
-	}
+	},
 )
 
 export default apiRequest

@@ -11,8 +11,9 @@ import UploadProgressLayout from '@/modules/layout/uploadFile/UploadProgressLayo
 import { invalidPage } from '@/modules/route/error.ts'
 import PurchaseABACheckout from '@/modules/layout/payment/PurchaseABACheckout.vue'
 import { ElMessage } from 'element-plus'
-import { loginStore } from '../store/auth'
+import { loginStore } from '@/modules/store/auth'
 import { isTokenValid } from '@/app/utils/authToken'
+import TableLayout from '@/modules/layout/table/TableLayout.vue'
 
 const route: Router = createRouter({
 	history: createWebHistory(),
@@ -69,6 +70,12 @@ const route: Router = createRouter({
 			name: 'Upload',
 			meta: { requireAuth: true },
 			component: UploadProgressLayout,
+		},
+		{
+			path: "/table",
+			name: "Table Role and Permission",
+			meta: { requiredAuth: true },
+			component: TableLayout
 		},
 		
 		... invalidPage

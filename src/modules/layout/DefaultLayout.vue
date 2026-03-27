@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import Cardbox from '@/app/components/card/Cardbox.vue'
-import { DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
+import { Avatar, DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
 import Timeline, { type Activities } from '@/app/components/card/Timeline.vue'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { timelineStore } from '@/modules/store/line.ts'
@@ -9,6 +8,7 @@ import { type FormInstance, type FormRules } from 'element-plus'
 import { useMessage } from '@/app/utils/message.ts'
 import ThemeSwitch from '@/app/components/theme/ThemeSwitch.vue'
 import { useTheme } from '@/modules/store/theme.ts'
+import Cardbox from '@/app/components/card/Cardbox.vue'
 
 const message = useMessage()
 
@@ -95,6 +95,8 @@ const themeStore = useTheme()
 					path="/upload"
 					:icon="UploadFilled"
 				/>
+				<!-- Role and Permission Table -->
+				 <Cardbox title="Table Tree" content="Build a nest tables row with data role and permission" :icon="Avatar" path="/table"/>
 			</div>
 		</div>
 	</div>

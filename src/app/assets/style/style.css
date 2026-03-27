@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./table.css";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -18,6 +19,8 @@
   --border-color: #000000;
   --text-color:  #213547;
   transition: all ease-in-out;
+
+  --table-bg-color: rgba(54, 54, 54, 0.982);
 }
 
 /* Dark mode */
@@ -25,7 +28,7 @@ html.dark {
   --bg-color: #000000;
   --border-color: #ffffff;
   --text-color: #ffffff;
-  --bg-color-blue: oklch(70.7% 0.165 254.624);
+  --bg-color-blue: rgb(81, 162, 255);
   --bg-color-blue-2: oklch(27.8% 0.033 256.848);
   --el-bg-color: var(--bg-color-blue-2);
   --el-fill-color-blank: var(--bg-color-blue-2);
