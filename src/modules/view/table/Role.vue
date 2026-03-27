@@ -4,7 +4,7 @@
             <el-form :ref="roleQueryFormRef" :model="roleQueryParam" :inline="true">
                 <!-- Search  -->
                 <el-form-item class="search-item" label="Search" prop="keyword">
-                    <el-input v-model="roleQueryParam.keyword" placeholder="Search role by name"
+                    <el-input v-model="roleQueryParam.keyword" placeholder="search role by name"
                         @keyup.enter="handleQuery" class="search-input" />
                 </el-form-item>
                 <!-- Status -->
@@ -37,7 +37,9 @@
         </div>
         <el-card shadow="hover" class="table-section">
             <div class="flex mb-5">
-                <ButtonGlobal class=" bg-yellow-400 hover:bg-yellow-500 px-5 text-white" value="Add" @click="handleOpenDialog">
+                <!-- Form Action  -->
+                <ButtonGlobal class=" bg-yellow-400 hover:bg-yellow-500 px-5 text-white" value="Add"
+                    @click="handleOpenDialog">
                     <template #icon-right>
                         <el-icon>
                             <Plus />
@@ -52,19 +54,40 @@
                     </template>
                 </ButtonGlobal>
             </div>
-            <el-table
-                row-key="id"
-                default-expand-all> 
+            <!-- Table Display -->
+            <el-table row-key="id" default-expand-all>
                 <el-table-column>
-
+                    <el-table-column type="selection" align="center"/>
+                    <el-table-column prop="name" label="Name" align="center"/>
+                    <el-table-column prop="code" label="Code" align="center"/>
+                    <el-table-column prop="permission" label="Permission Value" width="150" align="center"/>
+                    <el-table-column prop="status" label="status" align="center">
+                        <template #default="scope">
+                            <el-tag v-if="scope.row.status == 1" type="success" align="center">正常</el-tag>
+                            <el-tag v-else type="info">禁用</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="Action" align="center">
+                        <template>
+                            <el-button v-hasPerm="['sys:dept:create']" type="primary" link size="small" icon="plus">
+                                Add
+                            </el-button>
+                            <el-button v-hasPerm="['sys:dept:update']" type="primary" link size="small" icon="edit">
+                                Edit
+                            </el-button>
+                            <el-button v-hasPerm="['sys:dept:delete']" type="danger" link size="small" icon="delete">
+                                Delete 
+                            </el-button>
+                        </template>
+                    </el-table-column>
                 </el-table-column>
             </el-table>
         </el-card>
     </div>
     <!-- Dialog Form -->
-     <el-dialog v-model="dialogState" width="500" @closed="handleCloseDialog">
+    <el-dialog v-model="dialogState" width="500" @closed="handleCloseDialog">
         <div>Form</div>
-     </el-dialog>
+    </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -98,7 +121,7 @@ const handleResetQuery = () => {
     roleQueryFormRef.value?.resetFields();
     console.log(roleQueryParam.value)
 }
-const handleOpenDialog = ()=> {
+const handleOpenDialog = () => {
     dialogState.value = true
 
 }

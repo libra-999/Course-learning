@@ -43,7 +43,7 @@ const themeStore = useTheme()
 </script>
 <template>
 	<div class="w-full flex gap-1 px-3 py-5">
-		<!--	implement timeline studied-->
+		<!--implement timeline studied-->
 		<div :class=" `${themeStore.settings.themeSchema !== 'dark' ?' bg-gray-100 ': 'bg-gray-800'} w-0 2xl:w-[20%] max-h-[90vh] rounded-b-2xl px-2 py-5 hidden 2xl:flex flex-col items-end justify-start overflow-y-auto`">
 			<ButtonGlobal
 				@click="isTimelineShow = true"
