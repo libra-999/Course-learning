@@ -67,7 +67,7 @@ const onLogout = () => {
 				<p class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold">
 					From Zero to Zero 🤔
 				</p>
-				<div class="flex justify-between">
+				<div class="flex justify-between mt-5">
 					<ThemeSwitch :theme-schema="themeStore.settings.themeSchema" :is-dark="themeStore.darkMode"
 						@switch="themeStore.toggleThemeSchema" />
 					<div class="text-white">
@@ -78,7 +78,7 @@ const onLogout = () => {
 									<img alt="Empty" src="../../app/assets/image/learn.jpg"
 										class="w-full h-full object-cover rounded-[50%]" />
 								</div>
-								<span>{{ authStore.user?.username  || 'Test'}}</span>
+								<span class="md:block sm:block xl:block hidden ">{{ authStore.user?.username  || 'Test'}}</span>
 							</div>
 							<template #dropdown>
 								<el-dropdown-menu>
@@ -146,7 +146,6 @@ const onLogout = () => {
 					</div>
 				</el-form-item>
 			</div>
-
 			<el-form-item prop="content">
 				<span class="mr-4">Content Timeline</span>
 				<el-input name="content" v-model="timelineModel.content" placeholder="Please input title"
