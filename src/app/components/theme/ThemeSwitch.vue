@@ -39,14 +39,14 @@ const icon = computed(() => icons[prop.themeSchema])
 		:placement="prop.placementTool"
 	>
 		<button class="icon-btn" @click="handleClick">
-			<component :is="icon" class="w-5 h-5 m-2" />
+			<component :is="icon" class="w-8 h-5 m-2" />
 		</button>
 		<template #content>
 			<span class="text-white">{{ prop.themeSchema.toUpperCase()}}</span>
 		</template>
 	</el-tooltip>
 	<button v-else class="icon-btn" @click="handleClick">
-		<component :is="icon" class="w-5 h-5 m-2" />
+		<component :is="icon" class="w-8 h-7 m-2" />
 	</button>
 </template>
 
@@ -55,7 +55,6 @@ const icon = computed(() => icons[prop.themeSchema])
 	cursor: pointer;
 	display: flex;
 	align-items: center;
-	border: 1px solid rgba(0, 0, 0, 0.11);
 	border-radius: 50%;
 	transition: all ease-in-out;
 }
