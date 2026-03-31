@@ -60,8 +60,7 @@
                     <el-table-column type="selection" align="center"/>
                     <el-table-column prop="name" label="Name" align="center"/>
                     <el-table-column prop="code" label="Code" align="center"/>
-                    <el-table-column prop="permission" label="Permission Value" width="150" align="center"/>
-                    <el-table-column prop="status" label="status" align="center">
+                    <el-table-column prop="status" label="Status" align="center">
                         <template #default="scope">
                             <el-tag v-if="scope.row.status == 1" type="success" align="center">正常</el-tag>
                             <el-tag v-else type="info">禁用</el-tag>
@@ -69,11 +68,14 @@
                     </el-table-column>
                     <el-table-column label="Action" align="center">
                         <template>
-                            <el-button v-hasPerm="['sys:dept:create']" type="primary" link size="small" icon="plus">
+                            <el-button type="primary" link size="small" icon="plus">
                                 Add
                             </el-button>
-                            <el-button v-hasPerm="['sys:dept:update']" type="primary" link size="small" icon="edit">
+                            <el-button  type="primary" link size="small" icon="edit">
                                 Edit
+                            </el-button>
+                            <el-button  type="primary" link size="small" icon="edit">
+                                Assign Permission
                             </el-button>
                             <el-button v-hasPerm="['sys:dept:delete']" type="danger" link size="small" icon="delete">
                                 Delete 

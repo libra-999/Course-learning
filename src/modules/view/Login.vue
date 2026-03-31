@@ -48,24 +48,25 @@ const userRule: FormRules<LoginRequest> = {
 const submit = async () => {
 	if (!userRefInstance.value) return
 	userRefInstance.value.validate()
-	
+
 	const loginApi = await login(userRef.value);
-	if (loginApi.code == 200) {
+	if (loginApi.code === 200) {
 		const token = loginApi.data.access_token;
 		const userDetail = loginApi.data.user
-		const user : User ={
+		const user: User = {
 			id: userDetail.id,
 			username: userDetail.username,
 			email: userDetail.email,
 			is_online: userDetail.is_online,
 			created_at: userDetail.created_at
-		}	
+		}
 		errorMessage.messageBox(loginApi.message, "success")
 		userStore.login(user, token)
-		router.replace(	{path: "/"}	)
-	}else{
-		errorMessage.notificationBox(loginApi.message, "error")
+		return router.replace({ path: "/" })
 	}
+
+	return errorMessage.notificationBox(loginApi.message, "error")
+
 }
 </script>
 
