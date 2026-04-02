@@ -126,10 +126,6 @@ const handleFilterRolePermission = (value: string, data: PermissionItem) => {
 }
 
 /*  Button event  */
-const handleRoleAdd = async () => { }
-const handleRoleDelete = async () => { }
-const handleRoleEdit = async () => { }
-const handleRoleDeleteAll = async () => { }
 const handleToggleAssignPermission = async () => {
     if (!props.roleId) return
 
@@ -138,7 +134,6 @@ const handleToggleAssignPermission = async () => {
     const toAdd = getIds.filter((id) => !oldIds.includes(id))
     const toRemove = oldIds.filter((id) => !getIds.includes(id))
     const createBy = authStore.user?.username
-
     const requests = [
         ...toAdd.map((perId) =>
             addPermissionInRole({
@@ -159,14 +154,17 @@ const handleToggleAssignPermission = async () => {
     if (!requests.length) {
         return message.messageBox('No permission changes detected', 'info')
     }
-
-    await Promise.all(requests).then((e: any) => {
-        if(e.code === 200){
-            message.messageBox('Permission Updated Successfully', 'success')
-        }else{
-            throw message.messageBox("Error updated","error")
-        }
-    })
+    try{
+        const res = await Promise.all(requests)
+        res.every((i: any) => {
+            if(i.data.code === 200 || i.data.code === 201){
+                message.messageBox("Permission Updated Successfully", "success")
+            }
+        })
+    }catch(error: any){
+         message.messageBox(error.message,"error")
+    }
+    
 }
 
 /* watch data */

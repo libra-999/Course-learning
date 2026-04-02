@@ -6,6 +6,7 @@ export interface RoleItem{
     id: string,
     code: string,
     name: string,
+    status: number,
     createdAt: Date,
     createdBy: string
 }
@@ -29,4 +30,15 @@ export interface PermissionTree {
 export interface RolePermissionItem {
     role: RoleItem,
     permissions: PermissionItem[]
+}
+
+export interface RoleReq {
+    code: string,
+    name: string,
+    createdBy?: string
+}
+export interface RoleUpdateReq {
+    roleId: string,
+    name: string,
+    status: number
 }
