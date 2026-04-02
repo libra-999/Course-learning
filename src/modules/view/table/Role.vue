@@ -173,7 +173,7 @@ const getId = ref<RoleItem['id'] | null>(null)
 /* Model */
 const roleQueryParam = ref<RoleQueryParam>({
     keyword: '',
-    status: undefined
+    status: 1
 })
 const roleRef = ref<RoleReq>({
     name: '',

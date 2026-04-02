@@ -1,5 +1,5 @@
 import apiRequest from '@/app/utils/request'
-import type { RoleItem, RoleReq, RoleUpdateReq } from '@/modules/types/role'
+import type { RoleReq } from '@/modules/types/role'
 
 /** Role Module */
 export async function rolePage(
