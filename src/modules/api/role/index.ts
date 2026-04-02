@@ -12,7 +12,7 @@ export async function rolePage(page?: number,size?: number ,sort?: string , keyw
     })
 }
 export async function permissionList(): Promise<any>{
-    return await apiRequest.get("api/permissions",{
+    const permissions = await apiRequest.get("api/permissions",{
         params: {
             page: 1,
             size: 10000,
@@ -20,7 +20,9 @@ export async function permissionList(): Promise<any>{
             sort: 'desc',
         }
     })
+    return permissions.data
 }
 export async function rolePermission(id: string): Promise<any>{
-    return await apiRequest.get(`api/roles/assign/${id}`)
+    const rolePermission = await apiRequest.get(`api/roles/assign/${id}`)
+    return rolePermission.data
 }

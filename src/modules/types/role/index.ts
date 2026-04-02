@@ -18,7 +18,13 @@ export interface QueryParams{
 export interface PermissionItem {
     id: string,
     name: string,
-    module: string
+    module: string,
+}
+export interface PermissionTree {
+    id: string,
+    name: string,
+    module?: string,
+    children?: PermissionTree[]
 }
 export interface RolePermissionItem {
     role: RoleItem,
