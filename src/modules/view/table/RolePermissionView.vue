@@ -46,7 +46,6 @@ import {  Switch } from '@element-plus/icons-vue';
 import { nextTick, ref, watch } from 'vue';
 
 
-/* variable */
 const props = defineProps<{
     modelValue: boolean,
     roleId: string | null
@@ -61,11 +60,10 @@ const roleTreeRef = ref<any>()
 const rolePermissionLink = ref(true)
 
 /* Button Action */
-
 const handleVisibleDrawer = (value: boolean) => emit('update:modelValue', value);
 const handleClose = () => emit('update:modelValue', false)
 
-/* HTTP Request */
+/* List Data */
 const fetchPermissionData = async () => {
     const data = await permissionList()
     permissionData.value = Array.isArray(data.data) ? data.data : []
@@ -80,7 +78,7 @@ const fetchRolePermissionData = async () => {
 }
 
 /* TreeMenu */
-const setTreeExpanded = (expanded: boolean) => {
+const setTreeExpand = (expanded: boolean) => {
     const nodesMap = roleTreeRef.value?.store?.nodesMap ?? {}
     for (const node of Object.values(nodesMap) as any[]) {
         node.expanded = expanded
@@ -88,7 +86,7 @@ const setTreeExpanded = (expanded: boolean) => {
 }
 const toggleMenuExpand = () => { 
     menuExpanded.value = !menuExpanded.value
-    setTreeExpanded(menuExpanded.value)
+    setTreeExpand(menuExpanded.value)
 }
 const getPermissionPayload = (_payload: any): PermissionItem[] => {
     if (Array.isArray(_payload)) return _payload
@@ -131,7 +129,7 @@ const handleFilterRolePermission = (value: string, data: PermissionItem) => {
     return data.name.includes(value)
 }
 
-/* action  */
+/*  Button event  */
 const handleRoleAdd = async () => {}
 const handleRoleDelete = async () => {}
 const handleRoleEdit = async () => {}
