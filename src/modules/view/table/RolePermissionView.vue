@@ -15,22 +15,16 @@
                     </ButtonGlobal>
                 </div>
             </div>
-            <el-tree 
-            ref="roleTreeRef" 
-            :data="permissionTreeData" 
-            :props="{lable:'name', children: 'children'}"
-            node-key="id" 
-            show-checkbox
-            :default-expand-all="true"
-            :filter-node-method="handleFilterRolePermission" 
-            :check-strictly="!rolePermissionLink" class="mt-5">
+            <el-tree ref="roleTreeRef" :data="permissionTreeData" :props="{ lable: 'name', children: 'children' }"
+                node-key="id" show-checkbox :default-expand-all="true" :filter-node-method="handleFilterRolePermission"
+                :check-strictly="!rolePermissionLink" class="mt-5">
                 <template #default="{ data }">
                     {{ data.name.toUpperCase() }}
                 </template>
             </el-tree>
             <template #footer>
                 <div class="flex text-white place-items-end">
-                    <ButtonGlobal value="确定" @click="handleToggleAssignPermission" />
+                    <ButtonGlobal value="确定" @click.prevent="handleToggleAssignPermission" />
                     <ButtonGlobal value="取消" @click="handleClose" />
                 </div>
             </template>
@@ -40,11 +34,12 @@
 
 <script setup lang="ts">
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue';
-import { permissionList, rolePermission } from '@/modules/api/role';
+import { useMessage } from '@/app/utils/message';
+import { addPermissionInRole, permissionList, removePermissionInRole, rolePermission } from '@/modules/api/role';
+import { loginStore } from '@/modules/store/auth';
 import type { PermissionItem, PermissionTree, RolePermissionItem } from '@/modules/types/role';
-import {  Switch } from '@element-plus/icons-vue';
+import { Switch } from '@element-plus/icons-vue';
 import { nextTick, ref, watch } from 'vue';
-
 
 const props = defineProps<{
     modelValue: boolean,
@@ -55,9 +50,10 @@ const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>()
 const permissionData = ref<PermissionItem[]>([])
 const rolePermissionDefault = ref<RolePermissionItem | null>()
 const permissionTreeData = ref<PermissionTree[]>([])
-
 const roleTreeRef = ref<any>()
 const rolePermissionLink = ref(true)
+const authStore = loginStore()
+const message = useMessage()
 
 /* Button Action */
 const handleVisibleDrawer = (value: boolean) => emit('update:modelValue', value);
@@ -84,7 +80,7 @@ const setTreeExpand = (expanded: boolean) => {
         node.expanded = expanded
     }
 }
-const toggleMenuExpand = () => { 
+const toggleMenuExpand = () => {
     menuExpanded.value = !menuExpanded.value
     setTreeExpand(menuExpanded.value)
 }
@@ -130,22 +126,58 @@ const handleFilterRolePermission = (value: string, data: PermissionItem) => {
 }
 
 /*  Button event  */
-const handleRoleAdd = async () => {}
-const handleRoleDelete = async () => {}
-const handleRoleEdit = async () => {}
-const handleRoleDeleteAll = async () => {}
-const handleToggleAssignPermission = async () => {}
+const handleRoleAdd = async () => { }
+const handleRoleDelete = async () => { }
+const handleRoleEdit = async () => { }
+const handleRoleDeleteAll = async () => { }
+const handleToggleAssignPermission = async () => {
+    if (!props.roleId) return
+
+    const getIds = (roleTreeRef.value?.getCheckedKeys(true) ?? []) as string[]
+    const oldIds = rolePermissionDefault.value?.permissions.map((i) => i.id) ?? []
+    const toAdd = getIds.filter((id) => !oldIds.includes(id))
+    const toRemove = oldIds.filter((id) => !getIds.includes(id))
+    const createBy = authStore.user?.username
+
+    const requests = [
+        ...toAdd.map((perId) =>
+            addPermissionInRole({
+                roleId: props.roleId,
+                permissionId: perId,
+                createdBy: createBy
+            })
+        ),
+        ...toRemove.map((perId) =>
+            removePermissionInRole({
+                roleId: props.roleId,
+                permissionId: perId,
+                createdBy: createBy
+            })
+        ),
+    ]
+
+    if (!requests.length) {
+        return message.messageBox('No permission changes detected', 'info')
+    }
+
+    await Promise.all(requests).then((e: any) => {
+        if(e.code === 200){
+            message.messageBox('Permission Updated Successfully', 'success')
+        }else{
+            throw message.messageBox("Error updated","error")
+        }
+    })
+}
 
 /* watch data */
 watch(
     () => [props.modelValue, props.roleId], // make sure watch this event 
     async ([isOpen, roleId]) => {
-        if (!isOpen || !roleId) return 
+        if (!isOpen || !roleId) return
         await syncPermissionAndRoleHasPermission()
     },
     { immediate: true }
 )
-
 </script>
 
 <style scoped></style>
