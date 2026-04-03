@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
-import Product from '@/app/components/payment/crypto/Product.vue'
 import { ref } from 'vue'
 import type { NowpaymentModel } from '@/modules/types/payment/crypto'
 import { createInvoice } from '@/modules/api/payment/crypto'
 import Loading from '@/app/components/Loading.vue'
 import { useMessage } from '@/app/utils/message.ts'
+import Product from '@/app/components/system/payment/crypto/Product.vue'
 
 const errorMessage = useMessage()
 const loading = ref(false)

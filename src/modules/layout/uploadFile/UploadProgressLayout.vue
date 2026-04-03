@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import ProgressUpload from '@/app/components/uploadFile/ProgressUpload.vue'
 import { ref } from 'vue'
 import type { UploadItem } from '@/modules/types/uploadFile'
 import { createUploadFiles, removeFile } from '@/modules/api/uploadFile'
 import { v4 as uuidV4 } from 'uuid'
 import { FileRuleResp } from '@/app/utils/mimeType.ts'
 import { useMessage } from '@/app/utils/message.ts'
+import ProgressUpload from '@/app/components/system/uploadFile/ProgressUpload.vue'
 
 const pictures = ref<UploadItem[]>([])
 const message = useMessage()

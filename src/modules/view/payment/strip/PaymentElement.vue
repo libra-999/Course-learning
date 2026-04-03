@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { stripPayment } from '@/modules/api/payment/strip'
 import { VueStripeElements, VueStripeProvider } from '@vue-stripe/vue-stripe'
-import PaymentForm from '@/app/components/payment/strip/PaymentForm.vue'
+import PaymentForm from '@/app/components/system/payment/strip/PaymentForm.vue'
 
 // env and custom element in stripe
 const PUBLISH_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY

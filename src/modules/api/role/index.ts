@@ -40,14 +40,17 @@ export async function roleUpdate(
 	const update = await apiRequest.put(`api/roles/${id}`, updateReq)
 	return update.data
 }
+export async function roleDeleteAll(roleIds: string[]): Promise<any> {
+	const removeAll = await apiRequest.delete('api/roles/all', {
+		data: roleIds
+	})  // array data must use data build-in from axios 
+	return removeAll.data
+}
 export async function roleDelete(id: string): Promise<any> {
 	const remove =await apiRequest.delete(`api/roles/${id}`)
 	return remove.data
 }
-export async function roleDeleteAll(roleIds: any) : Promise<any> {
-	const removeAll = await apiRequest.delete("api/roles/all", roleIds)
-	return removeAll.data
-}
+
 
 /* Permisison Module */
 export async function permissionList(): Promise<any> {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import BookCard from '../../../app/components/book/BookCard.vue';
 import { getBooks } from '../../api/book';
 import { usePagination } from '@/app/utils/pagination.ts';
 import Pagination from '@/app/components/pagination/Pagination.vue';
@@ -7,6 +6,7 @@ import { onMounted, ref, watch } from 'vue';
 import type { Book } from '../../types/book';
 import Loading from '@/app/components/Loading.vue';
 import { useMessage } from '@/app/utils/message.ts'
+import BookCard from '@/app/components/system/book/BookCard.vue';
 
 const dataBook = ref<Book[]>([]);
 const loading = ref(false);

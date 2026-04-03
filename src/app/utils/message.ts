@@ -35,3 +35,36 @@ export function useMessage() {
 		notificationBox,
 	}
 }
+
+export const switchStatusCode = (value: number, messageAPI: string) => {
+	const message = useMessage()
+	switch (value) {
+		case 200: {
+			message.messageBox('Succeed!', 'success')
+			break
+		}
+		case 201: {
+			message.messageBox('Created Successfully !', 'success')
+			break
+		}
+		case 401: {
+			message.messageBox('Unauthorized!', 'error')
+			break
+		}
+		case 404: {
+			message.messageBox('Not Found!', 'error')
+			break
+		}
+		case 400: {
+			message.messageBox('Bad Request with some fields are null!', 'error')
+			break
+		}
+		case 32: {
+			message.messageBox(messageAPI, 'error')
+			break
+		}
+		default:
+			message.messageBox(messageAPI, 'error')
+			break
+	}
+}
