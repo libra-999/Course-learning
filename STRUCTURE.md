@@ -13,29 +13,6 @@
 - mongoose      # unofficial mongo ,but easies to used (build-in some query)
 
 ```
-# 📁 Structure API
-###  Patter Design of Node 
-``` 
-sever/
-├── share/ # utilities
-├── insfrastructure/
-    ├── file/
-    ├── config/
-    ├── db/
-├── presentation/
-    ├── routes/
-    ├── middleware/
-├── domain/
-    ├── service/
-    ├── logger/
-    ├── exception/
-    ├── entity/
-    ├── constant/
-    ├── file/
-└── Dockerfile
-└── Jenkinsfile
-└── main.ts
-``` 
 ###  Patter Design of VUE
 ``` 
 src/
