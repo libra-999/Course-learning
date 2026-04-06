@@ -1,3 +1,19 @@
+<template>
+	<el-timeline :mode="mode" :v-model="proActivity.activity">
+		<el-timeline-item
+			v-for="(element, index) in proActivity.activity"
+			:key="index"
+			:color="element.color"
+			:timestamp="dayMonthFormat(element.timestamp)"
+			class="text-start font-bold font-mono hover:rounded-xl focus:border-b-gray-600  duration-100 transition-all py-2"
+		>
+			<span style="color: var(--text-color)">{{ element.content }}</span>
+			<el-icon style="color: var(--text-color)" class="mx-2 opacity-40 hover:opacity-85 duration-100 transition-all cursor-pointer" @click="removeItem(index)">
+				<Delete />
+			</el-icon>
+		</el-timeline-item>
+	</el-timeline>
+</template>
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage, type TimelineProps } from 'element-plus'
@@ -24,22 +40,4 @@ const removeItem = (id: number) => {
 	})
 }
 </script>
-
-<template>
-	<el-timeline :mode="mode" :v-model="proActivity.activity">
-		<el-timeline-item
-			v-for="(element, index) in proActivity.activity"
-			:key="index"
-			:color="element.color"
-			:timestamp="dayMonthFormat(element.timestamp)"
-			class="text-start font-bold font-mono hover:rounded-xl focus:border-b-gray-600  duration-100 transition-all py-2"
-		>
-			<span style="color: var(--text-color)">{{ element.content }}</span>
-			<el-icon style="color: var(--text-color)" class="mx-2 opacity-40 hover:opacity-85 duration-100 transition-all cursor-pointer" @click="removeItem(index)">
-				<Delete />
-			</el-icon>
-		</el-timeline-item>
-	</el-timeline>
-</template>
-
 <style scoped></style>

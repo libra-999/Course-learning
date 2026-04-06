@@ -1,5 +1,3 @@
-<script setup lang="ts">
-</script>
 <template>
 	<div class="flex place-items-center h-full">
 		<nav v-if="$route.path === '/payment' ">
@@ -11,7 +9,8 @@
 		<RouterView/>
 	</div>
 </template>
-
+<script setup lang="ts">
+</script>
 <style scoped>
 
 </style>

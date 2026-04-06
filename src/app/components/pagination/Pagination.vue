@@ -1,3 +1,31 @@
+<template>
+  <!-- Prev -->
+  <ButtonGlobal @click="nextPage(modelValue - 1)" :disabled="modelValue === 1" style="color: white;" value="Previous">
+    <template #icon-left>
+      <el-icon>
+        <Back style="color: aliceblue;" />
+      </el-icon>
+    </template>
+  </ButtonGlobal>
+  <!-- Page Numbers -->
+  <button v-for="p in visiblePages" :key="p" :disabled="p === '...'" @click="nextPage(p)" :class="[
+    'px-3 py-1 border rounded mx-1 cursor-pointer',
+    p === modelValue
+      ? 'bg-blue-500 text-white'
+      : ' bg-gray-100 border-none text-[#213547]',
+    p === '...' ? 'cursor-default border-none bg-transparent' : ''
+  ]">
+    {{ p }}
+  </button>
+  <!-- Next -->
+  <ButtonGlobal value="Next" style="color: white;" @click="nextPage(modelValue + 1)" :disabled="modelValue === totals">
+    <template #icon-right>
+      <el-icon>
+        <Right />
+      </el-icon>
+    </template>
+  </ButtonGlobal>
+</template>
 <script setup lang="ts">
 import { computed } from 'vue';
 import ButtonGlobal from '../button/ButtonGlobal.vue';
@@ -63,32 +91,4 @@ const nextPage = (page: number | string) => {
   emit('update:modelValue', page) // open next button
 }
 </script>
-<template>
-  <!-- Prev -->
-  <ButtonGlobal @click="nextPage(modelValue - 1)" :disabled="modelValue === 1" style="color: white;" value="Previous">
-    <template #icon-left>
-      <el-icon>
-        <Back style="color: aliceblue;" />
-      </el-icon>
-    </template>
-  </ButtonGlobal>
-  <!-- Page Numbers -->
-  <button v-for="p in visiblePages" :key="p" :disabled="p === '...'" @click="nextPage(p)" :class="[
-    'px-3 py-1 border rounded mx-1 cursor-pointer',
-    p === modelValue
-      ? 'bg-blue-500 text-white'
-      : ' bg-gray-100 border-none text-[#213547]',
-    p === '...' ? 'cursor-default border-none bg-transparent' : ''
-  ]">
-    {{ p }}
-  </button>
-  <!-- Next -->
-  <ButtonGlobal value="Next" style="color: white;" @click="nextPage(modelValue + 1)" :disabled="modelValue === totals">
-    <template #icon-right>
-      <el-icon>
-        <Right />
-      </el-icon>
-    </template>
-  </ButtonGlobal>
-</template>
 <style scoped></style>

@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import img404 from '@/app/assets/image/404.jpg'
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
-import { useRouter } from 'vue-router'
-
-const img = ref(img404)
-const router = useRouter()
-const back = () => {
-	router.back()
-}
-</script>
-
 <template>
 	<div class="w-full h-full flex 2xl:flex-row xl:flex-row lg:flex-row flex-col justify-between place-items-center gap-1 sm:gap-3">
 		<div class="xl:w-[80%] 2xl:w-[80%] h-50% w-full">
@@ -27,6 +14,18 @@ const back = () => {
 		</div>
 	</div>
 </template>
+<script setup lang="ts">
+import { ref } from 'vue'
+import img404 from '@/app/assets/image/404.jpg'
+import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import { useRouter } from 'vue-router'
+
+const img = ref(img404)
+const router = useRouter()
+const back = () => {
+	router.back()
+}
+</script>
 
 <style scoped>
 </style>

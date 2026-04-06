@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import type { NowpaymentModel } from '@/modules/types/payment/crypto'
-import { useTheme } from '@/modules/store/theme.ts'
-
-defineProps<{
-	payload: NowpaymentModel
-	submit: any
-}>()
-const image = ref('https://www.techpowerup.com/img/QJEgChoZgK9jRxJG.jpg')
-const stars = ref(5)
-const themeStore =useTheme()
-</script>
 <template>
 	<div :class="`${themeStore.settings.themeSchema != 'dark' ?'text-black border-blue-100': 'text-white bg-gray-800 border-[0.3px] border-solid border-[rgba(255,255,255,0.18)]'} w-full max-w-sm bg-neutral-primary-soft p-6 border-2  rounded-l shadow-xs text-black`">
 		<a href="#">
@@ -77,5 +64,18 @@ const themeStore =useTheme()
 		</div>
 	</div>
 </template>
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { NowpaymentModel } from '@/modules/types/payment/crypto'
+import { useTheme } from '@/modules/store/theme.ts'
+
+defineProps<{
+	payload: NowpaymentModel
+	submit: any
+}>()
+const image = ref('https://www.techpowerup.com/img/QJEgChoZgK9jRxJG.jpg')
+const stars = ref(5)
+const themeStore =useTheme()
+</script>
 
 <style scoped></style>

@@ -109,11 +109,8 @@ const roleRules: FormRules<RoleReq> = {
 
 
 const handleOpenEmitState = (value: boolean) => emit('update:dialogState', value)
-const handleOpenEmitUpdateState = (value: boolean) => {
-    emit('update:dialogUpdate', value)
-}
+const handleOpenEmitUpdateState = (value: boolean) => { emit('update:dialogUpdate', value)}
 const handleOpenEmitDeleteState = (value: boolean) => emit('update:dialogDeleteAllState', value)
-
 const handleCloseUpdateDialog = () => emit('update:dialogUpdate', false)
 const handleCloseDialog = () => emit('update:dialogState', false)
 const handleCloseDeleteAllDialog = () => emit('update:dialogDeleteAllState', false)

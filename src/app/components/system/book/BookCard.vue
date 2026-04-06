@@ -1,30 +1,3 @@
-<script setup lang="ts">
-import {  ref } from 'vue';
-import type { Book } from '@/modules/types/book';
-import { viewBook } from '@/modules/api/book';
-import Loading from '@/app/components/Loading.vue';
-import Rating from '@/app/components/button/Rating.vue';
-
-const props = defineProps<{
-    bookData: Book
-}>();
-
-const data = ref<object>()
-const dialogDetail = ref(false);
-const loading = ref(false)
-const rating = ref(props.bookData.volumeInfo.averageRating);
-const getBook = async (id : string) =>{
-    loading.value = true
-    dialogDetail.value = true
-    try{
-        data.value = await viewBook(id);
-    }catch(error){
-        console.log(error);
-    }finally {
-        loading.value = false
-    }
-}
-</script>
 <template>
     <div class="w-full max-w-full p-1 md:max-w-xs border-card relative hover:translate-y-0.5 transition-transform duration-300">
         <!-- Info author -->
@@ -76,6 +49,33 @@ const getBook = async (id : string) =>{
         </div>
     </el-dialog>
 </template>
+<script setup lang="ts">
+import {  ref } from 'vue';
+import type { Book } from '@/modules/types/book';
+import { viewBook } from '@/modules/api/book';
+import Loading from '@/app/components/Loading.vue';
+import Rating from '@/app/components/button/Rating.vue';
+
+const props = defineProps<{
+    bookData: Book
+}>();
+
+const data = ref<object>()
+const dialogDetail = ref(false);
+const loading = ref(false)
+const rating = ref(props.bookData.volumeInfo.averageRating);
+const getBook = async (id : string) =>{
+    loading.value = true
+    dialogDetail.value = true
+    try{
+        data.value = await viewBook(id);
+    }catch(error){
+        console.log(error);
+    }finally {
+        loading.value = false
+    }
+}
+</script>
 <style scoped>
 .border-card {
     border: 0.8px solid rgba(224, 224, 224, 0.3);

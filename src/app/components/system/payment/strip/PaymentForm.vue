@@ -1,3 +1,16 @@
+<template>
+	<Loading v-if="loading" />
+	<div v-show="!loading">
+		<VueStripePaymentElement :options="paymentProp.optionPayment" />
+		<button
+			class="text-black bg-amber-300 rounded-sm w-full my-2 py-2 px-1 cursor-pointer"
+			@click="handleSubmit()"
+			type="button"
+		>
+			Submit
+		</button>
+	</div>
+</template>
 <script setup lang="ts">
 import {
 	usePaymentIntent,
@@ -44,19 +57,5 @@ const handleSubmit = async () => {
 	}
 }
 </script>
-
-<template>
-	<Loading v-if="loading" />
-	<div v-show="!loading">
-		<VueStripePaymentElement :options="paymentProp.optionPayment" />
-		<button
-			class="text-black bg-amber-300 rounded-sm w-full my-2 py-2 px-1 cursor-pointer"
-			@click="handleSubmit()"
-			type="button"
-		>
-			Submit
-		</button>
-	</div>
-</template>
 
 <style scoped></style>

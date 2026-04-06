@@ -1,3 +1,7 @@
+<template>
+	<Loading v-if="loading"/>
+	<Product v-else :payload="data" :submit="submit"/>
+</template>
 <script setup lang="ts">
 
 import { ref } from 'vue'
@@ -42,11 +46,6 @@ const submit = async ()=> {
 	}
 }
 </script>
-
-<template>
-	<Loading v-if="loading"/>
-	<Product v-else :payload="data" :submit="submit"/>
-</template>
 
 <style scoped>
 

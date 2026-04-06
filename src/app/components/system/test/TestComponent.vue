@@ -1,24 +1,3 @@
-<script setup lang="ts">
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
-import { ref } from 'vue'
-
-const boxValue = ref<number[]>([0])
-const count = ref<number>(0)
-
-const handleReset = () => {
-	count.value = 0
-	boxValue.value = [0]
-}
-
-const handleClickAdd = () => {
-	if (boxValue.value.length > 20) {
-		boxValue.value = []
-	}
-	count.value++
-	boxValue.value.push(count.value)
-}
-</script>
-
 <template>
 	<div class="flex flex-col items-center text-white">
 		<div class="flex justify-center align-middle">
@@ -47,5 +26,26 @@ const handleClickAdd = () => {
 		/>
 	</div>
 </template>
+<script setup lang="ts">
+import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import { ref } from 'vue'
+
+const boxValue = ref<number[]>([0])
+const count = ref<number>(0)
+
+const handleReset = () => {
+	count.value = 0
+	boxValue.value = [0]
+}
+
+const handleClickAdd = () => {
+	if (boxValue.value.length > 20) {
+		boxValue.value = []
+	}
+	count.value++
+	boxValue.value.push(count.value)
+}
+</script>
+
 <style scoped>
 </style>

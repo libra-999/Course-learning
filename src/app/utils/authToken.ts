@@ -7,3 +7,12 @@ export const isLogout = () => {
 	sessionStorage.removeItem('userLogin')
 	document.cookie = 'auth=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
 }
+
+export const extractQR = (decodeText: string)=>{
+	try{
+		const parsed =  JSON.parse(decodeText);
+		return parsed.token ?? decodeText
+	}catch{
+		return decodeText
+	}
+}

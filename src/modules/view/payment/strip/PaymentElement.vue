@@ -1,3 +1,17 @@
+<template>
+	<VueStripeProvider :publishable-key="PUBLISH_KEY">
+		<VueStripeElements
+			v-if="clientSecret"
+			:client-secret="clientSecret"
+			:options="optionStripeElement"
+		>
+			<PaymentForm
+				:client-secret="clientSecret"
+				:option-payment="optionPaymentElement"
+			/>
+		</VueStripeElements>
+	</VueStripeProvider>
+</template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { stripPayment } from '@/modules/api/payment/strip'
@@ -53,19 +67,4 @@ onMounted(async () => {
 	clientSecret.value = resp.data.clientSecret
 })
 </script>
-<template>
-	<VueStripeProvider :publishable-key="PUBLISH_KEY">
-		<VueStripeElements
-			v-if="clientSecret"
-			:client-secret="clientSecret"
-			:options="optionStripeElement"
-		>
-			<PaymentForm
-				:client-secret="clientSecret"
-				:option-payment="optionPaymentElement"
-			/>
-		</VueStripeElements>
-	</VueStripeProvider>
-</template>
-
 <style scoped></style>

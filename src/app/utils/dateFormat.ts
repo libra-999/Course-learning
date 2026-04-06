@@ -15,3 +15,13 @@ export const dayTimeFormat = (date: string | Date) => {
 	const minute = String(d.getMinutes()).padStart(2, '0')
 	return `${day}-${month}-${year} ${hour}:${minute}`
 }
+export const minuteFormat = (value: any) =>{
+	const totalSecond = Math.max(0,Number(value))
+	const minute = String(Math.floor(totalSecond / 60)).padStart(2,'0');
+	const second = String(totalSecond % 60).padStart(2,'0');
+	return `${minute}:${second}`
+}
+
+export const remaingTime =  (second: string | number)=>{
+	return Math.max(0,Math.ceil((new Date(second).getTime() - Date.now()) / 1000 ))
+}

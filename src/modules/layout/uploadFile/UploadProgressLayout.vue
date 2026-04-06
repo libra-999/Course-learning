@@ -1,3 +1,15 @@
+<template>
+	<div class="text-black w-full">
+		<!-- upload with progressing -->
+		<div class="m-auto">
+			<ProgressUpload
+				:pictures="pictures"
+				@upload-submit="progressSubmit"
+				@remove-image="progressRemoveFile"
+			/>
+		</div>
+	</div>
+</template>
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { UploadItem } from '@/modules/types/uploadFile'
@@ -81,18 +93,4 @@ const progressRemoveFile = async (fileName: string, id: string) => {
 	}
 }
 </script>
-
-<template>
-	<div class="text-black w-full">
-		<!-- upload with progressing -->
-		<div class="m-auto">
-			<ProgressUpload
-				:pictures="pictures"
-				@upload-submit="progressSubmit"
-				@remove-image="progressRemoveFile"
-			/>
-		</div>
-	</div>
-</template>
-
 <style scoped></style>

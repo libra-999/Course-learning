@@ -1,195 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import type { FormInstance } from 'element-plus'
-import type { PaywayABA, Transaction } from '@/modules/types/payment/aba'
-import {
-	createPayment,
-	generateQRImage,
-	getRate,
-	getTransaction,
-	manageCard,
-} from '@/modules/api/payment/aba'
-import { useMessage } from '@/app/utils/message.ts'
-
-const buildReqTime = () => {
-	const now = new Date()
-	const year = now.getFullYear().toString()
-	const month = String(now.getMonth() + 1).padStart(2, '0')
-	const day = String(now.getDay()).padStart(2, '0')
-	const hour = String(now.getHours()).padStart(2, '0')
-	const minute = String(now.getMinutes()).padStart(2, '0')
-	const second = String(now.getSeconds()).padStart(2, '0')
-	return year + month + day + hour + minute + second
-}
-const itemsStatic = [
-	{
-		id: 1,
-		name: 'watch',
-		price: 300,
-	},
-	{
-		id: 254,
-		name: 'ipad',
-		price: 505,
-	},
-]
-const ruleForm = ref<PaywayABA>({
-	firstname: 'li',
-	lastname: 'bra',
-	req_time: buildReqTime(),
-	tran_id: `Tx-${Date.now()}`,
-	merchant_id: 'ec463980',
-	email: 'libra1@gmail.com',
-	phone: '099284990',
-	amount: 22.2,
-	currency: 'USD',
-	hash: '',
-	items: '',
-	// skip_success_page:  0,
-	view_type: 'popup',
-	// payment_option: 'abapay_khqr'
-})
-const qrForm = ref<any>({
-	req_time: '20250222152210',
-	merchant_id: 'ec463980',
-	tran_id:
-		'T-' +
-		`${Date.now().toString().slice(-10)}` +
-		`${Math.floor(Math.random() * 1000)}`,
-	amount: 554,
-	first_name: 'bimo',
-	last_name: 'bimo',
-	email: 'bimo11@gmail.com',
-	phone: '092990239',
-	purchase_type: 'purchase',
-	payment_option: 'abapay_khqr',
-	currency: 'USD',
-	lifetime: 10,
-	qr_image_template: 'template3_color',
-	items: '',
-	return_deeplink: '',
-	return_params: '',
-	payout: '',
-	callback_url: '',
-	hash: '',
-})
-
-const ruleFormRef = ref<FormInstance>()
-const hash = ref('')
-const qrImage = ref()
-const dataResp = ref<object>()
-const rateXML = ref()
-const openDialog = ref(false)
-const errorMessage = useMessage()
-
-const submitForm = async () => {
-	if (!ruleFormRef.value) return
-	try {
-		await ruleFormRef.value.validate()
-		ruleForm.value.req_time = buildReqTime()
-		ruleForm.value.tran_id = `Tx-${Date.now()}`
-		ruleForm.value.items = btoa(JSON.stringify(itemsStatic))
-		const signedPayload = await createPayment(ruleForm.value)
-		// submitToABA(signedPayload)
-		if (signedPayload.status.code === '00') {
-			dataResp.value = signedPayload
-
-			qrForm.value.amount = ruleForm.value.amount
-			qrForm.value.first_name = ruleForm.value.firstname
-			qrForm.value.last_name = ruleForm.value.lastname
-			qrForm.value.email = ruleForm.value.email
-			qrForm.value.phone = ruleForm.value.phone
-			const generateKHQR = await generateQRImage(qrForm.value)
-			if (generateKHQR.status.code === '0') {
-				// Check multiple possible field names for the QR image
-				qrImage.value =
-					generateKHQR.qrImage ||
-					generateKHQR.qr_image ||
-					generateKHQR.image ||
-					generateKHQR.data
-				openDialog.value = true
-			} else {
-				errorMessage.messageBox('Generate QR Error', 'error')
-			}
-		} else {
-			errorMessage.messageBox('error sign payload', 'error')
-		}
-	} catch (error) {
-		throw errorMessage.messageBox(`Error or validation failed ${error}`,'error')
-	}
-}
-
-// get transaction
-const getTrans = async () => {
-	const transaction = ref<Transaction>({
-		tran_id: 'e10992',
-		req_time: '20250222152210',
-		merchant_id: 'ec463980',
-	})
-	try {
-		const req = await getTransaction(transaction.value)
-		if (req.status.code === '00') {
-			dataResp.value = req.data
-		}
-	} catch (error) {
-		throw errorMessage.messageBox(`${error}`,'error')
-	}
-}
-
-// get exchangeRate
-const getExchangeRate = async () => {
-	const exchange = ref<object>({
-		req_time: '20250222152210',
-		merchant_id: 'ec463980',
-		hash: '',
-	})
-	try {
-		const req = await getRate(exchange.value)
-		if (req.status.code === '00') {
-			rateXML.value = req.exchange_rates.OclResposne.io_rates
-			const parser = new DOMParser()
-			parser.parseFromString(rateXML.value, 'text/xml')
-			dataResp.value = req
-		}
-	} catch (err) {
-		throw errorMessage.messageBox(`${err}`,'error')
-	}
-}
-
-// generate QR
-const createQR = async () => {
-	const base64 = btoa(JSON.stringify(itemsStatic))
-	qrForm.value.items = base64
-	try {
-		const req = await generateQRImage(qrForm.value)
-		if (req.code === 200) {
-			qrImage.value = req.data.qrImage
-			openDialog.value = true
-		}
-		return
-	} catch (error) {
-		throw errorMessage.messageBox(`${error}`,'error')
-	}
-}
-
-// link card
-const linkCard = async () => {
-	const card = ref<object>({
-		merchant_id: 'ec463980',
-		ctid: 'ct122049925',
-		return_param:
-			'https://checkout-sandbox.payway.com.kh/checkout-popup.html?file=js',
-	})
-	try {
-		const req = await manageCard(card.value)
-		const newWindow = window.open()
-		newWindow?.document.write(req)
-		newWindow?.document.close()
-	} catch (error) {
-		throw errorMessage.messageBox(`${error}`,'error')
-	}
-}
-</script>
 <template>
 	<div class="aba-wrapper">
 		<!-- Background decoration -->
@@ -491,7 +299,198 @@ const linkCard = async () => {
 		</div>
 	</el-dialog>
 </template>
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { FormInstance } from 'element-plus'
+import type { PaywayABA, Transaction } from '@/modules/types/payment/aba'
+import {
+	createPayment,
+	generateQRImage,
+	getRate,
+	getTransaction,
+	manageCard,
+} from '@/modules/api/payment/aba'
+import { useMessage } from '@/app/utils/message.ts'
 
+const buildReqTime = () => {
+	const now = new Date()
+	const year = now.getFullYear().toString()
+	const month = String(now.getMonth() + 1).padStart(2, '0')
+	const day = String(now.getDay()).padStart(2, '0')
+	const hour = String(now.getHours()).padStart(2, '0')
+	const minute = String(now.getMinutes()).padStart(2, '0')
+	const second = String(now.getSeconds()).padStart(2, '0')
+	return year + month + day + hour + minute + second
+}
+const itemsStatic = [
+	{
+		id: 1,
+		name: 'watch',
+		price: 300,
+	},
+	{
+		id: 254,
+		name: 'ipad',
+		price: 505,
+	},
+]
+const ruleForm = ref<PaywayABA>({
+	firstname: 'li',
+	lastname: 'bra',
+	req_time: buildReqTime(),
+	tran_id: `Tx-${Date.now()}`,
+	merchant_id: 'ec463980',
+	email: 'libra1@gmail.com',
+	phone: '099284990',
+	amount: 22.2,
+	currency: 'USD',
+	hash: '',
+	items: '',
+	// skip_success_page:  0,
+	view_type: 'popup',
+	// payment_option: 'abapay_khqr'
+})
+const qrForm = ref<any>({
+	req_time: '20250222152210',
+	merchant_id: 'ec463980',
+	tran_id:
+		'T-' +
+		`${Date.now().toString().slice(-10)}` +
+		`${Math.floor(Math.random() * 1000)}`,
+	amount: 554,
+	first_name: 'bimo',
+	last_name: 'bimo',
+	email: 'bimo11@gmail.com',
+	phone: '092990239',
+	purchase_type: 'purchase',
+	payment_option: 'abapay_khqr',
+	currency: 'USD',
+	lifetime: 10,
+	qr_image_template: 'template3_color',
+	items: '',
+	return_deeplink: '',
+	return_params: '',
+	payout: '',
+	callback_url: '',
+	hash: '',
+})
+
+const ruleFormRef = ref<FormInstance>()
+const hash = ref('')
+const qrImage = ref()
+const dataResp = ref<object>()
+const rateXML = ref()
+const openDialog = ref(false)
+const errorMessage = useMessage()
+
+const submitForm = async () => {
+	if (!ruleFormRef.value) return
+	try {
+		await ruleFormRef.value.validate()
+		ruleForm.value.req_time = buildReqTime()
+		ruleForm.value.tran_id = `Tx-${Date.now()}`
+		ruleForm.value.items = btoa(JSON.stringify(itemsStatic))
+		const signedPayload = await createPayment(ruleForm.value)
+		// submitToABA(signedPayload)
+		if (signedPayload.status.code === '00') {
+			dataResp.value = signedPayload
+
+			qrForm.value.amount = ruleForm.value.amount
+			qrForm.value.first_name = ruleForm.value.firstname
+			qrForm.value.last_name = ruleForm.value.lastname
+			qrForm.value.email = ruleForm.value.email
+			qrForm.value.phone = ruleForm.value.phone
+			const generateKHQR = await generateQRImage(qrForm.value)
+			if (generateKHQR.status.code === '0') {
+				// Check multiple possible field names for the QR image
+				qrImage.value =
+					generateKHQR.qrImage ||
+					generateKHQR.qr_image ||
+					generateKHQR.image ||
+					generateKHQR.data
+				openDialog.value = true
+			} else {
+				errorMessage.messageBox('Generate QR Error', 'error')
+			}
+		} else {
+			errorMessage.messageBox('error sign payload', 'error')
+		}
+	} catch (error) {
+		throw errorMessage.messageBox(`Error or validation failed ${error}`,'error')
+	}
+}
+
+// get transaction
+const getTrans = async () => {
+	const transaction = ref<Transaction>({
+		tran_id: 'e10992',
+		req_time: '20250222152210',
+		merchant_id: 'ec463980',
+	})
+	try {
+		const req = await getTransaction(transaction.value)
+		if (req.status.code === '00') {
+			dataResp.value = req.data
+		}
+	} catch (error) {
+		throw errorMessage.messageBox(`${error}`,'error')
+	}
+}
+
+// get exchangeRate
+const getExchangeRate = async () => {
+	const exchange = ref<object>({
+		req_time: '20250222152210',
+		merchant_id: 'ec463980',
+		hash: '',
+	})
+	try {
+		const req = await getRate(exchange.value)
+		if (req.status.code === '00') {
+			rateXML.value = req.exchange_rates.OclResposne.io_rates
+			const parser = new DOMParser()
+			parser.parseFromString(rateXML.value, 'text/xml')
+			dataResp.value = req
+		}
+	} catch (err) {
+		throw errorMessage.messageBox(`${err}`,'error')
+	}
+}
+
+// generate QR
+const createQR = async () => {
+	const base64 = btoa(JSON.stringify(itemsStatic))
+	qrForm.value.items = base64
+	try {
+		const req = await generateQRImage(qrForm.value)
+		if (req.code === 200) {
+			qrImage.value = req.data.qrImage
+			openDialog.value = true
+		}
+		return
+	} catch (error) {
+		throw errorMessage.messageBox(`${error}`,'error')
+	}
+}
+
+// link card
+const linkCard = async () => {
+	const card = ref<object>({
+		merchant_id: 'ec463980',
+		ctid: 'ct122049925',
+		return_param:
+			'https://checkout-sandbox.payway.com.kh/checkout-popup.html?file=js',
+	})
+	try {
+		const req = await manageCard(card.value)
+		const newWindow = window.open()
+		newWindow?.document.write(req)
+		newWindow?.document.close()
+	} catch (error) {
+		throw errorMessage.messageBox(`${error}`,'error')
+	}
+}
+</script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap');
 

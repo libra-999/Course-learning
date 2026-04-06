@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import { Close, Folder, UploadFilled } from '@element-plus/icons-vue'
-import type { UploadItem } from '@/modules/types/uploadFile'
-
-const prop = defineProps<{
-	pictures: UploadItem[]
-}>()
-const emit = defineEmits(['uploadSubmit', 'removeImage'])
-const handleEmit = (file: any) => {
-	emit('uploadSubmit', file.file)
-}
-const handleDeleteImage = (fileName: string, index: string) => {
-	emit('removeImage', fileName, index)
-}
-</script>
-
 <template>
 	<div class="mb-5 color-text-theme ">
 		<span class="text-5xl font-bold font-mono"> Upload With Progress</span>
@@ -82,7 +66,21 @@ const handleDeleteImage = (fileName: string, index: string) => {
 		</div>
 	</div>
 </template>
+<script setup lang="ts">
+import { Close, Folder, UploadFilled } from '@element-plus/icons-vue'
+import type { UploadItem } from '@/modules/types/uploadFile'
 
+const prop = defineProps<{
+	pictures: UploadItem[]
+}>()
+const emit = defineEmits(['uploadSubmit', 'removeImage'])
+const handleEmit = (file: any) => {
+	emit('uploadSubmit', file.file)
+}
+const handleDeleteImage = (fileName: string, index: string) => {
+	emit('removeImage', fileName, index)
+}
+</script>
 <style scoped>
 :deep(.custom-upload .el-upload-dragger) {
 	border: 1px dashed #213547;

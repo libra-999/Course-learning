@@ -15,6 +15,7 @@ const apiRequest: AxiosInstance = axios.create({
 	timeout: 10000,
 })
 
+/* authentication */
 apiRequest.interceptors.request.use(
 	// attached token to sign all routes
 	(config: InternalAxiosRequestConfig) => {
@@ -28,7 +29,7 @@ apiRequest.interceptors.request.use(
 		return Promise.reject(error)
 	},
 )
-
+/* server error resp endpoint */
 apiRequest.interceptors.response.use(
 	(resp: AxiosResponse) => {
 		return resp
@@ -39,14 +40,14 @@ apiRequest.interceptors.response.use(
 
 		if (status === 500 || errorType === 'ERR_NETWORK') {
 			route.push('/server-error')
-			return Promise.reject(error)
+			return Promise.reject("Server Internal!")
 		}
 		if (status === 401) {
 			loginStore().logout() // no token
 			route.push('/login')
-			return Promise.reject(error)
+			return Promise.reject("Unauthorized!")
 		}
-		return Promise.reject(error)
+		return Promise.reject("Server Internal!")
 	},
 )
 

@@ -1,3 +1,19 @@
+<template>
+	<el-tooltip
+		v-if="prop.showTool"
+		:placement="prop.placementTool"
+	>
+		<button class="icon-btn" @click="handleClick">
+			<component :is="icon" class="w-8 h-5 m-2" />
+		</button>
+		<template #content>
+			<span class="text-white">{{ prop.themeSchema.toUpperCase()}}</span>
+		</template>
+	</el-tooltip>
+	<button v-else class="icon-btn" @click="handleClick">
+		<component :is="icon" class="w-8 h-7 m-2" />
+	</button>
+</template>
 <script setup lang="ts">
 import type { Placement } from 'element-plus'
 import { Moon, Sunny } from '@element-plus/icons-vue'
@@ -32,24 +48,6 @@ const icons = {
 // execute icon
 const icon = computed(() => icons[prop.themeSchema])
 </script>
-
-<template>
-	<el-tooltip
-		v-if="prop.showTool"
-		:placement="prop.placementTool"
-	>
-		<button class="icon-btn" @click="handleClick">
-			<component :is="icon" class="w-8 h-5 m-2" />
-		</button>
-		<template #content>
-			<span class="text-white">{{ prop.themeSchema.toUpperCase()}}</span>
-		</template>
-	</el-tooltip>
-	<button v-else class="icon-btn" @click="handleClick">
-		<component :is="icon" class="w-8 h-7 m-2" />
-	</button>
-</template>
-
 <style scoped>
 .icon-btn {
 	cursor: pointer;

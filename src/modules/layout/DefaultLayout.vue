@@ -1,54 +1,3 @@
-<script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { Avatar, DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
-import Timeline, { type Activities } from '@/app/components/card/Timeline.vue'
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
-import { timelineStore } from '@/modules/store/line.ts'
-import { type FormInstance, type FormRules } from 'element-plus'
-import { useMessage } from '@/app/utils/message.ts'
-import ThemeSwitch from '@/app/components/theme/ThemeSwitch.vue'
-import { useTheme } from '@/modules/store/theme.ts'
-import Cardbox from '@/app/components/card/Cardbox.vue'
-import { loginStore } from '@/modules/store/auth'
-import route from '@/modules/route'
-
-const message = useMessage()
-
-/* timeline activity*/
-const isTimelineShow = ref(false)
-const timelineInstance = ref<FormInstance>()
-const timelineRule: FormRules<Activities> = {
-	content: [
-		{ required: true, message: 'Please input content', trigger: 'blur' },
-	],
-	color: [{ required: true, message: 'Please pick a color', trigger: 'blur' }],
-	timestamp: [
-		{ required: true, message: 'Please select date', trigger: 'blur' },
-	],
-}
-const timeStore = timelineStore()
-const timelineModel = ref<Activities>({
-	content: '',
-	color: '',
-	timestamp: '',
-})
-const addTimeline = async () => {
-	timeStore.isSave({ ...timelineModel.value })
-	message.messageBox('Add Successfully', 'success')
-}
-
-/* load timeline */
-onMounted(() => timeStore.load())
-
-/* Theme & Auth */
-const themeStore = useTheme()
-const authStore = loginStore()
-const onLogout = () => {
-	authStore.logout()
-	route.replace('/login')
-}
-
-</script>
 <template>
 	<div class="w-full flex gap-1 px-3 py-5">
 		<!--implement timeline studied-->
@@ -71,14 +20,15 @@ const onLogout = () => {
 					<ThemeSwitch :theme-schema="themeStore.settings.themeSchema" :is-dark="themeStore.darkMode"
 						@switch="themeStore.toggleThemeSchema" />
 					<div class="text-white">
-						<el-dropdown trigger="click"
+						<el-dropdown trigger="click" :hide-on-click="false"
 							style="padding: 0.5rem; color: var(--text-color); cursor: pointer;overflow: hidden; background-color: var(--bg-color) ; border: 1px solid rgba(0, 0, 0, 0.11); border-radius: 0.2rem;">
 							<div class="flex justify-center place-items-center gap-2.5">
 								<div class=" w-9 h-9">
 									<img alt="Empty" src="../../app/assets/image/learn.jpg"
 										class="w-full h-full object-cover rounded-[50%]" />
 								</div>
-								<span class="md:block sm:block xl:block hidden ">{{ authStore.user?.username  || 'Test'}}</span>
+								<span class="md:block sm:block xl:block hidden ">{{ authStore.user?.username ||
+									'Test' }}</span>
 							</div>
 							<template #dropdown>
 								<el-dropdown-menu>
@@ -88,6 +38,9 @@ const onLogout = () => {
 									<el-dropdown-item divided @click="onLogout">
 										Logout
 									</el-dropdown-item>
+									<!-- <el-dropdown-item class="mobile-scan">
+										<Scan2/>
+									</el-dropdown-item> -->
 								</el-dropdown-menu>
 							</template>
 						</el-dropdown>
@@ -156,5 +109,69 @@ const onLogout = () => {
 	</el-dialog>
 	<RouterView />
 </template>
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { Avatar, DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
+import Timeline, { type Activities } from '@/app/components/card/Timeline.vue'
+import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import { timelineStore } from '@/modules/store/line.ts'
+import { type FormInstance, type FormRules } from 'element-plus'
+import { useMessage } from '@/app/utils/message.ts'
+import ThemeSwitch from '@/app/components/theme/ThemeSwitch.vue'
+import { useTheme } from '@/modules/store/theme.ts'
+import Cardbox from '@/app/components/card/Cardbox.vue'
+import { loginStore } from '@/modules/store/auth'
+import route from '@/modules/route'
 
-<style scoped></style>
+const message = useMessage()
+
+/* timeline activity*/
+const isTimelineShow = ref(false)
+const timelineInstance = ref<FormInstance>()
+const timelineRule: FormRules<Activities> = {
+	content: [
+		{ required: true, message: 'Please input content', trigger: 'blur' },
+	],
+	color: [{ required: true, message: 'Please pick a color', trigger: 'blur' }],
+	timestamp: [
+		{ required: true, message: 'Please select date', trigger: 'blur' },
+	],
+}
+const timeStore = timelineStore()
+const timelineModel = ref<Activities>({
+	content: '',
+	color: '',
+	timestamp: '',
+})
+const addTimeline = async () => {
+	timeStore.isSave({ ...timelineModel.value })
+	message.messageBox('Add Successfully', 'success')
+}
+
+/* load timeline */
+onMounted(() => timeStore.load())
+
+/* Theme & Auth */
+const themeStore = useTheme()
+const authStore = loginStore()
+const onLogout = () => {
+	authStore.logout()
+	route.replace('/login')
+}
+
+/* Scan login device */
+
+</script>
+<style scoped>
+:deep(.mobile-scan) {
+	display: none !important;
+}
+
+@media (max-width: 768px) {
+	:deep(.mobile-scan) {
+		display: block !important;
+		margin: auto;
+		width: 100%;
+	}
+}
+</style>
