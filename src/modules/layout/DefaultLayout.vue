@@ -38,9 +38,9 @@
 									<el-dropdown-item divided @click="onLogout">
 										Logout
 									</el-dropdown-item>
-									<!-- <el-dropdown-item class="mobile-scan">
-										<Scan2/>
-									</el-dropdown-item> -->
+									<el-dropdown-item class="mobile-scan">
+										<Scan/>
+									</el-dropdown-item>
 								</el-dropdown-menu>
 							</template>
 						</el-dropdown>
@@ -122,6 +122,7 @@ import { useTheme } from '@/modules/store/theme.ts'
 import Cardbox from '@/app/components/card/Cardbox.vue'
 import { loginStore } from '@/modules/store/auth'
 import route from '@/modules/route'
+import Scan from '@/app/components/scan/Scan.vue'
 
 const message = useMessage()
 

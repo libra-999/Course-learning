@@ -18,3 +18,8 @@ export interface QRCode {
 	qrCodeStatus?: string
     qrInfoUser?: any
 }
+
+export interface ConfirmReq{
+	token: string,
+	user?: any
+}

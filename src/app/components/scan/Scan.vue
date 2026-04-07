@@ -1,98 +1,276 @@
 <template>
-    <div class="w-full cursor-pointer" @click.stop="startScanner">
+    <div class="w-full cursor-pointer" @click.stop="openScanner">
         <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto" width="20" height="20" fill="#070707"
             viewBox="0 0 24 24">
             <path d="M9 5V3H3v6h2V5zM21 9V3h-6v2h4v4zM19 19h-4v2h6v-6h-2zM5 15H3v6h6v-2H5zM2 11h20v2H2z" />
         </svg>
     </div>
+
+    <Teleport to="body">
+        <div v-if="isScannerVisible" class="scan-overlay" @click.self="stopScanner">
+            <div class="scan-toolbar">
+                <p class="scan-title">Scan QR</p>
+                <button type="button" class="scan-close-btn" @click.stop="stopScanner">Close</button>
+            </div>
+
+            <div class="scan-reader-wrap">
+                <div :id="READER_ID" class="scan-reader"></div>
+                <div class="scan-frame" :style="scanFrameStyle" aria-hidden="true"></div>
+                <p class="scan-tip">Align QR code inside the frame</p>
+            </div>
+        </div>
+    </Teleport>
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref } from 'vue'
+import { computed, nextTick, onUnmounted, ref } from 'vue'
 import { terminalLog } from '@/app/utils/terminalLog'
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode'
 import { extractQR } from '@/app/utils/authToken'
+import { allowCamera } from '@/app/utils/common'
+import { useMessage } from '@/app/utils/message'
+import { scanQR } from '@/modules/api/auth'
 
 const isScanning = ref(false)
-const qrToken = ref('')
+const isScannerVisible = ref(false)
+const isStarting = ref(false)
 const scanner = ref<Html5Qrcode | null>(null)
-let readerEl: HTMLDivElement | null = null
+const message = useMessage()
+
+/* KEY allow  */
 const READER_ID = 'qr-reader'
+const BACK_CAMERA_REGEX = /back|rear|environment|traseira|trasera/i
+const EMPTY_SCAN_ERROR_CALLBACK = () => { }
 
-const mountReader = () => {
-    if (document.getElementById(READER_ID)) return
-    readerEl = document.createElement('div')
-    readerEl.id = READER_ID
-    Object.assign(readerEl.style, {
-        position: 'fixed',
-        inset: '0',
-        zIndex: '9999',
-        background: '#000',
-    })
-    document.body.appendChild(readerEl)
-    // Tap anywhere on preview to stop scanner manually.
-    readerEl.addEventListener('click', () => {
-        void stopScanner()
-    })
-}
-const unMountReader = async () => {
-    const el = document.getElementById(READER_ID)
-    if (el) el.remove()
-    readerEl = null
+/* style scan  */
+const SCAN_BOX_WIDTH = 260
+const SCAN_BOX_HEIGHT = 260
+const SCAN_BOX_MIN_SIZE = 180
+const SCAN_BOX_VIEWPORT_RATIO = 0.78
+const frameWidth = ref(SCAN_BOX_WIDTH)
+const frameHeight = ref(SCAN_BOX_HEIGHT)
+
+/* camera allowing */
+const errorCameraSupport = () => {
+    // allow only mobile device
+    if (!allowCamera) {
+        return message.messageBox("Scanner is available on mobile device only.", "warning")
+    }
+    // make sure is https 
+    if (!window.isSecureContext) {
+        return message.messageBox("Camera access requires HTTPS. Please open this page in a secure context.", "warning")
+    }
 }
 
-const stopScanner = async () => {
+/* crop as box to scan */
+const generateQRBox = (viewfinderWidth: number, viewfinderHeight: number) => {
+    const maxWidth = Math.floor(viewfinderWidth * SCAN_BOX_VIEWPORT_RATIO)
+    const maxHeight = Math.floor(viewfinderHeight * SCAN_BOX_VIEWPORT_RATIO)
+    const safeWidth = Math.max(SCAN_BOX_MIN_SIZE, Math.min(SCAN_BOX_WIDTH, maxWidth))
+    const safeHeight = Math.max(SCAN_BOX_MIN_SIZE, Math.min(SCAN_BOX_HEIGHT, maxHeight))
+
+    frameWidth.value = safeWidth
+    frameHeight.value = safeHeight
+
+    return {
+        width: safeWidth,
+        height: safeHeight,
+    }
+}
+const scanFrameStyle = computed(() => ({
+    width: `${frameWidth.value}px`,
+    height: `${frameHeight.value}px`,
+}))
+
+/* config camera  */
+const scanConfig = {
+    fps: 20,
+    qrbox: generateQRBox,
+}
+
+/* handle api request to scan plugin */
+const onScanSuccess = async (qr: string) => {
+    if (!qr) message.notificationBox("QR must be provide", "warning")
+    const token = extractQR(qr)
     try {
-        if (scanner.value?.isScanning) {
-            await scanner.value.stop()
+        const scanAPI = await scanQR(token)
+        if (scanAPI.code !== 200) {
+            return message.messageBox(scanAPI.message, "error")
+
         }
-        if (scanner.value) {
-            await scanner.value.clear()
+        await stopScanner() // if token got so close camera imediately
+    } catch {
+        message.messageBox("QR scan failed!", "error")
+        return
+    }
+}
+
+/* Hmlt5Qrcode setup */
+const startByFacingMode = async (instance: Html5Qrcode) => {
+    await instance.start(
+        { facingMode: 'environment' },
+        scanConfig,
+        onScanSuccess,
+        EMPTY_SCAN_ERROR_CALLBACK
+    )
+}
+
+const startByAvailableCamera = async (instance: Html5Qrcode) => {
+    const cameras = await Html5Qrcode.getCameras()
+    const firstCamera = cameras[0]
+    if (!firstCamera) {
+        message.notificationBox("No camera was found on this device.", "warning")
+        return
+    }
+
+    const preferredCamera =
+        cameras.find((camera) => BACK_CAMERA_REGEX.test(camera.label)) ?? firstCamera
+
+    await instance.start(
+        preferredCamera.id,
+        scanConfig,
+        onScanSuccess,
+        EMPTY_SCAN_ERROR_CALLBACK
+    )
+}
+const createScanner = () =>
+    new Html5Qrcode(READER_ID, {
+        verbose: false,
+        formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+    })
+
+/* listen from Hmlt5Qrcode is correct or error */
+const stopScanner = async () => {
+    const instance = scanner.value
+    scanner.value = null
+
+    isScanning.value = false
+    isStarting.value = false
+    isScannerVisible.value = false
+
+    if (!instance) return
+    try {
+        if (instance.isScanning) {
+            await instance.stop()
         }
     } finally {
-        scanner.value = null
-        isScanning.value = false
-        unMountReader()
+        instance.clear()
     }
 }
 const startScanner = async () => {
-    if (isScanning.value) return
+    if (isScanning.value || isStarting.value) return
+    isStarting.value = true
+    errorCameraSupport()  // exception camera
 
     try {
-        mountReader()
-        scanner.value = new Html5Qrcode(READER_ID, {
-            verbose: false,
-            formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
-        })
+        isScannerVisible.value = true
+        await nextTick()  // check scan QR , make it is QRCODE
+        const instance = createScanner()
+        scanner.value = instance
+        try {
+            await startByFacingMode(instance)
+        } catch (facingModeError) {
+            terminalLog('warn','scan','Facing mode start failed, fallback to camera list.',
+                facingModeError instanceof Error ? facingModeError.message : String(facingModeError)
+            )
+            await startByAvailableCamera(instance)
+        }
 
-        isScanning.value = true
-
-        await scanner.value.start(
-            { facingMode: 'environment' },
-            { fps: 10, qrbox: { width: 240, height: 240 } },
-            async (decodedText) => {
-                const token = extractQR(decodedText)
-                qrToken.value = token
-                terminalLog('info', 'scan', `Token: ${token}`)
-                await stopScanner()
-            },
-            () => { }
-        )
-    } catch (err) {
-        terminalLog(
-            'error',
-            'scan',
-            err instanceof Error ? err.message : 'Failed to start scanner'
-        )
+        isScanning.value = true // keep scaning
+    } catch {
+        message.notificationBox("Failed to start scanner", "error")
         await stopScanner()
+    } finally {
+        isStarting.value = false
     }
 }
 
+/* toggle camera */
+const openScanner = () => startScanner()
 onUnmounted(() => {
     stopScanner()
 })
 
-
 </script>
 
-<style scoped></style>
+<style scoped>
+.scan-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #050505;
+    display: flex;
+    flex-direction: column;
+}
+
+.scan-toolbar {
+    height: 56px;
+    min-height: 56px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.scan-title {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.scan-close-btn {
+    border: 0;
+    color: #111827;
+    background: #fff;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.scan-reader-wrap {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+}
+
+.scan-reader {
+    width: 100%;
+    height: 100%;
+}
+
+.scan-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    pointer-events: none;
+    box-shadow: 0 0 0 200vmax rgba(0, 0, 0, 0.44);
+}
+
+.scan-tip {
+    position: absolute;
+    left: 50%;
+    bottom: max(44px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    letter-spacing: 0.2px;
+}
+
+:deep(#qr-reader) {
+    border: 0 !important;
+    background: #050505 !important;
+}
+
+:deep(#qr-reader video) {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+</style>
