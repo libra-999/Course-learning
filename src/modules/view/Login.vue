@@ -31,15 +31,12 @@
 		</div>
 		<div v-if="loginType === 'qrcode'" class="container flex justify-center flex-col pt-5">
 			<div v-if="qr.qrCodeStatus === 'waiting'">
-				<div v-if="qr.qrCodeImageUrl && qr.qrCountDown != null" class=" my-auto">
-					<img class="w-[60%] mx-auto overflow-hidden" :src="qr.qrCodeImageUrl" alt="Empty QR" />
-					<div class="mt-5 p-3">
+				<div v-if="qr.qrCodeImageUrl" class=" my-auto">
+					<img  class="w-[60%] mx-auto overflow-hidden" :src="qr.qrCodeImageUrl" alt="Empty QR" />
+					<div v-if="qr.qrCountDown != null" class="mt-5 p-3">
 						<span>The QR code will be expired in </span>
 						<span class=" text-red-600 font-bold"> {{ minuteFormat(qr.qrCountDown) }} </span>
 					</div>
-				</div>
-				<div v-else>
-					<Loading />
 				</div>
 			</div>
 			<div v-else-if="qr.qrCodeStatus === 'scanned'" class="qrcode-status">
@@ -48,8 +45,8 @@
 				</el-icon>
 				<p>The QR code has been scanned, please confirm login on your mobile phone</p>
 			</div>
-			<div v-else-if="qr.qrCodeStatus === 'confirmed'" class="qrcode-status">
-				<el-icon class="status-icon confirmed">
+			<div v-else-if="qr.qrCodeStatus === 'confirmed'" class=" w-[150px] h-[150px]">
+				<el-icon style="width: max-content; height: max-content;">
 					<Check />
 				</el-icon>
 				<p>Login successful, redirecting...</p>
@@ -86,7 +83,6 @@ import { useMessage } from '@/app/utils/message.ts'
 import type { LoginRequest, QRCode, User } from '../types/auth'
 import { generateQR, getQR, login } from '../api/auth'
 import { minuteFormat, remaingTime } from '@/app/utils/dateFormat'
-import Loading from '@/app/components/Loading.vue'
 import { Check, Refresh } from '@element-plus/icons-vue'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 
@@ -169,9 +165,15 @@ function startQRCodePolling() {
 		try {
 			const poll = await getQR(qr.value.qrToken)
 			const status = poll?.data.status
+			qr.value.qrCodeStatus = status
+
 			if (poll?.code === 200 && status === "confirmed") {
 				stopQRCodePolling()
 				stopQRCodeCountdown()
+
+				// sleep to loading
+				await new Promise((r) => setTimeout(r,100)).then(()=> errorMessage.messageBox("Scan login succeed!","success")) // 9ms
+
 				const token = poll.data.qrCodeToken
 				const data = poll.data.user
 				const userDetail: User = {

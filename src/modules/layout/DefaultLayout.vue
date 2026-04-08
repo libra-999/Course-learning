@@ -27,7 +27,8 @@
 									<img alt="Empty" src="../../app/assets/image/learn.jpg"
 										class="w-full h-full object-cover rounded-[50%]" />
 								</div>
-								<span class="md:block sm:block xl:block hidden ">{{ authStore.user?.username || 'Test' }}</span>
+								<span class="md:block sm:block xl:block hidden ">{{ authStore.user?.username || 'Test'
+									}}</span>
 							</div>
 							<template #dropdown>
 								<el-dropdown-menu>
@@ -38,7 +39,7 @@
 										Logout
 									</el-dropdown-item>
 									<el-dropdown-item class="mobile-scan">
-										<ScanQR/>
+										<ScanQR />
 									</el-dropdown-item>
 								</el-dropdown-menu>
 							</template>
@@ -158,9 +159,6 @@ const onLogout = () => {
 	authStore.logout()
 	route.replace('/login')
 }
-
-/* Scan login device */
-
 </script>
 <style scoped>
 :deep(.mobile-scan) {
