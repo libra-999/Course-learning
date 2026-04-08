@@ -20,7 +20,7 @@ export async function getQR(qrToken: string): Promise<any> {
 }
 export async function scanQR(qrToken: string): Promise<any> {
 	const scanQR = await apiRequest.post(
-		'/auth/qr/scan',
+		'/api/qr/scan',
 		{}, // none body
 		{
 			headers: {
@@ -30,8 +30,8 @@ export async function scanQR(qrToken: string): Promise<any> {
 	)
 	return scanQR.data
 }
-export async function confirmLogin(qrToken: string, _payload: any): Promise<any> {
-	const confirm = await apiRequest.post('auth/qr/confirm',_payload, {
+export async function confirmLogin(qrToken: string): Promise<any> {
+	const confirm = await apiRequest.post('/api/qr/confirm', {}, {
 		headers :{
 			qrToken: qrToken
 		}
@@ -39,7 +39,7 @@ export async function confirmLogin(qrToken: string, _payload: any): Promise<any>
 	return confirm.data
 }
 export async function cancel(qrToken: string): Promise<any> {
-	const cancel = await apiRequest.post('auth/qr/cancel',{}, {
+	const cancel = await apiRequest.post('/api/qr/cancel',{}, {
 		headers :{
 			qrToken: qrToken
 		}

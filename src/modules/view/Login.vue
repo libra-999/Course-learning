@@ -56,7 +56,7 @@
 			</div>
 			<div v-else-if="qr.qrCodeStatus === 'expired'" class="qrcode-status">
 				<p>The QR code has expired, please refresh</p>
-				<ButtonGlobal @click="handleQR" value="Refresh QRCode" class="text-white mx-auto mt-2">
+				<ButtonGlobal @click="generateQRLogin" value="Refresh QRCode" class="text-white mx-auto mt-2">
 					<template #icon-left>
 						<el-icon>
 							<Refresh />
@@ -66,7 +66,7 @@
 			</div>
 			<div v-else-if="qr.qrCodeStatus === 'cancelled'" class="qrcode-status">
 				<p>Login has been canceled, please refresh</p>
-				<ButtonGlobal @click="handleQR" value="Refresh QRCode" class="text-white  mx-auto mt-2">
+				<ButtonGlobal @click="generateQRLogin" value="Refresh QRCode" class="text-white  mx-auto mt-2">
 					<template #icon-left>
 						<el-icon>
 							<Refresh />
@@ -84,7 +84,7 @@ import { type FormInstance, type FormRules } from 'element-plus'
 import route from '@/modules/route'
 import { useMessage } from '@/app/utils/message.ts'
 import type { LoginRequest, QRCode, User } from '../types/auth'
-import { confirmLogin, generateQR, getQR, login } from '../api/auth'
+import { generateQR, getQR, login } from '../api/auth'
 import { minuteFormat, remaingTime } from '@/app/utils/dateFormat'
 import Loading from '@/app/components/Loading.vue'
 import { Check, Refresh } from '@element-plus/icons-vue'
@@ -169,34 +169,20 @@ function startQRCodePolling() {
 		try {
 			const poll = await getQR(qr.value.qrToken)
 			const status = poll?.data.status
-			if (poll?.code == 200 && status === 'confirmed') {
+			if (poll?.code === 200 && status === "confirmed") {
 				stopQRCodePolling()
 				stopQRCodeCountdown()
-
+				const token = poll.data.qrCodeToken
+				const data = poll.data.user
 				const userDetail: User = {
-					username: poll.data.user.username,
-					email: poll.data.user.email,
-					id: poll.data.user.id,
-					is_online: poll.data.user.is_online,
-					created_at: poll.data.user.createdAt
+					username: data.username,
+					email: data.email,
+					id: data.id,
+					is_online: data.is_online,
+					created_at: data.createdAt
 				}
-				try {
-					const confirm = await confirmLogin(qr.value.qrToken, userDetail)
-					if (confirm.code === 200 && confirm.data.status === 'confimed') {
-						const token = confirm.data.token
-						const user: User = {
-							id: userDetail.id,
-							username: userDetail.username,
-							email: userDetail.email,
-							is_online: userDetail.is_online,
-							created_at: userDetail.created_at
-						}
-						userStore.login(user, token)
-						return router.replace({ path: "/" })
-					}
-				} catch (err) {
-					console.log(err)
-				}
+				userStore.login(userDetail, token)
+				return router.replace({ path: "/" })
 			}
 
 			if (status === 'expired' || status === 'canceled') {
@@ -234,7 +220,7 @@ function stopQRCodeCountdown() {
 		qrCountDownTimer.value = null
 	}
 }
-const handleQR = async () => {
+const generateQRLogin = async () => {
 	try {
 		stopQRCodePolling()
 		stopQRCodeCountdown()
@@ -244,8 +230,8 @@ const handleQR = async () => {
 		qr.value.qrCodeStatus = genQR.data.status
 		qr.value.qrCodeExpired = genQR.data.expiredTime
 		qr.value.qrCountDown = remaingTime(qr.value.qrCodeExpired)
-
 		if (genQR.code == 201) {
+			/** status === waiting */
 			const QRCodePlugin = await import('qrcode')
 			const QRCode = QRCodePlugin.default || QRCodePlugin
 			const QRDATA = JSON.stringify({
@@ -273,7 +259,7 @@ const handleQR = async () => {
 /** watch generateQR */
 watch(loginType, (newType) => {
 	if (newType === 'qrcode') {
-		handleQR()
+		generateQRLogin()
 	} else {
 		stopQRCodePolling()
 		stopQRCodeCountdown()

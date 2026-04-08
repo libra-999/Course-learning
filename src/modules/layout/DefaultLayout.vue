@@ -27,8 +27,7 @@
 									<img alt="Empty" src="../../app/assets/image/learn.jpg"
 										class="w-full h-full object-cover rounded-[50%]" />
 								</div>
-								<span class="md:block sm:block xl:block hidden ">{{ authStore.user?.username ||
-									'Test' }}</span>
+								<span class="md:block sm:block xl:block hidden ">{{ authStore.user?.username || 'Test' }}</span>
 							</div>
 							<template #dropdown>
 								<el-dropdown-menu>
@@ -39,7 +38,7 @@
 										Logout
 									</el-dropdown-item>
 									<el-dropdown-item class="mobile-scan">
-										<Scan/>
+										<ScanQR/>
 									</el-dropdown-item>
 								</el-dropdown-menu>
 							</template>
@@ -122,7 +121,7 @@ import { useTheme } from '@/modules/store/theme.ts'
 import Cardbox from '@/app/components/card/Cardbox.vue'
 import { loginStore } from '@/modules/store/auth'
 import route from '@/modules/route'
-import Scan from '@/app/components/scan/Scan.vue'
+import ScanQR from '@/app/components/scan/ScanQR.vue'
 
 const message = useMessage()
 

@@ -5,7 +5,6 @@
             <path d="M9 5V3H3v6h2V5zM21 9V3h-6v2h4v4zM19 19h-4v2h6v-6h-2zM5 15H3v6h6v-2H5zM2 11h20v2H2z" />
         </svg>
     </div>
-
     <Teleport to="body">
         <div v-if="isScannerVisible" class="scan-overlay" @click.self="stopScanner">
             <div class="scan-toolbar">
@@ -24,12 +23,11 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref } from 'vue'
-import { terminalLog } from '@/app/utils/terminalLog'
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode'
 import { extractQR } from '@/app/utils/authToken'
 import { allowCamera } from '@/app/utils/common'
 import { useMessage } from '@/app/utils/message'
-import { scanQR } from '@/modules/api/auth'
+import { confirmLogin, scanQR } from '@/modules/api/auth'
 
 const isScanning = ref(false)
 const isScannerVisible = ref(false)
@@ -96,12 +94,21 @@ const onScanSuccess = async (qr: string) => {
         const scanAPI = await scanQR(token)
         if (scanAPI.code !== 200) {
             return message.messageBox(scanAPI.message, "error")
-
         }
+        await onConfirmed(token) // then it will told login.vue to check statusQR , then you can login 
         await stopScanner() // if token got so close camera imediately
+        return message.messageBox("Scanning succeed", "success")
     } catch {
         message.messageBox("QR scan failed!", "error")
         return
+    }
+}
+const onConfirmed = async (qrToken: string) => {
+    if (!qrToken) return message.notificationBox("Token must be required", "error")
+    try {
+        await confirmLogin(qrToken)
+    } catch {
+        return message.messageBox("Something wrong with scanning", "error")
     }
 }
 
@@ -169,13 +176,9 @@ const startScanner = async () => {
         scanner.value = instance
         try {
             await startByFacingMode(instance)
-        } catch (facingModeError) {
-            terminalLog('warn','scan','Facing mode start failed, fallback to camera list.',
-                facingModeError instanceof Error ? facingModeError.message : String(facingModeError)
-            )
+        } catch {
             await startByAvailableCamera(instance)
         }
-
         isScanning.value = true // keep scaning
     } catch {
         message.notificationBox("Failed to start scanner", "error")
