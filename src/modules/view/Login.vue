@@ -1,7 +1,7 @@
 <template>
-	<div class="flex justify-center h-full flex-col">
+	<div class="login-container flex justify-center h-full flex-col ">
 		<!-- Switch login -->
-		<div class="flex justify-between w-full mx-auto mb-1">
+		<div class="flex justify-between w-full mx-auto mb-1 hidden lg:flex xl:flex 2xl:flex sm:flex">
 			<div :class="`${loginType === 'password' ? 'bg-[#acc8e5] font-bold transition-all ' : ''} cursor-pointer border py-2 px-5 w-full rounded-sm transition-all duration-150 border-gray-200`"
 				@click="loginType = 'password'">By Manual</div>
 			<div :class="`${loginType === 'qrcode' ? 'bg-[#acc8e5] font-bold transition-all' : ''}  cursor-pointer border py-2 px-5 w-full rounded-sm  transition-all duration-150 border-gray-200`"
@@ -20,38 +20,37 @@
 						<el-input v-model="userRef.username" name="username" type="text"
 							placeholder="please input your name" />
 					</el-form-item>
-					<el-form-item prop="password">
+					<el-form-item prop="password" >
 						<label class="font-bold">Password</label>
 						<el-input v-model="userRef.password" type="password" name="password" show-password
 							placeholder="please input your password" />
 					</el-form-item>
-					<ButtonGlobal @click.prevent="submit" value="Submit" class="text-white" />
+					<ButtonGlobal @click.prevent="submit" value="Submit"
+						class="text-white text-center container-button" />
 				</el-form>
 			</div>
 		</div>
 		<div v-if="loginType === 'qrcode'" class="container flex justify-center flex-col pt-5">
 			<div v-if="qr.qrCodeStatus === 'waiting'">
-				<div v-if="qr.qrCodeImageUrl" class=" my-auto">
-					<img  class="w-[60%] mx-auto overflow-hidden" :src="qr.qrCodeImageUrl" alt="Empty QR" />
+				<div v-if="qr.qrCodeImageUrl" class="my-auto">
+					<img class="w-[60%] mx-auto overflow-hidden" :src="qr.qrCodeImageUrl" alt="Empty QR" />
 					<div v-if="qr.qrCountDown != null" class="mt-5 p-3">
 						<span>The QR code will be expired in </span>
 						<span class=" text-red-600 font-bold"> {{ minuteFormat(qr.qrCountDown) }} </span>
 					</div>
 				</div>
 			</div>
-			<div v-else-if="qr.qrCodeStatus === 'scanned'" class="qrcode-status">
+			<div v-else-if="qr.qrCodeStatus === 'scanned'" class="text-center">
 				<el-icon class="status-icon scanned">
-					<Check />
+					<Select />
 				</el-icon>
 				<p>The QR code has been scanned, please confirm login on your mobile phone</p>
 			</div>
-			<div v-else-if="qr.qrCodeStatus === 'confirmed'" class=" w-[150px] h-[150px]">
-				<el-icon style="width: max-content; height: max-content;">
-					<Check />
-				</el-icon>
+			<div v-else-if="qr.qrCodeStatus === 'confirmed'" class="text-center">	
+				<img class="w-[40%] mx-auto overflow-hidden" :src="qr.qrCodeImageUrl" alt="Empty QR" />
 				<p>Login successful, redirecting...</p>
 			</div>
-			<div v-else-if="qr.qrCodeStatus === 'expired'" class="qrcode-status">
+			<div v-else-if="qr.qrCodeStatus === 'expired'" class="text-center">
 				<p>The QR code has expired, please refresh</p>
 				<ButtonGlobal @click="generateQRLogin" value="Refresh QRCode" class="text-white mx-auto mt-2">
 					<template #icon-left>
@@ -61,7 +60,7 @@
 					</template>
 				</ButtonGlobal>
 			</div>
-			<div v-else-if="qr.qrCodeStatus === 'cancelled'" class="qrcode-status">
+			<div v-else-if="qr.qrCodeStatus === 'cancelled'" class="text-center">
 				<p>Login has been canceled, please refresh</p>
 				<ButtonGlobal @click="generateQRLogin" value="Refresh QRCode" class="text-white  mx-auto mt-2">
 					<template #icon-left>
@@ -83,8 +82,9 @@ import { useMessage } from '@/app/utils/message.ts'
 import type { LoginRequest, QRCode, User } from '../types/auth'
 import { generateQR, getQR, login } from '../api/auth'
 import { minuteFormat, remaingTime } from '@/app/utils/dateFormat'
-import { Check, Refresh } from '@element-plus/icons-vue'
+import {  Refresh, Select } from '@element-plus/icons-vue'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import scanTick from '@/app/assets/image/scan_tick.png'
 
 const loginType = ref("password")
 const qr = ref<QRCode>({
@@ -165,14 +165,15 @@ function startQRCodePolling() {
 		try {
 			const poll = await getQR(qr.value.qrToken)
 			const status = poll?.data.status
+			
 			qr.value.qrCodeStatus = status
-
 			if (poll?.code === 200 && status === "confirmed") {
 				stopQRCodePolling()
 				stopQRCodeCountdown()
 
+				qr.value.qrCodeImageUrl = scanTick
 				// sleep to loading
-				await new Promise((r) => setTimeout(r,100)).then(()=> errorMessage.messageBox("Scan login succeed!","success")) // 9ms
+				await new Promise((r) => setTimeout(r, 1000)).then(() => errorMessage.messageBox("Scan login succeed!", "success")) // 9ms
 
 				const token = poll.data.qrCodeToken
 				const data = poll.data.user
@@ -281,5 +282,30 @@ onUnmounted(() => {
 	font-family: 'Cascadia Code', sans-serif;
 	background: #acc8e5;
 	border-radius: 0.7rem 1.2rem 0.7rem 1.2rem;
+}
+
+@media (max-width: 768px) {
+	.login-container {
+		padding: 0;		
+		overflow: auto;
+		width: 380px;
+		min-height: 100dvh;
+	}
+
+	.login-container .container {
+		width: 100%;
+		min-height: 80%;
+		display: flex;
+		justify-content: center;
+		border-radius: 1rem;
+		& :deep(.el-input__wrapper){
+			min-height: 60px;
+		}
+		& .container-button {
+			width: 100%;
+			height: 70px;
+			margin-left: 0;
+		}
+	}
 }
 </style>

@@ -10,12 +10,11 @@ export default defineConfig({
 	server: {
 		host: '0.0.0.0',
 		port: 7001,
-		// proxy: {
-		// 	'/v1': {
-		// 		target: "http://172.20.10.7:7005",
-		// 		secure: false,
-		// 	}
-		// }
+		proxy: {
+			'/v1': {
+				secure: false
+			}
+		}
 	},
 	// basicSsl() = testing for handling in secure 
 	plugins: [vue(), tailwindcss(), clientLogPlugin()],
