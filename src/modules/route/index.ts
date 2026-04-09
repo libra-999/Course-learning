@@ -7,7 +7,9 @@ import { loginStore } from '@/modules/store/auth'
 import { isTokenValid } from '@/app/utils/authToken'
 import { module } from '@/modules/route/module.ts'
 import GuestLayout from '@/modules/layout/base/GuestLayout.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route: Router = createRouter({
 	history: createWebHistory(),
 	routes: [
@@ -42,7 +44,7 @@ route.beforeEach((to) => {
 	// Route protected
 	if (to.meta.requireAuth && !isAuth) {
 		ElMessage({
-			message: '未经授权，请重新登录',
+			message: t("LOGIN.REQUEST_AXIOS.error.unauthorized"),
 			type: 'error',
 		})
 		return {
