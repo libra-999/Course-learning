@@ -6,42 +6,55 @@ import { ElMessage } from 'element-plus'
 import { loginStore } from '@/modules/store/auth'
 import { isTokenValid } from '@/app/utils/authToken'
 import { module } from '@/modules/route/module.ts'
+import GuestLayout from '@/modules/layout/base/GuestLayout.vue'
 
 const route: Router = createRouter({
 	history: createWebHistory(),
 	routes: [
 		{
+			path: '/',
+			redirect: '/guest',
+		},
+		{
 			name: 'login',
 			path: '/login',
-			meta: { requireAuth: false },
 			component: Login,
 		},
 		{
-			name: 'home',
-			path: '/',
-			meta: { requireAuth: true },
-			component: DefaultLayout,
+			path: '/guest',
+			component: GuestLayout,
+			meta: { isFree: true },
 		},
-		...module,
-		...invalidPage,
+		{
+			path: '/system',
+			component: DefaultLayout,
+			name: 'home',
+			meta: { requireAuth: true },
+			children: [...module, ...invalidPage],
+		},
 	],
 })
 
 route.beforeEach((to) => {
-	if (!to.meta.requireAuth) return true // without required token
-
-	// assign token to
 	const authStore = loginStore()
-	if (isTokenValid(authStore.access_token)) return true
+	const isAuth = isTokenValid(authStore.access_token)
 
-	// handle invalid token or missing token
-	ElMessage({
-		message: '未经授权，请重新登录',
-		type: 'error',
-	})
-	return {
-		path: '/login',
-		query: { redirect: to.fullPath },
+	// Route protected
+	if (to.meta.requireAuth && !isAuth) {
+		ElMessage({
+			message: '未经授权，请重新登录',
+			type: 'error',
+		})
+		return {
+			path: '/login',
+			query: { redirect: to.fullPath },
+		}
 	}
+
+	// Guest
+	if (to.meta.isFree && isAuth) {
+		return (to.query.redirect as string) || '/system'
+	}
+	return true
 })
 export default route

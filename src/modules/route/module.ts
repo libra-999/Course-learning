@@ -54,9 +54,8 @@ export const module = [
    {
       path: "/table",
       name: "Table Role and Permission",
-      meta: { requiredAuth: true },
+      meta: { requireAuth: true },
       component: TableLayout
    }
 
 ]
-

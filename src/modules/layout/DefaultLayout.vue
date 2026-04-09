@@ -3,7 +3,7 @@
 		<!--implement timeline studied-->
 		<div
 			:class="`${themeStore.settings.themeSchema !== 'dark' ? ' bg-gray-100 ' : 'bg-gray-800'} w-0 2xl:w-[20%] max-h-[90vh] rounded-b-2xl px-2 py-5 hidden 2xl:flex flex-col items-end justify-start overflow-y-auto`">
-			<ButtonGlobal @click="isTimelineShow = true" value="Input now"
+			<ButtonGlobal @click="isTimelineShow = true" :value="`${t('MAIN_LAYOUT.TIMELINE.button_input')}`"
 				:class="`${themeStore.settings.themeSchema !== 'dark' ? 'bg-gray-800 hover:bg-gray-600' : ''} text-white z-100 top-15 `" />
 			<Timeline class="w-full" :activity="timeStore.activities" />
 		</div>
@@ -11,16 +11,16 @@
 			<div
 				class="mx-auto lg:w-[100%] xl:w-[80%] sm:w-[100%] md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent">
 				<p class="uppercase font-bold lg:text-center text-start sm:text-start text-sm mb-3">
-					Vue 3 Learning Tutorial
+					{{ t("MAIN_LAYOUT.title_1") }}
 				</p>
 				<p class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold">
-					From Zero to Zero 🤔
+					{{ t("MAIN_LAYOUT.title_2") }}🤔
 				</p>
 				<div class="flex justify-between mt-5">
 					<ThemeSwitch :theme-schema="themeStore.settings.themeSchema" :is-dark="themeStore.darkMode"
 						@switch="themeStore.toggleThemeSchema" />
 					<div class="text-white flex justify-center h-10 gap-2  place-items-center">
-						<SwitchLang/>
+						<SwitchLang />
 						<el-dropdown trigger="click" :hide-on-click="false"
 							style="padding: 0.5rem; color: var(--text-color); cursor: pointer;overflow: hidden; background-color: var(--bg-color) ; border: 1px solid rgba(0, 0, 0, 0.11); border-radius: 0.2rem;">
 							<div class="flex justify-center place-items-center gap-2.5">
@@ -29,15 +29,15 @@
 										class="w-full h-full object-cover rounded-[50%]" />
 								</div>
 								<span class="md:block sm:block xl:block hidden ">{{ authStore.user?.username || 'Test'
-									}}</span>
+								}}</span>
 							</div>
 							<template #dropdown>
 								<el-dropdown-menu>
 									<el-dropdown-item disabled>
-										Profile
+										{{ t("MAIN_LAYOUT.PROFILE_DD.profile") }}
 									</el-dropdown-item>
 									<el-dropdown-item divided @click="onLogout">
-										Logout
+										{{ t("MAIN_LAYOUT.PROFILE_DD.logout") }}
 									</el-dropdown-item>
 									<el-dropdown-item class="mobile-scan">
 										<ScanQR />
@@ -51,35 +51,33 @@
 			<div
 				class="lg:w-[100%] xl:w-[80%] md:w-[95%] sm:w-[100%] mx-auto mt-5 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:grid-cols-4 gap-4 overflow-hidden">
 				<!-- Test -->
-				<Cardbox title="Test" content="Just a normal click box with auto created box number " path="/test"
-					:icon="DocumentAdd">
+				<Cardbox :title="`${t('MAIN_LAYOUT.TEST.title')}`" :content="`${t('MAIN_LAYOUT.TEST.content')}`"
+					path="/test" :icon="DocumentAdd">
 				</Cardbox>
 				<!-- Book -->
-				<Cardbox title="Book API"
-					content="Google book API with  , list product book as list and view detail of book "
+				<Cardbox :title="`${t('MAIN_LAYOUT.BOOK.title')}`" :content="`${t('MAIN_LAYOUT.BOOK.content')}`"
 					path="/books" />
 				<!-- Payment -->
-				<Cardbox title="Payment Type"
-					content="Learned the structure and fields should be have when implement payment feature into project"
+				<Cardbox :title="`${t('MAIN_LAYOUT.PAYMENT.title')}`" :content="`${t('MAIN_LAYOUT.PAYMENT.content')}`"
 					path="/payment" :icon="DataLine" />
 				<!-- upload with progress -->
-				<Cardbox title="Upload Files"
-					content="Build a view to upload files with multiple types and loading progress base image uploaded"
+				<Cardbox :title="`${t('MAIN_LAYOUT.FILE.title')}`" :content="`${t('MAIN_LAYOUT.FILE.content')}`"
 					path="/upload" :icon="UploadFilled" />
 				<!-- Role and Permission Table -->
-				<Cardbox title="Table Tree" content="Build a nest tables row with data role and permission"
+				<Cardbox :title="`${t('MAIN_LAYOUT.ROLE.title')}`" :content="`${t('MAIN_LAYOUT.ROLE.content')}`"
 					:icon="Avatar" path="/table" />
 			</div>
 		</div>
 	</div>
 	<!-- Timeline form-->
 	<el-dialog width="500" v-model="isTimelineShow" :show-close="true">
-		<p
-			:class="`${themeStore.settings.themeSchema == 'dark' ? 'text-white text-2xl font-bold' : ''}text-2xl font-bold`">
-			Timeline</p>
-		<el-form class="mt-6 font-bold w-full"
-			:class="`${themeStore.settings.themeSchema != 'dark' ? '' : 'text-white'}`" :model="timelineModel"
-			:rules="timelineRule" :ref="timelineInstance">
+		<p :class="`${themeStore.settings.themeSchema == 'dark' ? 'text-white text-2xl font-bold' : ''}text-2xl font-bold`">
+			{{ t("MAIN_LAYOUT.TIMELINE.title") }}
+		</p>
+		<el-form 
+			:class="`${themeStore.settings.themeSchema != 'dark' ? '' : 'text-white'} mt-6 font-bold w-full` " :model="timelineModel"
+			:rules="timelineRule" 
+			:ref="timelineInstance">
 			<div class="flex justify-between">
 				<el-form-item style="
 						display: flex;
@@ -87,9 +85,9 @@
 						align-content: center;
 					" prop="timestamp">
 					<div class="w-max">
-						<span class="mr-4">Date Timeline</span>
+						<span class="mr-4">{{ t("MAIN_LAYOUT.TIMELINE.FORM_ITEM.date") }}</span>
 						<el-date-picker name="timestamp" v-model="timelineModel.timestamp" type="date"
-							placeholder="Select date" />
+							:placeholder="`${t('MAIN_LAYOUT.TIMELINE.FORM_ITEM.date_placeholder')}`" />
 					</div>
 				</el-form-item>
 				<el-form-item prop="color">
@@ -99,13 +97,13 @@
 				</el-form-item>
 			</div>
 			<el-form-item prop="content">
-				<span class="mr-4">Content Timeline</span>
-				<el-input name="content" v-model="timelineModel.content" placeholder="Please input title"
+				<span class="mr-4">{{ t("MAIN_LAYOUT.TIMELINE.FORM_ITEM.content")}}</span>
+				<el-input name="content" v-model="timelineModel.content" :placeholder="`${t('MAIN_LAYOUT.TIMELINE.FORM_ITEM.content_placeholder')}`"
 					type="textarea" style="width: 240px" />
 			</el-form-item>
 			<ButtonGlobal @click.prevent="addTimeline"
 				:class="`${themeStore.settings.themeSchema != 'dark' ? 'bg-gray-800 text-white hover:bg-gray-600' : 'text-white'}`"
-				value="Add" />
+				:value="`${t('MAIN_LAYOUT.TIMELINE.FORM_ITEM.add')}`" />
 		</el-form>
 	</el-dialog>
 	<RouterView />
@@ -125,8 +123,10 @@ import { loginStore } from '@/modules/store/auth'
 import route from '@/modules/route'
 import ScanQR from '@/app/components/scan/ScanQR.vue'
 import SwitchLang from '@/app/components/localization/SwitchLang.vue'
+import { useI18n } from 'vue-i18n'
 
 const message = useMessage()
+const { t } = useI18n()
 
 /* timeline activity*/
 const isTimelineShow = ref(false)
@@ -159,7 +159,7 @@ const themeStore = useTheme()
 const authStore = loginStore()
 const onLogout = () => {
 	authStore.logout()
-	route.replace('/login')
+	route.replace('/guest')
 }
 </script>
 <style lang="scss" scoped>
