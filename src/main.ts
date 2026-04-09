@@ -7,6 +7,7 @@ import route from './modules/route'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { useTheme } from '@/modules/store/theme.ts'
+import i18n from "@/modules/locales";
 
 
 const app = createApp(App);
@@ -14,6 +15,7 @@ const pinia = createPinia();
 const router = route;
 
 pinia.use(piniaPluginPersistedstate)
+app.use(i18n)
 app.use(pinia);
 app.use(router);
 app.use(ElementPlus);

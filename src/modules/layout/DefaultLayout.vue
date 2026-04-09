@@ -20,6 +20,7 @@
 					<ThemeSwitch :theme-schema="themeStore.settings.themeSchema" :is-dark="themeStore.darkMode"
 						@switch="themeStore.toggleThemeSchema" />
 					<div class="text-white">
+						<SwitchLang/>
 						<el-dropdown trigger="click" :hide-on-click="false"
 							style="padding: 0.5rem; color: var(--text-color); cursor: pointer;overflow: hidden; background-color: var(--bg-color) ; border: 1px solid rgba(0, 0, 0, 0.11); border-radius: 0.2rem;">
 							<div class="flex justify-center place-items-center gap-2.5">
@@ -123,6 +124,7 @@ import Cardbox from '@/app/components/card/Cardbox.vue'
 import { loginStore } from '@/modules/store/auth'
 import route from '@/modules/route'
 import ScanQR from '@/app/components/scan/ScanQR.vue'
+import SwitchLang from '@/app/components/localization/SwitchLang.vue'
 
 const message = useMessage()
 
@@ -142,7 +144,7 @@ const timeStore = timelineStore()
 const timelineModel = ref<Activities>({
 	content: '',
 	color: '',
-	timestamp: '',
+	timestamp: new Date(),
 })
 const addTimeline = async () => {
 	timeStore.isSave({ ...timelineModel.value })

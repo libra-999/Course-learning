@@ -23,7 +23,7 @@ import { timelineStore } from '@/modules/store/line.ts'
 
 export interface Activities {
 	content: string
-	timestamp: string
+	timestamp: Date
 	color: string
 }
 

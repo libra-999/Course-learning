@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, type Ref, ref, watch } from 'vue'
 import { toggleHTMLClass } from '@/app/utils/common.ts'
+import { useStorage } from "@vueuse/core";
 export function initThemeSetting(): App.Theme.ThemeSetting {
 	const savedTheme = localStorage.getItem('themeSchema')
 	return {
@@ -16,6 +17,7 @@ export function toggleClassCss(darkMode = false) {
 
 export const useTheme = defineStore('theme', () => {
 	const settings: Ref<App.Theme.ThemeSetting> = ref(initThemeSetting())
+	const changeLang = useStorage("localization", "")
 	type ThemeSchema = App.Theme.ThemeSetting['themeSchema'] // map to themeSchema
 	const themes: ThemeSchema[] = ['light', 'dark']
 
@@ -43,8 +45,14 @@ export const useTheme = defineStore('theme', () => {
 		toggleClassCss(val)
 	}, { immediate: true })
 
+	/* toggle language */
+	function switchLanguage(value: string) {
+		changeLang.value = value
+	}
 
 	return {
+		changeLang,
+		switchLanguage,
 		darkMode,
 		toggleThemeSchema,
 		settings,
