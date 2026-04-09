@@ -85,4 +85,10 @@ export default {
 			},
 		},
 	},
+	REQUEST_AXIOS:{
+		error: {
+			internal_server: "服务器内部!",
+			unauthorized: "未经授权!"
+		}
+	}
 }

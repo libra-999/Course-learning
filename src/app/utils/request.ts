@@ -6,10 +6,12 @@ import axios, {
 } from 'axios'
 import route from '@/modules/route'
 import { loginStore } from '@/modules/store/auth'
+import { useI18n } from 'vue-i18n'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
 const SERVER_VERSION = import.meta.env.VITE_SERVER_VERSION
 
+const { t } = useI18n()
 const apiRequest: AxiosInstance = axios.create({
 	baseURL: `${SERVER_URL}/${SERVER_VERSION}`,
 	timeout: 10000,
@@ -40,14 +42,14 @@ apiRequest.interceptors.response.use(
 
 		if (status === 500 || errorType === 'ERR_NETWORK') {
 			route.push('/server-error')
-			return Promise.reject('Server Internal!')
+			return Promise.reject(t("REQUEST_AXIOS.error.internal_server"))
 		}
 		if (status === 401) {
 			loginStore().logout() // no token
 			route.push('/login')
-			return Promise.reject('Unauthorized!')
+			return Promise.reject(t("REQUEST_AXIOS.error.internal_server"))
 		}
-		return Promise.reject('Server Internal!')
+		return Promise.reject(t("REQUEST_AXIOS.error.unauthorized"))
 	},
 )
 

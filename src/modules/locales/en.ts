@@ -89,4 +89,10 @@ export default {
             }
         }
 	},
+	REQUEST_AXIOS:{
+		error: {
+			internal_server: "Server Internal!",
+			unauthorized: "Unauthorized!"
+		}
+	}
 }
