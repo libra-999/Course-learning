@@ -4,8 +4,9 @@ import { toggleHTMLClass } from '@/app/utils/common.ts'
 import { useStorage } from "@vueuse/core";
 export function initThemeSetting(): App.Theme.ThemeSetting {
 	const savedTheme = localStorage.getItem('themeSchema')
+	const themeSchema : App.Theme.ThemeSetting['themeSchema'] = savedTheme === 'dark' || savedTheme === 'light' ?savedTheme : 'light'
 	return {
-		themeSchema: (savedTheme as 'light' | 'dark')
+		themeSchema
 	}
 }
 

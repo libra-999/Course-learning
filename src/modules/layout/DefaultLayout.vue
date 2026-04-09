@@ -19,7 +19,7 @@
 				<div class="flex justify-between mt-5">
 					<ThemeSwitch :theme-schema="themeStore.settings.themeSchema" :is-dark="themeStore.darkMode"
 						@switch="themeStore.toggleThemeSchema" />
-					<div class="text-white">
+					<div class="text-white flex justify-center h-10 gap-2  place-items-center">
 						<SwitchLang/>
 						<el-dropdown trigger="click" :hide-on-click="false"
 							style="padding: 0.5rem; color: var(--text-color); cursor: pointer;overflow: hidden; background-color: var(--bg-color) ; border: 1px solid rgba(0, 0, 0, 0.11); border-radius: 0.2rem;">

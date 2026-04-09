@@ -1,7 +1,7 @@
 <template>
-	<el-dropdown trigger="click" @command="handleLanguageChange">
+	<el-dropdown trigger="click" @command="handleLanguageChange" style="cursor: pointer;">
 		<div>
-			<svg-icon icon-class="language" :size="size" />
+			<img class="w-8 h-8" :src="i18nIcon"/>
 		</div>
 		<template #dropdown>
 			<el-dropdown-menu>
@@ -22,6 +22,7 @@ import { Locale, type LocaleType, useLocale } from '@/modules/locales'
 import { useI18n } from 'vue-i18n'
 import { useMessage } from '@/app/utils/message.ts'
 import { useTheme } from '@/modules/store/theme'
+import i18nIcon from  '@/app/assets/image/translate.png'
 
 defineProps({
 	size: {

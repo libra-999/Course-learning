@@ -10,7 +10,9 @@ export const Locale = {
 	CH:"ch",
 } as const
 export type LocaleType = (typeof Locale)[keyof typeof Locale]
-const localeKey = localStorage.getItem('i18n') || 'ch'
+
+
+const localeKey = localStorage.getItem('localization') || 'en'
 const i18n = createI18n({
 	legacy: false, // must not change to true , vue 3 didn't support
 	locale: localeKey,
