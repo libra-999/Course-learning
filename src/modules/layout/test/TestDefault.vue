@@ -7,4 +7,4 @@
 import TestComponent from '@/app/components/system/test/TestComponent.vue';
 
 </script>
-<style scoped></style>
+<style lang="scss" scoped></style>

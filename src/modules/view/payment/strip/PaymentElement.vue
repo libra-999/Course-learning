@@ -67,4 +67,4 @@ onMounted(async () => {
 	clientSecret.value = resp.data.clientSecret
 })
 </script>
-<style scoped></style>
+<style lang="scss" scoped></style>

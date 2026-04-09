@@ -416,7 +416,10 @@ const submitForm = async () => {
 			errorMessage.messageBox('error sign payload', 'error')
 		}
 	} catch (error) {
-		throw errorMessage.messageBox(`Error or validation failed ${error}`,'error')
+		throw errorMessage.messageBox(
+			`Error or validation failed ${error}`,
+			'error',
+		)
 	}
 }
 
@@ -433,7 +436,7 @@ const getTrans = async () => {
 			dataResp.value = req.data
 		}
 	} catch (error) {
-		throw errorMessage.messageBox(`${error}`,'error')
+		throw errorMessage.messageBox(`${error}`, 'error')
 	}
 }
 
@@ -453,7 +456,7 @@ const getExchangeRate = async () => {
 			dataResp.value = req
 		}
 	} catch (err) {
-		throw errorMessage.messageBox(`${err}`,'error')
+		throw errorMessage.messageBox(`${err}`, 'error')
 	}
 }
 
@@ -469,7 +472,7 @@ const createQR = async () => {
 		}
 		return
 	} catch (error) {
-		throw errorMessage.messageBox(`${error}`,'error')
+		throw errorMessage.messageBox(`${error}`, 'error')
 	}
 }
 
@@ -487,11 +490,11 @@ const linkCard = async () => {
 		newWindow?.document.write(req)
 		newWindow?.document.close()
 	} catch (error) {
-		throw errorMessage.messageBox(`${error}`,'error')
+		throw errorMessage.messageBox(`${error}`, 'error')
 	}
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap');
 
 .aba-wrapper {

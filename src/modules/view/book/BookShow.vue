@@ -66,4 +66,4 @@ watch(search, () => {
     }, 500);
 })
 </script>
-<style scoped></style>
+<style lang="scss" scoped></style>

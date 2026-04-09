@@ -220,7 +220,7 @@ onMounted(() => {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .table-container .table-section {
     background-color: var(--table-bg-color);
 }

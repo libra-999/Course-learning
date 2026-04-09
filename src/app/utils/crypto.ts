@@ -15,7 +15,7 @@ export const decrypt = (localItem: any): object => {
 	return JSON.parse(bytp) as object
 }
 
-export async function hmacBase64 (payload: string, apiKey: string) {
+export async function hmacBase64(payload: string, apiKey: string) {
 	const encoder = new TextEncoder()
 	const data = encoder.encode(apiKey)
 	const msgData = encoder.encode(payload)

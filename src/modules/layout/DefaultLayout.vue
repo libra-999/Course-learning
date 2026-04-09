@@ -160,7 +160,7 @@ const onLogout = () => {
 	route.replace('/login')
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 :deep(.mobile-scan) {
 	display: none !important;
 }

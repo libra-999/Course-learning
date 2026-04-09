@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./table.css";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -21,6 +20,9 @@
   transition: all ease-in-out;
 
   --table-bg-color: rgba(54, 54, 54, 0.982);
+  --theme-color: #fdfdfd;
+  --text-transparent: rgba(51, 51, 51, 0.8);
+  --background-box-color: #b9b9b9c9;
 }
 
 /* Dark mode */
@@ -52,6 +54,33 @@ body {
   padding: 2rem;
   text-align: center;
 }
+
+.book-theme {
+  background-color: var(--theme-color);
+  color: var(--text-color);
+}
+
+.table-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.table-filter-select {
+  padding: 20px 0 5px 30px;
+  border-radius: 0.2rem;
+  background-color: var(--table-bg-color);
+  border: 1px whitesmoke;
+}
+.table-filter-select .search-input :deep(.el-form-item__wrapper) {
+  margin-right: 0;
+  background-color: gray;
+}
+.table-filter-select .search-item .el-form-item__label {
+  color: white;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {

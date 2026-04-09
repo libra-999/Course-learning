@@ -27,5 +27,5 @@ const back = () => {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 </style>

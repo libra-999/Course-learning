@@ -27,7 +27,7 @@ export const UploadRuleForm: UploadRule[] = [
 			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			'application/vnd.ms-wpl',
 			'application/msword',
-			'text/rtf'
+			'text/rtf',
 		],
 	},
 	{

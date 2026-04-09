@@ -93,4 +93,5 @@ const progressRemoveFile = async (fileName: string, id: string) => {
 	}
 }
 </script>
-<style scoped></style>
+<style lang="scss" scoped>
+</style>

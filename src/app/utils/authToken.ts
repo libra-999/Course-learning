@@ -8,11 +8,11 @@ export const isLogout = () => {
 	document.cookie = 'auth=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'
 }
 
-export const extractQR = (decodeText: string)=>{
-	try{
-		const parsed =  JSON.parse(decodeText);
+export const extractQR = (decodeText: string) => {
+	try {
+		const parsed = JSON.parse(decodeText)
 		return parsed.token ?? decodeText
-	}catch{
+	} catch {
 		return decodeText
 	}
 }

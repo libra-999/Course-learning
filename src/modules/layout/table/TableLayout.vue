@@ -8,6 +8,6 @@
 import Role from '@/modules/view/table/role/Role.vue';
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
