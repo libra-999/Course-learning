@@ -18,21 +18,21 @@
 			<div
 				class="lg:w-[100%] xl:w-[80%] md:w-[95%] sm:w-[100%] mx-auto mt-5 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 xl:grid-cols-4 gap-4 overflow-hidden">
 				<!-- Test -->
-				<Cardbox :title="`${t('MAIN_LAYOUT.TEST.title')}`" :content="`${t('MAIN_LAYOUT.TEST.content')}`" path="/test"
+				<Cardbox :title="`${t('MAIN_LAYOUT.TEST.title')}`" :content="`${t('MAIN_LAYOUT.TEST.content')}`" path="/system/test"
 					:icon="DocumentAdd">
 				</Cardbox>
 				<!-- Book -->
 				<Cardbox :title="`${t('MAIN_LAYOUT.BOOK.title')}`" :content="`${t('MAIN_LAYOUT.BOOK.content')}`"
-					path="/books" />
+					path="/system/books" />
 				<!-- Payment -->
 				<Cardbox :title="`${t('MAIN_LAYOUT.PAYMENT.title')}`" :content="`${t('MAIN_LAYOUT.PAYMENT.content')}`"
-					path="/payment" :icon="DataLine" />
+					path="/system/payment" :icon="DataLine" />
 				<!-- upload with progress -->
 				<Cardbox :title="`${t('MAIN_LAYOUT.FILE.title')}`" :content="`${t('MAIN_LAYOUT.FILE.content')}`"
-					path="/upload" :icon="UploadFilled" />
+					path="/system/upload" :icon="UploadFilled" />
 				<!-- Role and Permission Table -->
 				<Cardbox :title="`${t('MAIN_LAYOUT.ROLE.title')}`" :content="`${t('MAIN_LAYOUT.ROLE.content')}`"
-					:icon="Avatar" path="/table" />
+					:icon="Avatar" path="/system/table" />
 			</div>
 		</div>
 	</div>

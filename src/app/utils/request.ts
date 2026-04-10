@@ -6,12 +6,12 @@ import axios, {
 } from 'axios'
 import route from '@/modules/route'
 import { loginStore } from '@/modules/store/auth'
-import { useI18n } from 'vue-i18n'
+import i18n from '@/modules/locales'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL
 const SERVER_VERSION = import.meta.env.VITE_SERVER_VERSION
 
-const { t } = useI18n()
+const t = i18n.global.t
 const apiRequest: AxiosInstance = axios.create({
 	baseURL: `${SERVER_URL}/${SERVER_VERSION}`,
 	timeout: 10000,

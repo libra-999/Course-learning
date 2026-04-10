@@ -7,9 +7,9 @@ import { loginStore } from '@/modules/store/auth'
 import { isTokenValid } from '@/app/utils/authToken'
 import { module } from '@/modules/route/module.ts'
 import GuestLayout from '@/modules/layout/base/GuestLayout.vue'
-import { useI18n } from 'vue-i18n'
+import i18n from '@/modules/locales'
 
-const { t } = useI18n()
+const t = i18n.global.t
 const route: Router = createRouter({
 	history: createWebHistory(),
 	routes: [
@@ -32,8 +32,9 @@ const route: Router = createRouter({
 			component: DefaultLayout,
 			name: 'home',
 			meta: { requireAuth: true },
-			children: [...module, ...invalidPage],
+			children: [...module],
 		},
+		...invalidPage,
 	],
 })
 
@@ -44,7 +45,7 @@ route.beforeEach((to) => {
 	// Route protected
 	if (to.meta.requireAuth && !isAuth) {
 		ElMessage({
-			message: t("LOGIN.REQUEST_AXIOS.error.unauthorized"),
+			message: t('REQUEST_AXIOS.error.unauthorized'),
 			type: 'error',
 		})
 		return {

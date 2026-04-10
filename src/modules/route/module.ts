@@ -11,19 +11,19 @@ import TableLayout from "@/modules/layout/table/TableLayout.vue";
 
 export const module = [
    {
-      path: '/books',
+      path: '/system/books',
       name: 'Book Store',
       meta: { requireAuth: true },
       component: BookStoreDefault,
    },
    {
-      path: '/test',
+      path: '/system/test',
       name: 'Testing',
       meta: { requireAuth: true },
       component: TestDefault,
    },
    {
-      path: '/payment',
+      path: '/system/payment',
       name: 'Payment',
       meta: { requireAuth: true },
       component: PaymentLayout,
@@ -46,13 +46,13 @@ export const module = [
       ],
    },
    {
-      path: '/upload',
+      path: '/system/upload',
       name: 'Upload',
       meta: { requireAuth: true },
       component: UploadProgressLayout,
    },
    {
-      path: "/table",
+      path: "/system/table",
       name: "Table Role and Permission",
       meta: { requireAuth: true },
       component: TableLayout

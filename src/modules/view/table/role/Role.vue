@@ -71,7 +71,7 @@
                     </el-table-column>
                     <el-table-column prop="createdAt" width="200" label="创建时间" align="center">
                         <template #default="scope">
-                            {{ dayTimeFormat(scope.row.createdAt) }}
+                            {{ dayMonthFormat(scope.row.createdAt) }}
                         </template>
                     </el-table-column>
                     <el-table-column min-width="260" label="操作" align="center" class-name="action-table">
@@ -125,7 +125,7 @@
 <script setup lang="ts">
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue';
 import Loading from '@/app/components/Loading.vue';
-import {  dayTimeFormat } from '@/app/utils/dateFormat';
+import {  dayMonthFormat } from '@/app/utils/dateFormat';
 import { switchStatusCode, useMessage } from '@/app/utils/message';
 import {  roleDelete, rolePage } from '@/modules/api/role';
 import { type RoleUpdateReq, type QueryParams, type RoleItem, type RoleQueryParam } from '@/modules/types/role';
