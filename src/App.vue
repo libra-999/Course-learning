@@ -1,6 +1,6 @@
 <template>
 	<div class="w-full h-full">
-		<el-config-provider :local="elementPlusLocale">
+		<el-config-provider :locale="elementPlusLocale">
 			<RouterView />
 		</el-config-provider>
 	</div>
@@ -12,6 +12,8 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n()
 const { currentValue, elementPlusLocale } = useLocale()
+// const { initSocket } = useSocket<any>({})
+// initSocket()
 document.title = t("TITLE_SYSTEM") 
 watch((currentValue), () => document.title = t("TITLE_SYSTEM")) // can be nearly real time to see title changed
 </script>

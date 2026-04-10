@@ -140,7 +140,7 @@ const userRule: FormRules<LoginRequest> = {
 		// format of password
 		{
 			pattern: /^(?=[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/,
-			message: t("LOGIN.FILL.FORM_ITEM.pwd_pattern_"),
+			message: t("LOGIN.FILL.FORM_ITEM.pwd_pattern_validate"),
 			trigger: 'blur',
 		},
 	],
