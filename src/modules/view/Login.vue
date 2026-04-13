@@ -148,10 +148,96 @@ const userRule: FormRules<LoginRequest> = {
 
 /** manage room */
 initSocket()
-
 function leaveQRRoom() {
 	if (!qr.value.qrToken) return
 	sendMessage(QR_KEY.QR_LEAVE_ROOM, { qrToken: qr.value.qrToken })
+}
+
+/** login by manual */
+async function submit() {
+	if (!userRefInstance.value) return
+	userRefInstance.value.validate()
+
+	try {
+		const loginApi = await login(userRef.value)
+		if (loginApi.code === 200) {
+			const token = loginApi.data.access_token
+			const userDetail = loginApi.data.user
+			const user: User = {
+				id: userDetail.id,
+				username: userDetail.username,
+				email: userDetail.email,
+				is_online: userDetail.is_online,
+				created_at: userDetail.created_at,
+			}
+			errorMessage.messageBox(loginApi.message, 'success')
+			userStore.login(user, token)
+			return route.replace({ path: '/system' })
+		}
+	} catch {
+		return errorMessage.messageBox(t("LOGIN.API.error.wrong_login"), 'error')
+	}
+}
+
+/** Countdown event */
+function startQRCodeCountdown(expired = 120) {
+	stopQRCodeCountdown()
+	const tick = () => {
+		qr.value.qrCountDown = remaingTime(expired)
+		if (qr.value.qrCountDown <= 0) { // expired countdown time
+			qr.value.qrCodeStatus = 'expired'
+			leaveQRRoom() // leave roome when QR code expired
+			stopQRCodeCountdown()
+		}
+	}
+	tick()
+	qrCountDownTimer.value = setInterval(tick, 1000)
+}
+function stopQRCodeCountdown() {
+	if (qrCountDownTimer.value) {
+		clearInterval(qrCountDownTimer.value)
+		qrCountDownTimer.value = null
+	}
+}
+
+/** login by qrcode */
+async function generateQRLogin() {
+	try {
+		leaveQRRoom()
+		stopQRCodeCountdown()
+		const genQR = await generateQR()
+
+		qr.value.qrToken = genQR.data.qrCodeToken
+		qr.value.qrCodeStatus = genQR.data.status
+		qr.value.qrCodeExpired = genQR.data.expiredTime
+		qr.value.qrCountDown = remaingTime(qr.value.qrCodeExpired)
+		if (genQR.code == 201) {
+
+			/** join room */
+			sendMessage(QR_KEY.QR_JOIN_ROOM, { qrToken: qr.value.qrToken })
+			/** status === waiting */
+			const QRCodePlugin = await import('qrcode')
+			const QRCode = QRCodePlugin.default || QRCodePlugin
+			const QRDATA = JSON.stringify({
+				token: qr.value.qrToken,
+				type: 'login',
+			})
+			try {
+				const imageUrl = await QRCode.toDataURL(QRDATA, {
+					width: 200,
+					margin: 2,
+				})
+				qr.value.qrCodeImageUrl = imageUrl
+				startQRCodeCountdown(qr.value.qrCodeExpired)
+			} catch {
+				errorMessage.notificationBox(t("LOGIN.API.error.qr_generate_url_login"), 'error')
+			}
+		} else {
+			errorMessage.notificationBox(t("LOGIN.API.error.qr_generate_login"), 'error')
+		}
+	} catch {
+		errorMessage.messageBox(t("LOGIN.API.error.qr_generate_display"), 'error')
+	}
 }
 async function qrRouteToLogin(data: any) {
 	// prevent null user & token
@@ -197,89 +283,6 @@ async function fetchQrStateByStatus() {
 	}
 }
 
-/** login by manual */
-async function submit() {
-	if (!userRefInstance.value) return
-	userRefInstance.value.validate()
-
-	try {
-		const loginApi = await login(userRef.value)
-		if (loginApi.code === 200) {
-			const token = loginApi.data.access_token
-			const userDetail = loginApi.data.user
-			const user: User = {
-				id: userDetail.id,
-				username: userDetail.username,
-				email: userDetail.email,
-				is_online: userDetail.is_online,
-				created_at: userDetail.created_at,
-			}
-			errorMessage.messageBox(loginApi.message, 'success')
-			userStore.login(user, token)
-			return route.replace({ path: '/system' })
-		}
-	} catch {
-		return errorMessage.messageBox(t("LOGIN.API.error.wrong_login"), 'error')
-	}
-}
-function startQRCodeCountdown(expired = 120) {
-	stopQRCodeCountdown()
-	const tick = () => {
-		qr.value.qrCountDown = remaingTime(expired)
-		if (qr.value.qrCountDown <= 0) { // expired countdown time
-			qr.value.qrCodeStatus = 'expired'
-			leaveQRRoom() // leave roome when QR code expired
-			stopQRCodeCountdown()
-		}
-	}
-	tick()
-	qrCountDownTimer.value = setInterval(tick, 1000)
-}
-function stopQRCodeCountdown() {
-	if (qrCountDownTimer.value) {
-		clearInterval(qrCountDownTimer.value)
-		qrCountDownTimer.value = null
-	}
-}
-async function generateQRLogin() {
-	try {
-		leaveQRRoom()
-		stopQRCodeCountdown()
-		const genQR = await generateQR()
-
-		qr.value.qrToken = genQR.data.qrCodeToken
-		qr.value.qrCodeStatus = genQR.data.status
-		qr.value.qrCodeExpired = genQR.data.expiredTime
-		qr.value.qrCountDown = remaingTime(qr.value.qrCodeExpired)
-		if (genQR.code == 201) {
-
-			/** join room */
-			sendMessage(QR_KEY.QR_JOIN_ROOM, { qrToken: qr.value.qrToken })
-			/** status === waiting */
-			const QRCodePlugin = await import('qrcode')
-			const QRCode = QRCodePlugin.default || QRCodePlugin
-			const QRDATA = JSON.stringify({
-				token: qr.value.qrToken,
-				type: 'login',
-			})
-			try {
-				const imageUrl = await QRCode.toDataURL(QRDATA, {
-					width: 200,
-					margin: 2,
-				})
-				qr.value.qrCodeImageUrl = imageUrl
-				startQRCodeCountdown(qr.value.qrCodeExpired)
-			} catch {
-				errorMessage.notificationBox(t("LOGIN.API.error.qr_generate_url_login"), 'error')
-			}
-		} else {
-			errorMessage.notificationBox(t("LOGIN.API.error.qr_generate_login"), 'error')
-		}
-	} catch {
-		errorMessage.messageBox(t("LOGIN.API.error.qr_generate_display"), 'error')
-	}
-}
-
 //** QR status from socket */
 async function listenRoomQRByStatus(payload: any) {
 
@@ -312,7 +315,7 @@ onEvent(QR_KEY.QR_STATUS, listenRoomQRByStatus)
 onEvent('connect', onSocketConnected)
 
 
-/** watch generateQR */
+/** fetching request */
 watch(loginType, (newType) => {
 	if (newType === 'qrcode') {
 		generateQRLogin()
@@ -321,6 +324,7 @@ watch(loginType, (newType) => {
 		stopQRCodeCountdown()
 	}
 })
+
 onUnmounted(() => {
 	offEvent(QR_KEY.QR_STATUS, listenRoomQRByStatus)
 	offEvent('connect', onSocketConnected)
