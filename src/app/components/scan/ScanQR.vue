@@ -28,12 +28,15 @@ import { extractQR } from '@/app/utils/authToken'
 import { allowCamera } from '@/app/utils/common'
 import { useMessage } from '@/app/utils/message'
 import { confirmLogin, scanQR } from '@/modules/api/auth'
+import useSocket, { type SocketAck } from '@/app/utils/si'
+import { QR_KEY } from '@/modules/config/socket.config'
 
 const isScanning = ref(false)
 const isScannerVisible = ref(false)
 const isStarting = ref(false)
 const scanner = ref<Html5Qrcode | null>(null)
 const message = useMessage()
+const { initSocket, sendMessage } = useSocket<any>({})
 
 /* KEY allow  */
 const READER_ID = 'qr-reader'
@@ -51,7 +54,7 @@ const frameHeight = ref(SCAN_BOX_HEIGHT)
 /* camera allowing */
 const errorCameraSupport = () => {
     // allow only mobile device
-    if (!allowCamera) {
+    if (!allowCamera()) {
         return message.messageBox("Scanner is available on mobile device only.", "warning")
     }
     // make sure is https 
@@ -90,6 +93,14 @@ const scanConfig = {
 const onScanSuccess = async (qr: string) => {
     if (!qr) message.notificationBox("QR must be provide", "warning")
     const token = extractQR(qr)
+
+    //** pust message to server */
+    sendMessage<SocketAck>(QR_KEY.QR_JOIN_ROOM, { qrToken: token }, (ack) => {
+        if (!ack?.status) {
+            message.notificationBox(ack?.message || 'Unable to join QR room', "error")
+        }
+    })
+
     try {
         const scanAPI = await scanQR(token)
         if (scanAPI.code !== 200) {
@@ -101,6 +112,9 @@ const onScanSuccess = async (qr: string) => {
     } catch {
         message.messageBox("QR scan failed!", "error")
         return
+    } finally {
+        //** leave room after success */
+        sendMessage<SocketAck>(QR_KEY.QR_LEAVE_ROOM, { qrToken: token })
     }
 }
 const onConfirmed = async (qrToken: string) => {
@@ -167,6 +181,7 @@ const stopScanner = async () => {
 const startScanner = async () => {
     if (isScanning.value || isStarting.value) return
     isStarting.value = true
+    initSocket()
     errorCameraSupport()  // exception camera
 
     try {

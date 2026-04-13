@@ -9,16 +9,17 @@ import { loadEnv } from 'vite'
 const pathSrc = path.resolve(__dirname, 'src')
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), '')
+	const apiProxy = `/${env.VITE_SERVER_VERSION}`
 	return {
 		server: {
 			host: '0.0.0.0', // allow anywhere
 			port: 7001, // port access
 			proxy: {
-				[env.VITE_SERVER_URL]: {
+				[apiProxy]: {
 					secure: false, // http only
-					host: env.VITE_SERVER_URL,
-					changeOrigin: true // dynamic
-				},
+					target: env.VITE_SERVER_URL,
+					changeOrigin: true, // dynamic
+				}
 			},
 		},
 		// basicSsl() = testing for handling in secure

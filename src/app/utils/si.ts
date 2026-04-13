@@ -20,6 +20,11 @@ const defaultOptions: Required<OptionsType> = {
 	reconnectDelay: 13 * 3000, // 3s
 }
 
+export interface SocketAck {
+	status: boolean
+	message: string
+}
+
 export default function useSocket<T>({
 	options = {},
 	message,
@@ -44,9 +49,16 @@ export default function useSocket<T>({
 	}
 
 	function initSocket() {
+		const accessToken = authLogin.access_token?.trim()
+		if (socket) {
+			socket.auth = accessToken ? { token: accessToken } : {}
+			if (!socket.connected) socket.connect()
+			return
+		}
 		socket = io(SOCKET_URL, {
+			auth: accessToken ? { token: accessToken } : {},
 			extraHeaders: {
-				authorization: authLogin.access_token
+				authorization: accessToken ? accessToken : '',
 			},
 			autoConnect: true,
 			reconnection: true,
@@ -59,32 +71,70 @@ export default function useSocket<T>({
 		})
 
 		socket.on('connect', onConneted)
-		socket.on('disconnected', onDisconnect)
+		socket.on('disconnect', onDisconnect)
 		socket.on('connect_error', onError)
-		socket.off(messageKey, onMessage) // prevent duplicate event
-		socket.on(messageKey, onMessage)
+		if (messageKey) {
+			socket.off(messageKey, onMessage) // prevent duplicate event
+			socket.on(messageKey, onMessage)
+		}
 	}
 
-	function sendMessage(event: string, payload: any | undefined) {
+	function sendMessage<TAck = unknown>(
+		event: string,
+		payload?: unknown,
+		ack?: (response: TAck) => void,
+	) {
 		if (!socket) return false
+		if (ack) {
+			socket.emit(event, payload, ack)
+			return true
+		}
 		socket.emit(event, payload)
+		return true
+	}
+
+	function onEvent<TPayload = unknown>(
+		event: string,
+		handler: (payload: TPayload) => void,
+	) {
+		if (!socket) return false
+		socket.on(event, handler as (...args: any[]) => void)
+		return true
+	}
+
+	function offEvent<TPayload = unknown>(
+		event: string,
+		handler: (payload: TPayload) => void,
+	) {
+		if (!socket) return false
+		socket.off(event, handler as (...args: any[]) => void)
 		return true
 	}
 
 	function destroySocket() {
 		if (!socket) return false
 		socket.off('connect', onConneted)
-		socket.off('disconnected', onDisconnect)
+		socket.off('disconnect', onDisconnect)
 		socket.off('connect_error', onError)
-		socket.off(messageKey, onMessage)
+		if (messageKey) {
+			socket.off(messageKey, onMessage)
+		}
 
 		socket.disconnect()
 		socket = null
+		return true
 	}
 
 	onUnmounted(() => {
 		destroySocket()
 	})
 
-	return { initSocket, destroySocket, sendMessage, getSocket: () => Socket }
+	return {
+		initSocket,
+		destroySocket,
+		sendMessage,
+		onEvent,
+		offEvent,
+		getSocket: () => socket,
+	}
 }
