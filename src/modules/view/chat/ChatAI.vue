@@ -16,7 +16,7 @@
                 <header class="chat-header">
                     <div class="chat-header__left">
                         <div class="c-avatar">
-                            <img :src="LogoChatAI" />
+                            <img :src="LogoChatAI" @click="clearMessage" />
                         </div>
                         <div class="chat-header__meta">
                             <p class="chat-header__name">Lemon Assistant</p>
@@ -188,7 +188,7 @@ const sendMessage = async (): Promise<void> => {
         }))
 
     const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
         {
             method: 'POST',
             headers: {
@@ -198,25 +198,20 @@ const sendMessage = async (): Promise<void> => {
                 systemInstruction: {
                     parts: [
                         {
-                            text: `You are a helpful community assistant. Always respond in Khmer (ភាសាខ្មែរ) using Khmer script. If a technical word is unclear in Khmer, keep the English term in parentheses.`.trim(),
+                            text: `You are a helpful community assistant. Always respond in Chinese script. If a technical word is unclear in Chinese, keep the English term in parentheses.`.trim(),
                         },
                     ],
                 },
                 contents,
                 generationConfig: {
-                    maxOutputTokens: 10000,
+                    maxOutputTokens: 100000,
                 },
             }),
         }
     )
 
-    const data = await response.json()
-    let reply;
-    if (data.error.code == 503) {
-        reply = 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ។'
-    } else {
-        reply = data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ។'
-    }
+    const data = await response.json()   
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ។'
     const idx = messages.value.findIndex((m) => m.id === loadingId)
     if (idx !== -1) {
         messages.value[idx] = {
@@ -227,6 +222,10 @@ const sendMessage = async (): Promise<void> => {
     isLoading.value = false
     await scrollToBottom()
     inputEl.value?.focus()
+}
+
+const clearMessage = () => {
+    messages.value = []
 }
 </script>
 
@@ -261,7 +260,7 @@ const sendMessage = async (): Promise<void> => {
     bottom: 28px;
     right: 28px;
     width: 330px;
-    height: 400px;
+    height: 450px;
     background: var(--background-color);
     border-radius: .5rem;
     box-shadow: $shadow;
@@ -366,7 +365,7 @@ const sendMessage = async (): Promise<void> => {
     width: 44px;
     height: 44px;
     flex-shrink: 0;
-
+    cursor: pointer;
     &__dot {
         position: absolute;
         bottom: 1px;
