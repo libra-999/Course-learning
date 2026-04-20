@@ -1,5 +1,5 @@
 <template>
-	<div class="login-container flex justify-center h-full flex-col">
+	<div :class="`login-container flex justify-center h-full flex-col ${currentValue === 'kh' ? 'login-container-font-khmer': ''}`">
 		<!-- Switch login -->
 		<div class="flex justify-between w-full mx-auto mb-1 hidden lg:flex xl:flex 2xl:flex sm:flex">
 			<div :class="`${loginType === 'password' ? 'bg-[#acc8e5] font-bold transition-all ' : ''} cursor-pointer border py-2 px-5 w-full rounded-sm transition-all duration-150 border-gray-200`"
@@ -99,8 +99,10 @@ import scanTick from '@/app/assets/image/scan_tick.png'
 import { useI18n } from 'vue-i18n'
 import useSocket from '@/app/utils/si'
 import { QR_KEY } from '@/modules/config/socket.config'
+import  { useLocale } from '@/modules/locales'
 
 const { t } = useI18n()
+const { currentValue} = useLocale()
 const loginType = ref('password')
 const qrCountDownTimer = ref<ReturnType<typeof setInterval> | null>(null)
 const errorMessage = useMessage()
@@ -333,7 +335,6 @@ onUnmounted(() => {
 })
 </script>
 <style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=DynaPuff:wght@400..700&display=swap');
 
 .container {
 	width: 500px;
@@ -341,6 +342,12 @@ onUnmounted(() => {
 	font-family: 'Cascadia Code', sans-serif;
 	background: #acc8e5;
 	border-radius: 0.7rem 1.2rem 0.7rem 1.2rem;
+}
+.login-container-font-khmer {
+	font-family: "Nokora", sans-serif;
+	font-optical-sizing: auto;
+	font-style: normal;
+	font-weight: 400;
 }
 
 @media (max-width: $screen-md) {
@@ -350,7 +357,6 @@ onUnmounted(() => {
 		width: 380px;
 		min-height: 100dvh;
 	}
-
 	.login-container .container {
 		width: 100%;
 		min-height: 80%;

@@ -34,6 +34,7 @@ defineProps({
 const langOptions = [
 	{ label: '中文', value: Locale.CH },
 	{ label: 'English', value: Locale.EN },
+	{ label: 'ខ្មែរ', value: Locale.KH },
 ]
 
 const theme = useTheme()

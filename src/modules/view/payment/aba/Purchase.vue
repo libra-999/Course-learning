@@ -495,8 +495,6 @@ const linkCard = async () => {
 }
 </script>
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap');
-
 .aba-wrapper {
 	position: relative;
 	background: #0d0d0f;

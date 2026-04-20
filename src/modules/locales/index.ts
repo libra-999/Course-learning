@@ -1,13 +1,15 @@
 import { createI18n, useI18n } from 'vue-i18n'
 
 import { computed } from 'vue'
-import { zhCn } from 'element-plus/es/locales.mjs'
 import en from "@/modules/locales/en.ts";
 import ch from "@/modules/locales/ch.ts";
+import kh from '@/modules/locales/kh';
+import { en as epEn, zhCn as epZhCn, km as epKh } from 'element-plus/es/locales.mjs'
 
 export const Locale = {
 	EN:"en",
 	CH:"ch",
+	KH:"kh"
 } as const
 export type LocaleType = (typeof Locale)[keyof typeof Locale]
 
@@ -21,17 +23,20 @@ const i18n = createI18n({
 	messages: {
 		en,
 		ch,
+		kh
 	},
 })
 
 export const locales: { label: string; value: LocaleType; code: string }[] = [
 	{ label: 'English', value: 'en', code: 'en-US' },
 	{ label: '中文', value: 'ch', code: 'zh-CN' },
+	{ label: 'ខ្មែរ', value: 'kh', code: 'km-KH' },
 ]
 
 export const elementPlusLocaleMap: Record<LocaleType, any> = {
-	en,
-	ch: zhCn,
+	en: epEn,
+	ch: epZhCn,
+	kh: epKh ,
 }
 
 export const useLocale = () => {

@@ -1,4 +1,7 @@
+@import url(
+  'https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=DynaPuff:wght@400..700&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=IBM+Plex+Mono:wght@400;500&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Nokora:wght@100..900&family=Syne:wght@400;600;700&display=swap');
 @import "tailwindcss";
+
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -73,7 +76,7 @@ body {
   background-color: var(--table-bg-color);
   border: 1px whitesmoke;
 }
-.table-filter-select .search-input :deep(.el-form-item__wrapper) {
+.table-filter-select .search-input .el-form-item__wrapper {
   margin-right: 0;
   background-color: gray;
 }
