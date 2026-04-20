@@ -1,5 +1,5 @@
 <template>
-	<div :class="`login-container flex justify-center h-full flex-col ${currentValue === 'kh' ? 'login-container-font-khmer': ''}`">
+	<div :class="`login-container flex justify-center h-full flex-col ${currentValue === 'kh' ? 'login-container-font-khmer' : ''}`">
 		<!-- Switch login -->
 		<div class="flex justify-between w-full mx-auto mb-1 hidden lg:flex xl:flex 2xl:flex sm:flex">
 			<div :class="`${loginType === 'password' ? 'bg-[#acc8e5] font-bold transition-all ' : ''} cursor-pointer border py-2 px-5 w-full rounded-sm transition-all duration-150 border-gray-200`"
@@ -25,7 +25,7 @@
 							:placeholder="`${t('LOGIN.FILL.FORM_ITEM.username_placeholder')}`" />
 					</el-form-item>
 					<el-form-item prop="password">
-						<label class="font-bold">{{ t("LOGIN.FILL.FORM_ITEM.username") }}</label>
+						<label class="font-bold">{{ t("LOGIN.FILL.FORM_ITEM.pwd") }}</label>
 						<el-input v-model="userRef.password" type="password" name="password" show-password
 							:placeholder="`${t('LOGIN.FILL.FORM_ITEM.pwd_placeholder')}`" />
 					</el-form-item>
@@ -99,10 +99,10 @@ import scanTick from '@/app/assets/image/scan_tick.png'
 import { useI18n } from 'vue-i18n'
 import useSocket from '@/app/utils/si'
 import { QR_KEY } from '@/modules/config/socket.config'
-import  { useLocale } from '@/modules/locales'
+import { useLocale } from '@/modules/locales'
 
 const { t } = useI18n()
-const { currentValue} = useLocale()
+const { currentValue } = useLocale()
 const loginType = ref('password')
 const qrCountDownTimer = ref<ReturnType<typeof setInterval> | null>(null)
 const errorMessage = useMessage()
@@ -289,9 +289,9 @@ async function fetchQrStateByStatus() {
 async function listenRoomQRByStatus(payload: any) {
 
 	// payload from server side socket
-	if(!payload) return errorMessage.notificationBox(t("LOGIN.API.error.qr_generate_display"), 'error')
-	if(!payload.qrToken && !payload.status) return errorMessage.notificationBox(t("LOGIN.API.error.qr_generate_display"), 'error')
-	if(payload.qrToken !== qr.value.qrToken) return // if the qrToken is not same as current qrToken, ignore the status update
+	if (!payload) return errorMessage.notificationBox(t("LOGIN.API.error.qr_generate_display"), 'error')
+	if (!payload.qrToken && !payload.status) return errorMessage.notificationBox(t("LOGIN.API.error.qr_generate_display"), 'error')
+	if (payload.qrToken !== qr.value.qrToken) return // if the qrToken is not same as current qrToken, ignore the status update
 
 	const status = payload.status
 	if (!status) return
@@ -335,43 +335,47 @@ onUnmounted(() => {
 })
 </script>
 <style scoped lang="scss">
+.login-container {
+	width: 20%;
+	margin: 0 auto;
 
-.container {
-	width: 500px;
-	min-height: 400px;
-	font-family: 'Cascadia Code', sans-serif;
-	background: #acc8e5;
-	border-radius: 0.7rem 1.2rem 0.7rem 1.2rem;
+	& .container {
+		width: 100%;
+		min-height: 400px;
+		font-family: 'Cascadia Code', sans-serif;
+		background: #acc8e5;
+		border-radius: 0.7rem 1.2rem 0.7rem 1.2rem;
+	}
+
+	& .login-container-font-khmer {
+		font-family: "Nokora", sans-serif;
+		font-optical-sizing: auto;
+		font-style: normal;
+		font-weight: 400;
+	}
 }
-.login-container-font-khmer {
-	font-family: "Nokora", sans-serif;
-	font-optical-sizing: auto;
-	font-style: normal;
-	font-weight: 400;
-}
+
 
 @media (max-width: $screen-md) {
+
 	.login-container {
-		padding: 0;
-		overflow: auto;
-		width: 380px;
-		min-height: 100dvh;
-	}
-	.login-container .container {
 		width: 100%;
-		min-height: 80%;
-		display: flex;
-		justify-content: center;
-		border-radius: 1rem;
-
-		& :deep(.el-input__wrapper) {
-			min-height: 60px;
-		}
-
-		& .container-button {
+		padding: 0.2rem;
+		& .container {
 			width: 100%;
-			height: 70px;
-			margin-left: 0;
+			height: 100%;
+			display: flex; 
+			justify-content: center;
+			border-radius: 0;
+			& :deep(.el-input__wrapper) {
+				min-height: 60px;
+			}
+
+			& .container-button {
+				width: 100%;
+				height: 70px;
+				margin-left: 0;
+			}
 		}
 	}
 }

@@ -46,6 +46,7 @@ a {
 
 body {
   margin: 0;
+  box-sizing: border-box;
   display: flex;
   min-height: 100vh;
   background: var(--bg-color);
@@ -53,9 +54,9 @@ body {
 }
 
 #app {
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
   text-align: center;
+  overflow: hidden;
 }
 
 .book-theme {
