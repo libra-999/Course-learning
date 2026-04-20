@@ -25,6 +25,10 @@ export default {
 			title: '巢桌',
 			content: '构建具有数据角色和权限的嵌套表行',
 		},
+		BOT: {
+			title: '机器人你',
+			content: '让机器人支持或帮助客户服务责任并减少对用户的响应',
+		},
 		PROFILE_DD: {
 			profile: '轮廓',
 			logout: '退出',

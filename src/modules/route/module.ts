@@ -7,6 +7,7 @@ import CryptoPayment from "@/modules/view/payment/crypto/CryptoPayment.vue";
 import PurchaseABACheckout from "@/modules/layout/payment/PurchaseABACheckout.vue";
 import UploadProgressLayout from "@/modules/layout/uploadFile/UploadProgressLayout.vue";
 import TableLayout from "@/modules/layout/table/TableLayout.vue";
+import Chat from "@/modules/view/chat/Chat.vue";
 
 
 export const module = [
@@ -56,6 +57,12 @@ export const module = [
       name: "Table Role and Permission",
       meta: { requireAuth: true },
       component: TableLayout
+   },
+   {
+      path: '/system/bot',
+      name: 'Chat',
+      meta: {requiredAuth: true},
+      component: Chat
    }
 
 ]

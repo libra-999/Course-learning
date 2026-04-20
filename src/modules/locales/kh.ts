@@ -28,6 +28,10 @@ export default {
 			title: 'Nest Table',
 			content: 'Build a nest tables row with data role and permission',
 		},
+		BOT: {
+			title: 'BOT AI',
+			content: 'Make a bot support or help customer service responsibility and reducing respond for user ',
+		},
 		PROFILE_DD: {
 			profile: 'Profile',
 			logout: 'Logout',

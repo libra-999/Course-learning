@@ -261,8 +261,6 @@ onMounted(() => {
                 margin-right: 0 !important;
 
                 :deep(.el-form-item__label) {
-                    color: white;
-                    font-weight: 600;
                     padding: 0 10px;
                 }
             }
@@ -274,5 +272,9 @@ onMounted(() => {
             }
         }
     }
+}
+
+:deep(.el-form-item__label) {
+    color: white;
 }
 </style>

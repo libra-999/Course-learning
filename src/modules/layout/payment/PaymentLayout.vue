@@ -17,6 +17,10 @@
 
 </script>
 <style lang="scss" scoped>
+.mobile {
+	width: 30%;
+	margin: auto;
+}
 @media (max-width: $screen-sm) {
 	.mobile {
 		@include mobile-responsive(100%, auto 0, null, null);

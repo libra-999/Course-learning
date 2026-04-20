@@ -65,6 +65,9 @@ watch(search, () => {
 })
 </script>
 <style lang="scss" scoped>
+.mobile{
+    margin: auto;
+}
 @media (max-width: $screen-sm) {
     .mobile {
         @include mobile-responsive(100%, auto, 10px 0, null)

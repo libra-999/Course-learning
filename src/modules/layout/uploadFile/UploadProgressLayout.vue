@@ -94,6 +94,10 @@ const progressRemoveFile = async (fileName: string, id: string) => {
 }
 </script>
 <style lang="scss" scoped>
+.mobile {
+	width: 30%;
+	margin: 1rem auto;
+}
 @media (max-width: $screen-sm) {
 	.mobile {
 		@include mobile-responsive(100%, 100%, null ,0.5rem 1rem);
