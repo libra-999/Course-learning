@@ -16,7 +16,7 @@
                 <header class="chat-header">
                     <div class="chat-header__left">
                         <div class="c-avatar">
-                           <img :src="LogoChatAI"/>
+                            <img :src="LogoChatAI" />
                         </div>
                         <div class="chat-header__meta">
                             <p class="chat-header__name">Lemon Assistant</p>
@@ -30,7 +30,7 @@
                     <div class="chat-header__actions">
                         <ButtonGlobal value="" class="icon-btn icon-btn--close" @click.prevent="closeChat">
                             <template #icon-right>
-                                <CloseBold/>
+                                <CloseBold />
                             </template>
                         </ButtonGlobal>
                     </div>
@@ -74,7 +74,7 @@
                     <TransitionGroup v-else name="msg" tag="div" class="message-list">
                         <div v-for="msg in messages" :key="msg.id" class="msg-row" :class="`msg-row--${msg.role}`">
                             <div v-if="msg.role === 'assistant'" class="msg-avatar">
-                                <img :src="LogoChatAI"/>
+                                <img :src="LogoChatAI" />
                             </div>
                             <div class="msg-content">
                                 <div class="bubble" :class="`bubble--${msg.role}`">
@@ -95,10 +95,11 @@
                         <textarea ref="inputEl" v-model="inputText" class="chat-textarea" placeholder="Ask anything…"
                             rows="1" @keydown.enter.exact.prevent="sendMessage" @focus="inputFocused = true"
                             @blur="inputFocused = false" @input="autoResize" />
-                        
-                        <ButtonGlobal value="" class="send-btn" :class="{ 'send-btn--active': canSend }" :disabled="!canSend" @click.prevent="sendMessage">
+
+                        <ButtonGlobal value="" class="send-btn" :class="{ 'send-btn--active': canSend }"
+                            :disabled="!canSend" @click.prevent="sendMessage">
                             <template #icon-left>
-                                <Position/>
+                                <Position />
                             </template>
                         </ButtonGlobal>
                     </div>
@@ -113,30 +114,16 @@ import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { ref, computed, nextTick } from 'vue'
 import { CloseBold, Position } from '@element-plus/icons-vue'
 import LogoChatAI from "@/app/assets/image/live_chat_AI.gif"
+import type { Message, QuickPrompt } from '@/modules/types/chat'
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-interface Message {
-    id: number
-    role: 'user' | 'assistant'
-    content: string
-    loading: boolean
-    timestamp: number
-}
 
-interface QuickPrompt {
-    icon: string
-    label: string
-    text: string
-}
-
-// ── State ─────────────────────────────────────────────────────────────────────
 const isOpen = ref<boolean>(false)
-const isMaximized = ref<boolean>(false)
 const inputFocused = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const unreadCount = ref<number>(1)
 const inputText = ref<string>('')
 const messages = ref<Message[]>([])
+
 
 const messagesEl = ref<HTMLElement | null>(null)
 const inputEl = ref<HTMLTextAreaElement | null>(null)
@@ -145,10 +132,8 @@ const quickPrompts: QuickPrompt[] = [
     { icon: '💬', label: 'What can you help with?', text: 'What can you help me with?' },
 ]
 
-// ── Computed ──────────────────────────────────────────────────────────────────
 const canSend = computed<boolean>(() => inputText.value.trim().length > 0 && !isLoading.value)
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
 const formatTime = (ts: number): string =>
     new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
@@ -163,8 +148,6 @@ const autoResize = (): void => {
     el.style.height = 'auto'
     el.style.height = `${Math.min(el.scrollHeight, 124)}px`
 }
-
-// ── Actions ───────────────────────────────────────────────────────────────────
 const openChat = (): void => {
     isOpen.value = true
     unreadCount.value = 0
@@ -197,33 +180,43 @@ const sendMessage = async (): Promise<void> => {
     })
     await scrollToBottom()
 
-    // ── 🔌 Replace this mock with your real API call ──────────────────────────
-    //
-    // const response = await fetch('https://api.anthropic.com/v1/messages', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     model: 'claude-sonnet-4-20250514',
-    //     max_tokens: 1000,
-    //     system: 'You are a helpful community assistant.',
-    //     messages: messages.value
-    //       .filter((m) => !m.loading)
-    //       .map((m) => ({ role: m.role, content: m.content })),
-    //   }),
-    // })
-    // const data = await response.json()
-    // const reply: string = data.content[0].text
-    //
-    // ─────────────────────────────────────────────────────────────────────────
-    await new Promise<void>((r) => setTimeout(r, 1000 + Math.random() * 800))
-    const mocks: string[] = [
-        "Great question! I'm here to support our community — feel free to ask me about guidelines, resources, or anything else.",
-        "Thanks for reaching out! Could you share a bit more detail so I can give you the best answer?",
-        "Happy to help! Our community is all about collaboration. Here's what I can share…",
-        "That's a great topic. Let me walk you through what I know about that.",
-    ]
-    const reply = mocks[Math.floor(Math.random() * mocks.length)]
+    const contents = messages.value
+        .filter((m) => !m.loading)
+        .map((m) => ({
+            role: m.role === 'assistant' ? 'model' : 'user', // Gemini uses user/model
+            parts: [{ text: m.content }],
+        }))
 
+    const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                systemInstruction: {
+                    parts: [
+                        {
+                            text: `You are a helpful community assistant. Always respond in Khmer (ភាសាខ្មែរ) using Khmer script. If a technical word is unclear in Khmer, keep the English term in parentheses.`.trim(),
+                        },
+                    ],
+                },
+                contents,
+                generationConfig: {
+                    maxOutputTokens: 10000,
+                },
+            }),
+        }
+    )
+
+    const data = await response.json()
+    let reply;
+    if (data.error.code == 503) {
+        reply = 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ។'
+    } else {
+        reply = data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ។'
+    }
     const idx = messages.value.findIndex((m) => m.id === loadingId)
     if (idx !== -1) {
         messages.value[idx] = {
@@ -238,7 +231,6 @@ const sendMessage = async (): Promise<void> => {
 </script>
 
 <style lang="scss" scoped>
-
 // chat container
 .chat-wrapper {
     position: fixed;
@@ -258,17 +250,19 @@ const sendMessage = async (): Promise<void> => {
     cursor: pointer;
     @include flex-center;
     transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), box-shadow .25s ease;
-    & img{
+
+    & img {
         transform: scale(2.5) translateY(-10px);
     }
 }
+
 .chat-window {
     position: fixed;
     bottom: 28px;
     right: 28px;
     width: 330px;
     height: 400px;
-    background: var(--background-color) ;
+    background: var(--background-color);
     border-radius: .5rem;
     box-shadow: $shadow;
     display: flex;
@@ -290,6 +284,7 @@ const sendMessage = async (): Promise<void> => {
         height: min(820px, calc(100vh - 56px));
     }
 }
+
 .chat-header {
     display: flex;
     align-items: center;
@@ -352,6 +347,7 @@ const sendMessage = async (): Promise<void> => {
         gap: 4px;
     }
 }
+
 @keyframes blink {
 
     0%,
@@ -382,6 +378,7 @@ const sendMessage = async (): Promise<void> => {
         border: 2.5px solid $bg-3;
     }
 }
+
 .icon-btn {
     width: 32px;
     height: 32px;
@@ -425,6 +422,7 @@ const sendMessage = async (): Promise<void> => {
         border-radius: 4px;
     }
 }
+
 .welcome {
     display: flex;
     flex-direction: column;
@@ -460,6 +458,7 @@ const sendMessage = async (): Promise<void> => {
         line-height: 1.5;
     }
 }
+
 @keyframes float {
 
     0%,
@@ -471,6 +470,7 @@ const sendMessage = async (): Promise<void> => {
         transform: translateY(-10px);
     }
 }
+
 .quick-list {
     list-style: none;
     margin: 0;
@@ -503,11 +503,13 @@ const sendMessage = async (): Promise<void> => {
         flex-shrink: 0;
     }
 }
+
 .message-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
+
 .msg-row {
     display: flex;
     gap: 9px;
@@ -517,11 +519,13 @@ const sendMessage = async (): Promise<void> => {
         flex-direction: row-reverse;
     }
 }
+
 .msg-avatar {
     width: 32px;
     height: 32px;
     flex-shrink: 0;
 }
+
 .msg-content {
     display: flex;
     flex-direction: column;
@@ -540,12 +544,13 @@ const sendMessage = async (): Promise<void> => {
     font-size: 13.5px;
     line-height: 1.6;
     text-align: start;
-    
+
 
     &--assistant {
         border-bottom-left-radius: 4px;
-        border: 1px solid $gray;
+        border: 1px solid #b9b9b93c;
     }
+
     &--user {
         border-bottom-right-radius: 4px;
         border: 1px solid #b9b9b9c9;
@@ -555,9 +560,10 @@ const sendMessage = async (): Promise<void> => {
 
     &__text {
         word-break: break-word;
-        white-space: pre-wrap;   
+        white-space: pre-wrap;
     }
 }
+
 .msg-time {
     font-size: 10px;
     color: $muted;
@@ -621,6 +627,7 @@ const sendMessage = async (): Promise<void> => {
         text-align: center;
     }
 }
+
 .input-wrap {
     display: flex;
     align-items: flex-end;
@@ -635,6 +642,7 @@ const sendMessage = async (): Promise<void> => {
         box-shadow: 0 0 0 3px rgba($primary, .1);
     }
 }
+
 .chat-textarea {
     flex: 1;
     background: none;
@@ -651,10 +659,11 @@ const sendMessage = async (): Promise<void> => {
         color: var(--text-color);
     }
 }
+
 .send-btn {
     width: 36px;
     height: 36px;
-    background: var(--text-color) ;
+    background: var(--text-color);
     border-radius: $radius-sm;
     border: none;
     color: white;
@@ -673,9 +682,11 @@ const sendMessage = async (): Promise<void> => {
 .msg-enter-active {
     animation: msgIn .3s cubic-bezier(.34, 1.56, .64, 1) both;
 }
+
 .msg-leave-active {
     animation: msgIn .2s ease-in reverse both;
 }
+
 @keyframes msgIn {
     from {
         opacity: 0;
@@ -687,23 +698,31 @@ const sendMessage = async (): Promise<void> => {
         transform: translateY(0) scale(1);
     }
 }
+
 .fab-enter-active {
     transition: all .3s cubic-bezier(.34, 1.56, .64, 1);
 }
+
 .fab-leave-active {
     transition: all .2s ease-in;
 }
-.fab-enter-from,.fab-leave-to {
+
+.fab-enter-from,
+.fab-leave-to {
     opacity: 0;
     transform: scale(.6) translateY(12px);
 }
+
 .window-enter-active {
     transition: all .4s cubic-bezier(.34, 1.25, .64, 1);
 }
+
 .window-leave-active {
     transition: all .25s ease-in;
 }
-.window-enter-from, .window-leave-to {
+
+.window-enter-from,
+.window-leave-to {
     opacity: 0;
     transform: scale(.82) translateY(24px);
     transform-origin: bottom right;
