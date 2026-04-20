@@ -64,28 +64,6 @@ body {
   color: var(--text-color);
 }
 
-.table-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.table-filter-select {
-  padding: 20px 0 5px 30px;
-  border-radius: 0.2rem;
-  background-color: var(--table-bg-color);
-  border: 1px whitesmoke;
-}
-.table-filter-select .search-input .el-form-item__wrapper {
-  margin-right: 0;
-  background-color: gray;
-}
-.table-filter-select .search-item .el-form-item__label {
-  color: white;
-}
-
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

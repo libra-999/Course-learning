@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col items-center text-white">
-		<div class="flex justify-center align-middle">
+		<div class="flex justify-center align-middle overflow-x-scroll">
 			<KeepAlive>
 				<span
 					v-for="(key, index) in boxValue"
@@ -48,4 +48,5 @@ const handleClickAdd = () => {
 </script>
 
 <style scoped>
+
 </style>

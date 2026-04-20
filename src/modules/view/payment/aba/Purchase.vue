@@ -785,7 +785,11 @@ const linkCard = async () => {
 	border-radius: 4px;
 	border: 1px solid rgba(200, 22, 29, 0.25);
 }
-@media (max-width: 480px) {
+@media (max-width: $screen-sm) {
+	.aba-wrapper {
+		width: 100%;
+		border-radius: none;
+	}
 	.aba-form {
 		padding: 20px 16px;
 	}

@@ -1,5 +1,5 @@
 <template>
-	<div class="text-black w-full">
+	<div class="text-black w-full mobile">
 		<!-- upload with progressing -->
 		<div class="m-auto">
 			<ProgressUpload
@@ -94,4 +94,9 @@ const progressRemoveFile = async (fileName: string, id: string) => {
 }
 </script>
 <style lang="scss" scoped>
+@media (max-width: $screen-sm) {
+	.mobile {
+		@include mobile-responsive(100%, 100%, null ,0.5rem 1rem);
+	}
+}
 </style>

@@ -10,7 +10,7 @@
 		<input v-for="(value, key) in checkoutPayload" :key="key" type="hidden" :name="key" :value="value" /> 
 		<!-- Get key and data from server side -->
 		<div
-			:class="`${themeStore.settings.themeSchema != 'dark' ? 'text-black border-blue-100' : 'text-white bg-gray-800 border-[0.3px] border-solid border-[rgba(255,255,255,0.18)]'} w-full max-w-sm bg-neutral-primary-soft p-6 border-2  rounded-l shadow-xs text-black`">
+			:class="`${themeStore.settings.themeSchema != 'dark' ? 'text-black border-blue-100' : 'text-white bg-gray-800 border-[0.3px] border-solid border-[rgba(255,255,255,0.18)]'} w-full max-w-sm bg-neutral-primary-soft p-6 border-2  rounded-l shadow-xs text-black mx-2`">
 			<a href="#">
 				<img class="rounded-base mb-6" :src="image" alt="product image" />
 			</a>

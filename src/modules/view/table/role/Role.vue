@@ -113,21 +113,16 @@
     <RolePermissionView v-model="rolePermissionDrawerVisible" :role-id="getId" />
 
     <!-- Dialog Form -->
-    <DialogForm 
-        :role-update-ref="roleUpdateRef" 
-        :selected-role-ids="selectedRoleIds"
-        v-model:dialog-state="dialogState"
-        v-model:dialog-update="dialogUpdate"
-        v-model:dialog-delete-all-state="dialogDeleteAllState"
-        />
+    <DialogForm :role-update-ref="roleUpdateRef" :selected-role-ids="selectedRoleIds" v-model:dialog-state="dialogState"
+        v-model:dialog-update="dialogUpdate" v-model:dialog-delete-all-state="dialogDeleteAllState" />
 </template>
 
 <script setup lang="ts">
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue';
 import Loading from '@/app/components/Loading.vue';
-import {  dayMonthFormat } from '@/app/utils/dateFormat';
+import { dayMonthFormat } from '@/app/utils/dateFormat';
 import { switchStatusCode, useMessage } from '@/app/utils/message';
-import {  roleDelete, rolePage } from '@/modules/api/role';
+import { roleDelete, rolePage } from '@/modules/api/role';
 import { type RoleUpdateReq, type QueryParams, type RoleItem, type RoleQueryParam } from '@/modules/types/role';
 import DialogForm from '@/modules/view/table/role/DialogForm.vue';
 import RolePermissionView from '@/modules/view/table/role/RolePermissionView.vue';
@@ -221,7 +216,63 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.table-container .table-section {
+.table-container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    margin: auto;
+    padding: 0.1rem 0.2rem;
+
+    & .table-filter-select {
+        width: 100%;
+        padding: 20px 0 5px 30px;
+        background-color: var(--table-bg-color);
+        border: 1px whitesmoke;
+
+        & .search-input .el-form-item__wrapper {
+            margin-right: 0;
+            background-color: gray;
+        }
+
+        & .search-item .el-form-item__label {
+            color: white;
+        }
+    }
+}
+
+.table-filter-select .table-filter-select .table-container .table-section {
     background-color: var(--table-bg-color);
+}
+
+@media (max-width: $screen-sm) {
+    .table-container {
+        @include mobile-responsive(100%, 100%, null, null);
+        gap: 0;
+
+        .table-filter-select {
+            padding: 10px 0 0 0;
+            width: 100%;
+            flex-wrap: nowrap;
+
+            .search-item {
+                min-width: 0;
+                margin-right: 0 !important;
+
+                :deep(.el-form-item__label) {
+                    color: white;
+                    font-weight: 600;
+                    padding: 0 10px;
+                }
+            }
+
+            :deep(.el-form-item:last-child, .el-form-item__content) {
+                width: 100%;
+                margin: 0;
+                padding: 0.2rem 0 0.5rem 0;
+            }
+        }
+    }
 }
 </style>

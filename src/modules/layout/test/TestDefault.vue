@@ -1,5 +1,5 @@
 <template>
-    <div class="flex  place-items-center h-full">
+    <div class="flex justify-center place-items-center h-full">
         <TestComponent/>
     </div>
 </template>

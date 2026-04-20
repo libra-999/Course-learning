@@ -1,29 +1,30 @@
 <script setup lang="ts">
 </script>
 <template>
-    <div class="loader" ></div>
+    <div class="loader"></div>
 </template>
-<style scoped>
+<style scoped lang="scss">
 .loader {
     width: 60px;
     display: flex;
     align-items: flex-start;
     aspect-ratio: 1;
-}
+    margin: auto;
 
-.loader:before,
-.loader:after {
-    content: "";
-    flex: 1;
-    aspect-ratio: 1;
-    --g: conic-gradient(from -90deg at 10px 10px, var(--text-color) 90deg, #0000 0);
-    background: var(--g), var(--g), var(--g);
-    filter: drop-shadow(30px 30px 0 var(--text-color));
-    animation: l20 1s infinite;
-}
+    &::before,
+    &::after {
+        content: "";
+        flex: 1;
+        aspect-ratio: 1;
+        --g: conic-gradient(from -90deg at 10px 10px, var(--text-color) 90deg, #0000 0);
+        background: var(--g), var(--g), var(--g);
+        filter: drop-shadow(30px 30px 0 var(--text-color));
+        animation: l20 1s infinite;
+    }
+    &::after {
+        transform: scaleX(-1);
+    }
 
-.loader:after {
-    transform: scaleX(-1);
 }
 
 @keyframes l20 {
