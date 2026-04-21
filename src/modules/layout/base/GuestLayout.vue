@@ -33,12 +33,14 @@
 				<!-- Role and Permission Table -->
 				<Cardbox :title="`${t('MAIN_LAYOUT.ROLE.title')}`" :content="`${t('MAIN_LAYOUT.ROLE.content')}`"
 					:icon="Avatar" path="/system/table" />
+					<!-- Chat BOT-->
+				 <Cardbox :title="`${t('MAIN_LAYOUT.BOT.title')}`" :content="`${t('MAIN_LAYOUT.BOT.content')}`" :icon="ChatDotRound" path="/system/bot"/>
 			</div>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { Avatar, DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
+import { Avatar, ChatDotRound, DataLine, DocumentAdd, UploadFilled } from '@element-plus/icons-vue'
 import Cardbox from '@/app/components/card/Cardbox.vue'
 import SwitchLang from '@/app/components/localization/SwitchLang.vue'
 import { useI18n } from 'vue-i18n';

@@ -103,6 +103,7 @@
                             </template>
                         </ButtonGlobal>
                     </div>
+                    <article class=" text-gray-400 text-[.5rem] font-bold italic">click on icon to get new prompt</article>
                 </footer>
             </div>
         </Transition>
@@ -117,7 +118,7 @@ import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { BotApi } from '@/modules/api/bot'
 import type { Message, QuickPrompt } from '@/modules/types/chat'
 import { useMessage } from '@/app/utils/message'
-import {  timeStampMinuteFormat } from '@/app/utils/dateFormat'
+import { timeStampMinuteFormat } from '@/app/utils/dateFormat'
 
 const TEXTAREA_MAX_HEIGHT = 124
 const BOT_ERROR_NOTIFY = 'It has something wrong with bot, Please try again later'
@@ -352,6 +353,7 @@ const clearMessage = (): void => {
 }
 
 @keyframes blink {
+
     0%,
     100% {
         opacity: 1;
@@ -450,6 +452,7 @@ const clearMessage = (): void => {
 }
 
 @keyframes float {
+
     0%,
     100% {
         transform: translateY(0);
@@ -583,6 +586,7 @@ const clearMessage = (): void => {
 }
 
 @keyframes dot {
+
     0%,
     80%,
     100% {
@@ -703,5 +707,11 @@ const clearMessage = (): void => {
     opacity: 0;
     transform: scale(0.82) translateY(24px);
     transform-origin: bottom right;
+}
+
+@media (max-width: $screen-sm) {
+    .chat-window {
+        height: 90%;
+    }
 }
 </style>
