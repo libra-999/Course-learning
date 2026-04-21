@@ -115,6 +115,8 @@ import { ref, computed, nextTick } from 'vue'
 import { CloseBold, Position } from '@element-plus/icons-vue'
 import LogoChatAI from "@/app/assets/image/live_chat_AI.gif"
 import type { Message, QuickPrompt } from '@/modules/types/chat'
+import { BotApi } from '@/modules/api/bot'
+import { useMessage } from '@/app/utils/message'
 
 
 const isOpen = ref<boolean>(false)
@@ -123,13 +125,14 @@ const isLoading = ref<boolean>(false)
 const unreadCount = ref<number>(1)
 const inputText = ref<string>('')
 const messages = ref<Message[]>([])
-
-
 const messagesEl = ref<HTMLElement | null>(null)
 const inputEl = ref<HTMLTextAreaElement | null>(null)
+const boxMessage = useMessage()
 
 const quickPrompts: QuickPrompt[] = [
     { icon: '💬', label: 'What can you help with?', text: 'What can you help me with?' },
+    { icon: '👤', label: 'Tell me about your role?', text: 'Tell me about your role?' },
+    { icon: '🎯', label: 'What is purpose of this project?', text: 'What is purpose of this project?' }
 ]
 
 const canSend = computed<boolean>(() => inputText.value.trim().length > 0 && !isLoading.value)
@@ -165,9 +168,7 @@ const sendMessage = async (): Promise<void> => {
     const text = inputText.value.trim()
     if (!text || isLoading.value) return
 
-    messages.value.push({
-        id: Date.now(), role: 'user', content: text, loading: false, timestamp: Date.now(),
-    })
+    messages.value.push({  id: Date.now(), role: 'user', content: text, loading: false, timestamp: Date.now() })
 
     inputText.value = ''
     if (inputEl.value) inputEl.value.style.height = 'auto'
@@ -175,9 +176,7 @@ const sendMessage = async (): Promise<void> => {
 
     isLoading.value = true
     const loadingId = Date.now() + 1
-    messages.value.push({
-        id: loadingId, role: 'assistant', content: '', loading: true, timestamp: Date.now(),
-    })
+    messages.value.push({ id: loadingId, role: 'assistant', content: '', loading: true, timestamp: Date.now() })
     await scrollToBottom()
 
     const contents = messages.value
@@ -186,32 +185,15 @@ const sendMessage = async (): Promise<void> => {
             role: m.role === 'assistant' ? 'model' : 'user', // Gemini uses user/model
             parts: [{ text: m.content }],
         }))
-
-    const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                systemInstruction: {
-                    parts: [
-                        {
-                            text: `You are a helpful community assistant. Always respond in Chinese script. If a technical word is unclear in Chinese, keep the English term in parentheses.`.trim(),
-                        },
-                    ],
-                },
-                contents,
-                generationConfig: {
-                    maxOutputTokens: 100000,
-                },
-            }),
-        }
-    )
-
-    const data = await response.json()   
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text ?? 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ។'
+    let reply: string;  
+    try {
+        const response = await BotApi({ contents })
+        reply = response.data.text ?? 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ'
+    } catch {
+        reply = 'សុំទោស ប្រព័ន្នកំពុងមានបញ្ហា'
+        boxMessage.notificationBox("It has something wrong with bot, Please try again later", "error")
+    }
+    
     const idx = messages.value.findIndex((m) => m.id === loadingId)
     if (idx !== -1) {
         messages.value[idx] = {
@@ -366,6 +348,7 @@ const clearMessage = () => {
     height: 44px;
     flex-shrink: 0;
     cursor: pointer;
+
     &__dot {
         position: absolute;
         bottom: 1px;
@@ -567,6 +550,7 @@ const clearMessage = () => {
     font-size: 10px;
     color: $muted;
     padding: 0 2px;
+    text-align: start;
 }
 
 // waiting respond
