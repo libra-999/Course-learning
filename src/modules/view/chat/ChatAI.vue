@@ -83,7 +83,7 @@
                                     </span>
                                     <span v-else class="bubble__text">{{ msg.content }}</span>
                                 </div>
-                                <time class="msg-time">{{ formatTime(msg.timestamp) }}</time>
+                                <time class="msg-time">{{ timeStampMinuteFormat(msg.timestamp) }}</time>
                             </div>
                         </div>
                     </TransitionGroup>
@@ -96,7 +96,7 @@
                             rows="1" @keydown.enter.exact.prevent="sendMessage" @focus="inputFocused = true"
                             @blur="inputFocused = false" @input="autoResize" />
 
-                        <ButtonGlobal value="" class="send-btn" :class="{ 'send-btn--active': canSend }"
+                        <ButtonGlobal value="" :class="['send-btn', { 'send-btn--active': canSend }]"
                             :disabled="!canSend" @click.prevent="sendMessage">
                             <template #icon-left>
                                 <Position />
@@ -110,109 +110,137 @@
 </template>
 
 <script setup lang="ts">
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
-import { ref, computed, nextTick } from 'vue'
 import { CloseBold, Position } from '@element-plus/icons-vue'
-import LogoChatAI from "@/app/assets/image/live_chat_AI.gif"
-import type { Message, QuickPrompt } from '@/modules/types/chat'
+import { computed, nextTick, ref } from 'vue'
+import LogoChatAI from '@/app/assets/image/live_chat_AI.gif'
+import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { BotApi } from '@/modules/api/bot'
+import type { Message, QuickPrompt } from '@/modules/types/chat'
 import { useMessage } from '@/app/utils/message'
+import {  timeStampMinuteFormat } from '@/app/utils/dateFormat'
 
+const TEXTAREA_MAX_HEIGHT = 124
+const BOT_ERROR_NOTIFY = 'It has something wrong with bot, Please try again later'
+const BOT_FALLBACK_REPLY = 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ'
+const BOT_ERROR_REPLY = 'សុំទោស ប្រព័ន្នកំពុងមានបញ្ហា'
 
-const isOpen = ref<boolean>(false)
-const inputFocused = ref<boolean>(false)
-const isLoading = ref<boolean>(false)
-const unreadCount = ref<number>(1)
-const inputText = ref<string>('')
+const isOpen = ref(false)
+const inputFocused = ref(false)
+const isLoading = ref(false)
+const inputText = ref('')
 const messages = ref<Message[]>([])
 const messagesEl = ref<HTMLElement | null>(null)
 const inputEl = ref<HTMLTextAreaElement | null>(null)
 const boxMessage = useMessage()
+let messageId = 0
 
+// recommendation content
 const quickPrompts: QuickPrompt[] = [
     { icon: '💬', label: 'What can you help with?', text: 'What can you help me with?' },
     { icon: '👤', label: 'Tell me about your role?', text: 'Tell me about your role?' },
     { icon: '🎯', label: 'What is purpose of this project?', text: 'What is purpose of this project?' }
 ]
 
-const canSend = computed<boolean>(() => inputText.value.trim().length > 0 && !isLoading.value)
-
-const formatTime = (ts: number): string =>
-    new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+// send message button after completed 
+const canSend = computed(() => inputText.value.trim().length > 0 && !isLoading.value)
 
 const scrollToBottom = async (): Promise<void> => {
     await nextTick()
-    if (messagesEl.value) messagesEl.value.scrollTop = messagesEl.value.scrollHeight
+    if (!messagesEl.value) return
+    messagesEl.value.scrollTop = messagesEl.value.scrollHeight
 }
 
-const autoResize = (): void => {
-    const el = inputEl.value
-    if (!el) return
-    el.style.height = 'auto'
-    el.style.height = `${Math.min(el.scrollHeight, 124)}px`
-}
-const openChat = (): void => {
-    isOpen.value = true
-    unreadCount.value = 0
+const focusInput = (): void => {
     nextTick(() => inputEl.value?.focus())
 }
 
-const closeChat = (): void => { isOpen.value = false }
+const resetInputHeight = (): void => {
+    if (!inputEl.value) return
+    inputEl.value.style.height = 'auto'
+}
+
+const autoResize = (): void => {
+    if (!inputEl.value) return
+    resetInputHeight()
+    inputEl.value.style.height = `${Math.min(inputEl.value.scrollHeight, TEXTAREA_MAX_HEIGHT)}px`
+}
+
+const openChat = (): void => {
+    isOpen.value = true
+    focusInput()
+}
+
+const closeChat = (): void => {
+    isOpen.value = false
+}
 
 const sendQuickPrompt = (text: string): void => {
     inputText.value = text
     sendMessage()
 }
 
+const createMessage = (role: Message['role'], content: string, loading = false): Message => ({
+    id: ++messageId,
+    role,
+    content,
+    loading,
+    timestamp: Date.now(),
+})
+
+const buildBotContents = () =>
+    messages.value.filter(({ loading }) => !loading).map(({ role, content }) => ({
+        role: role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: content }],
+    }))
+
+const replaceMessage = (id: number, payload: Partial<Omit<Message, 'id' | 'role'>>): void => {
+    const idx = messages.value.findIndex((message) => message.id === id)
+    if (idx === -1) return
+    messages.value[idx] = { ...messages.value[idx], ...payload }
+}
+
 const sendMessage = async (): Promise<void> => {
     const text = inputText.value.trim()
     if (!text || isLoading.value) return
 
-    messages.value.push({  id: Date.now(), role: 'user', content: text, loading: false, timestamp: Date.now() })
+    messages.value.push(createMessage('user', text))
 
     inputText.value = ''
-    if (inputEl.value) inputEl.value.style.height = 'auto'
+    resetInputHeight()
     await scrollToBottom()
 
     isLoading.value = true
-    const loadingId = Date.now() + 1
-    messages.value.push({ id: loadingId, role: 'assistant', content: '', loading: true, timestamp: Date.now() })
+    const loadingMessage = createMessage('assistant', '', true)
+    messages.value.push(loadingMessage)
     await scrollToBottom()
 
-    const contents = messages.value
-        .filter((m) => !m.loading)
-        .map((m) => ({
-            role: m.role === 'assistant' ? 'model' : 'user', // Gemini uses user/model
-            parts: [{ text: m.content }],
-        }))
-    let reply: string;  
+    let reply = BOT_FALLBACK_REPLY
     try {
-        const response = await BotApi({ contents })
-        reply = response.data.text ?? 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ'
+        const response = await BotApi({ contents: buildBotContents() })
+        reply = response.data.text ?? BOT_FALLBACK_REPLY
     } catch {
-        reply = 'សុំទោស ប្រព័ន្នកំពុងមានបញ្ហា'
-        boxMessage.notificationBox("It has something wrong with bot, Please try again later", "error")
-    }
-    
-    const idx = messages.value.findIndex((m) => m.id === loadingId)
-    if (idx !== -1) {
-        messages.value[idx] = {
-            id: loadingId, role: 'assistant', content: reply ?? '', loading: false, timestamp: Date.now(),
-        }
+        reply = BOT_ERROR_REPLY
+        boxMessage.notificationBox(BOT_ERROR_NOTIFY, 'error')
+    } finally {
+        replaceMessage(loadingMessage.id, {
+            content: reply,
+            loading: false,
+            timestamp: Date.now(),
+        })
+        isLoading.value = false
     }
 
-    isLoading.value = false
     await scrollToBottom()
-    inputEl.value?.focus()
+    focusInput()
 }
 
-const clearMessage = () => {
+const clearMessage = (): void => {
     messages.value = []
+    messageId = 0
 }
 </script>
 
 <style lang="scss" scoped>
-// chat container
 .chat-wrapper {
     position: fixed;
     bottom: 28px;
@@ -220,7 +248,6 @@ const clearMessage = () => {
     z-index: 99;
 }
 
-// open window and chat box 
 .chat-box {
     position: relative;
     width: 62px;
@@ -230,9 +257,9 @@ const clearMessage = () => {
     background: white;
     cursor: pointer;
     @include flex-center;
-    transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), box-shadow .25s ease;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 
-    & img {
+    img {
         transform: scale(2.5) translateY(-10px);
     }
 }
@@ -244,12 +271,12 @@ const clearMessage = () => {
     width: 330px;
     height: 450px;
     background: var(--background-color);
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     box-shadow: $shadow;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: width .35s cubic-bezier(.34, 1.2, .64, 1), height .35s cubic-bezier(.34, 1.2, .64, 1);
+    transition: width 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), height 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
 
     &::before {
         content: '';
@@ -258,11 +285,6 @@ const clearMessage = () => {
         pointer-events: none;
         z-index: 0;
         border-radius: inherit;
-    }
-
-    &--max {
-        width: min(700px, calc(100vw - 32px));
-        height: min(820px, calc(100vh - 56px));
     }
 }
 
@@ -283,7 +305,7 @@ const clearMessage = () => {
         left: 0;
         right: 0;
         height: 2px;
-        border-radius: .8rem .8rem 0 0;
+        border-radius: 0.8rem 0.8rem 0 0;
     }
 
     &__left {
@@ -302,7 +324,7 @@ const clearMessage = () => {
         font-size: 14px;
         font-weight: 600;
         margin: 0;
-        letter-spacing: -.015em;
+        letter-spacing: -0.015em;
     }
 
     &__status {
@@ -320,7 +342,7 @@ const clearMessage = () => {
         border-radius: 50%;
         background: $green;
         flex-shrink: 0;
-        animation: blink 2.2s ease-in-out infinite;
+        animation: blink 2.2s ease infinite;
     }
 
     &__actions {
@@ -330,35 +352,22 @@ const clearMessage = () => {
 }
 
 @keyframes blink {
-
     0%,
     100% {
         opacity: 1;
     }
 
     50% {
-        opacity: .3;
+        opacity: 0.3;
     }
 }
 
-// open window component
 .c-avatar {
     position: relative;
     width: 44px;
     height: 44px;
     flex-shrink: 0;
     cursor: pointer;
-
-    &__dot {
-        position: absolute;
-        bottom: 1px;
-        right: 1px;
-        width: 11px;
-        height: 11px;
-        background: $green;
-        border-radius: 50%;
-        border: 2.5px solid $bg-3;
-    }
 }
 
 .icon-btn {
@@ -370,7 +379,7 @@ const clearMessage = () => {
     border-radius: $radius-sm;
     @include flex-center;
     cursor: pointer;
-    transition: background .15s, color .15s;
+    transition: background 0.15s, color 0.15s;
 
     &:hover {
         background: $surface;
@@ -378,12 +387,11 @@ const clearMessage = () => {
     }
 
     &--close:hover {
-        background: rgba($red, .12);
+        background: rgba($red, 0.12);
         color: $red;
     }
 }
 
-// message history or recommend 
 .messages {
     flex: 1;
     overflow-y: auto;
@@ -418,7 +426,7 @@ const clearMessage = () => {
     &__orb {
         width: 90px;
         height: 90px;
-        animation: float 3.5s ease-in-out infinite;
+        animation: float 3.5s ease infinite;
 
         svg {
             width: 100%;
@@ -442,7 +450,6 @@ const clearMessage = () => {
 }
 
 @keyframes float {
-
     0%,
     100% {
         transform: translateY(0);
@@ -472,10 +479,10 @@ const clearMessage = () => {
         font-size: 13px;
         cursor: pointer;
         text-align: left;
-        transition: background .15s, border-color .15s, transform .18s;
+        transition: background 0.15s, border-color 0.15s, transform 0.18s;
 
         &:hover {
-            border-color: rgba($primary, .4);
+            border-color: rgba($primary, 0.4);
             transform: translateX(5px);
         }
     }
@@ -519,14 +526,12 @@ const clearMessage = () => {
     }
 }
 
-// response chat 
 .bubble {
-    padding: .3rem .8rem;
-    border-radius: .8rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.8rem;
     font-size: 13.5px;
     line-height: 1.6;
     text-align: start;
-
 
     &--assistant {
         border-bottom-left-radius: 4px;
@@ -553,7 +558,6 @@ const clearMessage = () => {
     text-align: start;
 }
 
-// waiting respond
 .typing {
     display: flex;
     gap: 5px;
@@ -564,27 +568,26 @@ const clearMessage = () => {
     span {
         width: 6px;
         height: 6px;
-        background: rgba($primary, .7);
+        background: rgba($primary, 0.7);
         border-radius: 50%;
-        animation: dot 1.3s ease-in-out infinite;
+        animation: dot 1.3s ease infinite;
 
         &:nth-child(2) {
-            animation-delay: .2s;
+            animation-delay: 0.2s;
         }
 
         &:nth-child(3) {
-            animation-delay: .4s;
+            animation-delay: 0.4s;
         }
     }
 }
 
 @keyframes dot {
-
     0%,
     80%,
     100% {
-        transform: scale(.65);
-        opacity: .4;
+        transform: scale(0.65);
+        opacity: 0.4;
     }
 
     40% {
@@ -593,7 +596,6 @@ const clearMessage = () => {
     }
 }
 
-// Footer
 .chat-footer {
     padding: 12px 14px 16px;
     flex-shrink: 0;
@@ -602,27 +604,20 @@ const clearMessage = () => {
     gap: 6px;
     position: relative;
     z-index: 1;
-
-    &__hint {
-        font-size: 10.5px;
-        color: $muted;
-        margin: 0;
-        text-align: center;
-    }
 }
 
 .input-wrap {
     display: flex;
     align-items: flex-end;
-    gap: 0.2rem;
+    gap: 0.25rem;
     border: 1.5px solid var(--background-box-color);
     border-radius: 0.5rem;
     padding: 9px 9px 9px 14px;
-    transition: border-color .2s, box-shadow .2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 
     &--focused {
-        border-color: rgba($primary, .55);
-        box-shadow: 0 0 0 3px rgba($primary, .1);
+        border-color: rgba($primary, 0.55);
+        box-shadow: 0 0 0 3px rgba($primary, 0.1);
     }
 }
 
@@ -646,34 +641,33 @@ const clearMessage = () => {
 .send-btn {
     width: 36px;
     height: 36px;
-    background: var(--text-color);
+    background: #21354792;
     border-radius: $radius-sm;
     border: none;
     color: white;
     @include flex-center;
     flex-shrink: 0;
     cursor: not-allowed;
-    transition: background .2s, color .2s, transform .15s, box-shadow .2s;
+    transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
 
     &--active {
-        background: linear-gradient(135deg, $gray, $surface);
+        background: linear-gradient(135deg, var(--text-color), var(--text-color));
         cursor: pointer;
     }
 }
 
-// Transitions 
 .msg-enter-active {
-    animation: msgIn .3s cubic-bezier(.34, 1.56, .64, 1) both;
+    animation: msgIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .msg-leave-active {
-    animation: msgIn .2s ease-in reverse both;
+    animation: msgIn 0.2s ease-in reverse both;
 }
 
 @keyframes msgIn {
     from {
         opacity: 0;
-        transform: translateY(10px) scale(.96);
+        transform: translateY(10px) scale(0.96);
     }
 
     to {
@@ -682,32 +676,32 @@ const clearMessage = () => {
     }
 }
 
-.fab-enter-active {
-    transition: all .3s cubic-bezier(.34, 1.56, .64, 1);
+.box-enter-active {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.fab-leave-active {
-    transition: all .2s ease-in;
+.box-leave-active {
+    transition: all 0.2s ease-in;
 }
 
-.fab-enter-from,
-.fab-leave-to {
+.box-enter-from,
+.box-leave-to {
     opacity: 0;
-    transform: scale(.6) translateY(12px);
+    transform: scale(0.6) translateY(12px);
 }
 
 .window-enter-active {
-    transition: all .4s cubic-bezier(.34, 1.25, .64, 1);
+    transition: all 0.4s cubic-bezier(0.34, 1.25, 0.64, 1);
 }
 
 .window-leave-active {
-    transition: all .25s ease-in;
+    transition: all 0.25s ease-in;
 }
 
 .window-enter-from,
 .window-leave-to {
     opacity: 0;
-    transform: scale(.82) translateY(24px);
+    transform: scale(0.82) translateY(24px);
     transform-origin: bottom right;
 }
 </style>

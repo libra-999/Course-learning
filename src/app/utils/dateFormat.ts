@@ -25,6 +25,9 @@ export const minuteFormat = (value: any) => {
 	const second = String(totalSecond % 60).padStart(2, '0')
 	return `${minute}:${second}`
 }
+export const timeStampMinuteFormat = (value: number): string => {
+    return new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+}
 export const remaingTime = (second: string | number) => {
 	return Math.max(
 		0,
