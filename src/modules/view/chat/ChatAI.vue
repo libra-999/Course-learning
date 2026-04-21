@@ -220,7 +220,7 @@ const sendMessage = async (): Promise<void> => {
     let reply = BOT_FALLBACK_REPLY
     const device = platform.name ?? ''
     try {
-        const response = await BotApi({ contents: buildBotContents()}, '')
+        const response = await BotApi(buildBotContents(), device)
         reply = response.data.text ?? BOT_FALLBACK_REPLY
     } catch {
         reply = BOT_ERROR_REPLY
