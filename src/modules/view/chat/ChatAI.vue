@@ -119,6 +119,7 @@ import { BotApi } from '@/modules/api/bot'
 import type { Message, QuickPrompt } from '@/modules/types/chat'
 import { useMessage } from '@/app/utils/message'
 import { timeStampMinuteFormat } from '@/app/utils/dateFormat'
+import platform from 'platform'
 
 const TEXTAREA_MAX_HEIGHT = 124
 const BOT_ERROR_NOTIFY = 'It has something wrong with bot, Please try again later'
@@ -133,6 +134,7 @@ const messages = ref<Message[]>([])
 const messagesEl = ref<HTMLElement | null>(null)
 const inputEl = ref<HTMLTextAreaElement | null>(null)
 const boxMessage = useMessage()
+
 let messageId = 0
 
 // recommendation content
@@ -216,8 +218,9 @@ const sendMessage = async (): Promise<void> => {
     await scrollToBottom()
 
     let reply = BOT_FALLBACK_REPLY
+    const device = platform.name ?? ''
     try {
-        const response = await BotApi({ contents: buildBotContents() })
+        const response = await BotApi({ contents: buildBotContents()}, '')
         reply = response.data.text ?? BOT_FALLBACK_REPLY
     } catch {
         reply = BOT_ERROR_REPLY
