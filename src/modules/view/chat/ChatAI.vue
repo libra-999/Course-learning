@@ -21,8 +21,8 @@
                         <div class="chat-header__meta">
                             <p class="chat-header__name">Lemon Assistant</p>
                             <p class="chat-header__status">
-                                <span class="chat-header__status-dot" />
-                                Online
+                                <span class="chat-header__status-dot" :class="{'is-offline': aiStatus !== 'Online'}" />
+                                {{ aiStatus }}
                             </p>
                         </div>
                     </div>
@@ -62,8 +62,8 @@
                         <h4 class="welcome__title">Hello! 👋</h4>
                         <p class="welcome__sub">Ask me anything about our community.</p>
                         <ul class="quick-list">
-                            <li v-for="p in quickPrompts" :key="p.label" class="quick-list__item"
-                                @click="sendQuickPrompt(p.text)">
+                            <li v-for="p in quickPrompts" :key="p.label" :class="`quick-list__item ${aiStatus === 'Offline' ? 'cursor-not-allowed':' cursor-pointer'}`"
+                                @click="aiStatus !== 'Offline' && sendQuickPrompt(p.text) ">
                                 <span class="quick-list__emoji">{{ p.icon }}</span>
                                 <span>{{ p.label }}</span>
                             </li>
@@ -92,18 +92,20 @@
                 <!-- Prompt your content -->
                 <footer class="chat-footer">
                     <div class="input-wrap" :class="{ 'input-wrap--focused': inputFocused }">
-                        <textarea ref="inputEl" v-model="inputText" class="chat-textarea" placeholder="Ask anything…"
+                        <textarea ref="inputEl" :disabled="aiStatus === 'Offline'" v-model="inputText" class="chat-textarea" placeholder="Ask anything…"
                             rows="1" @keydown.enter.exact.prevent="sendMessage" @focus="inputFocused = true"
                             @blur="inputFocused = false" @input="autoResize" />
 
-                        <ButtonGlobal value="" :class="['send-btn', { 'send-btn--active': canSend }]"
+                        <ButtonGlobal value="" :class="['send-btn', { 'send-btn--active': canSend }]" 
+                            
                             :disabled="!canSend" @click.prevent="sendMessage">
                             <template #icon-left>
                                 <Position />
                             </template>
                         </ButtonGlobal>
                     </div>
-                    <article class=" text-gray-400 text-[.5rem] font-bold italic">click on icon to get new prompt</article>
+                    <article class=" text-gray-400 text-[.5rem] font-bold italic">click on icon to get new chat
+                    </article>
                 </footer>
             </div>
         </Transition>
@@ -112,10 +114,10 @@
 
 <script setup lang="ts">
 import { CloseBold, Position } from '@element-plus/icons-vue'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import LogoChatAI from '@/app/assets/image/live_chat_AI.gif'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
-import { BotApi } from '@/modules/api/bot'
+import { BotApi, healthServer } from '@/modules/api/bot'
 import type { Message, QuickPrompt } from '@/modules/types/chat'
 import { useMessage } from '@/app/utils/message'
 import { timeStampMinuteFormat } from '@/app/utils/dateFormat'
@@ -134,6 +136,8 @@ const messages = ref<Message[]>([])
 const messagesEl = ref<HTMLElement | null>(null)
 const inputEl = ref<HTMLTextAreaElement | null>(null)
 const boxMessage = useMessage()
+const aiStatus = ref<"Online" | "Offline">("Offline")
+let checkAIStatus: ReturnType<typeof setInterval> | null = null
 
 let messageId = 0
 
@@ -242,6 +246,24 @@ const clearMessage = (): void => {
     messages.value = []
     messageId = 0
 }
+
+const healthAI = async () => {
+    try{
+        const res = await healthServer();
+    aiStatus.value = res.status === 200 || res.status === 201 ? "Online" : "Offline"
+    }catch {
+        aiStatus.value = "Offline"
+    }
+}
+
+onMounted(()=> {
+    healthAI()
+    checkAIStatus = setInterval(healthAI, 15000) // 10s
+})
+
+onUnmounted(()=>{
+    if(checkAIStatus) clearInterval(checkAIStatus) // clear interval polling
+})
 </script>
 
 <style lang="scss" scoped>
@@ -346,7 +368,12 @@ const clearMessage = (): void => {
         border-radius: 50%;
         background: $green;
         flex-shrink: 0;
-        animation: blink 2.2s ease infinite;
+        animation: onlineblink 2.2s ease infinite;
+
+        &.is-offline{
+            background: #ef4444;
+            animation:  offlineblink 2.2s ease infinite;
+        }
     }
 
     &__actions {
@@ -355,7 +382,18 @@ const clearMessage = (): void => {
     }
 }
 
-@keyframes blink {
+@keyframes onlineblink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+@keyframes offlineblink {
 
     0%,
     100% {
@@ -483,7 +521,6 @@ const clearMessage = (): void => {
         border-radius: 12px;
         padding: 11px 14px;
         font-size: 13px;
-        cursor: pointer;
         text-align: left;
         transition: background 0.15s, border-color 0.15s, transform 0.18s;
 
@@ -652,6 +689,7 @@ const clearMessage = (): void => {
     border-radius: $radius-sm;
     border: none;
     color: white;
+    margin-right: 0px;
     @include flex-center;
     flex-shrink: 0;
     cursor: not-allowed;

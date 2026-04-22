@@ -14,7 +14,7 @@ const SERVER_VERSION = import.meta.env.VITE_SERVER_VERSION
 const t = i18n.global.t
 const apiRequest: AxiosInstance = axios.create({
 	baseURL: `${SERVER_URL}/${SERVER_VERSION}`,
-	timeout: 10000,
+	timeout: 50000, // 5s
 })
 
 /* authentication */
