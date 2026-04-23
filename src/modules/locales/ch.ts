@@ -29,6 +29,10 @@ export default {
 			title: '机器人你',
 			content: '让机器人支持或帮助客户服务责任并减少对用户的响应',
 		},
+		OCR_CARD: {
+			title: '卡身份到文本',
+			content: "从图像或卡身份生成文本, 在某些想要使用用户信息的功能尤其是KYC的用户中易于管理",
+		},
 		PROFILE_DD: {
 			profile: '轮廓',
 			logout: '退出',

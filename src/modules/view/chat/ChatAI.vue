@@ -92,6 +92,13 @@
                 <!-- Prompt your content -->
                 <footer class="chat-footer">
                     <div class="input-wrap" :class="{ 'input-wrap--focused': inputFocused }">
+                        <!-- <el-upload
+                            class=" px-1 rounded-[.2rem] py-[8px]  mr-2"
+                            :show-file-list="false">
+                            <el-icon class="w-[15px] h-[15px]">
+                                <UploadFilled />
+                            </el-icon>
+                        </el-upload> -->
                         <textarea ref="inputEl" :disabled="aiStatus === 'Offline'" v-model="inputText" class="chat-textarea" placeholder="Ask anything…"
                             rows="1" @keydown.enter.exact.prevent="sendMessage" @focus="inputFocused = true"
                             @blur="inputFocused = false" @input="autoResize" />
@@ -258,7 +265,7 @@ const healthAI = async () => {
 
 onMounted(()=> {
     healthAI()
-    checkAIStatus = setInterval(healthAI, 15000) // 10s
+    checkAIStatus = setInterval(healthAI, 15000) // 15s
 })
 
 onUnmounted(()=>{

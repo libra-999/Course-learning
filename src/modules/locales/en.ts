@@ -32,6 +32,10 @@ export default {
 			title: 'BOT AI',
 			content: 'Make a bot support or help customer service responsibility and reducing respond for user ',
 		},
+		OCR_CARD: {
+			title: 'Card Identity To Text',
+			content: "Generate text from image or card identity , easy to manage in some function that want to use user information epecially KYC's user ",
+		},
 		PROFILE_DD: {
 			profile: 'Profile',
 			logout: 'Logout',

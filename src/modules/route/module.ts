@@ -8,6 +8,7 @@ import PurchaseABACheckout from "@/modules/layout/payment/PurchaseABACheckout.vu
 import UploadProgressLayout from "@/modules/layout/uploadFile/UploadProgressLayout.vue";
 import TableLayout from "@/modules/layout/table/TableLayout.vue";
 import Chat from "@/modules/view/chat/Chat.vue";
+import Preview from "@/modules/view/cardIdentity/Preview.vue";
 
 
 export const module = [
@@ -63,6 +64,11 @@ export const module = [
       name: 'Chat',
       meta: {requiredAuth: true},
       component: Chat
+   },{
+      path: '/system/card-identity',
+      name: 'Card to Text',
+      meta: { requried: true},
+      component: Preview
    }
 
 ]
