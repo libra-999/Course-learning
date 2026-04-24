@@ -26,7 +26,6 @@
                             </p>
                         </div>
                     </div>
-
                     <div class="chat-header__actions">
                         <ButtonGlobal value="" class="icon-btn icon-btn--close" @click.prevent="closeChat">
                             <template #icon-right>
@@ -81,7 +80,7 @@
                                     <span v-if="msg.loading" class="typing">
                                         <span></span><span></span><span></span>
                                     </span>
-                                    <span v-else class="bubble__text">{{ msg.content }}</span>
+                                    <div v-else class="bubble__text" v-html="renderRawText(msg.content)"></div>
                                 </div>
                                 <time class="msg-time">{{ timeStampMinuteFormat(msg.timestamp) }}</time>
                             </div>
@@ -92,13 +91,6 @@
                 <!-- Prompt your content -->
                 <footer class="chat-footer">
                     <div class="input-wrap" :class="{ 'input-wrap--focused': inputFocused }">
-                        <!-- <el-upload
-                            class=" px-1 rounded-[.2rem] py-[8px]  mr-2"
-                            :show-file-list="false">
-                            <el-icon class="w-[15px] h-[15px]">
-                                <UploadFilled />
-                            </el-icon>
-                        </el-upload> -->
                         <textarea ref="inputEl" :disabled="aiStatus === 'Offline'" v-model="inputText" class="chat-textarea" placeholder="Ask anything…"
                             rows="1" @keydown.enter.exact.prevent="sendMessage" @focus="inputFocused = true"
                             @blur="inputFocused = false" @input="autoResize" />
@@ -129,6 +121,7 @@ import type { Message, QuickPrompt } from '@/modules/types/chat'
 import { useMessage } from '@/app/utils/message'
 import { timeStampMinuteFormat } from '@/app/utils/dateFormat'
 import platform from 'platform'
+import { renderRawText } from '@/app/utils/common'
 
 const TEXTAREA_MAX_HEIGHT = 124
 const BOT_ERROR_NOTIFY = 'It has something wrong with bot, Please try again later'
@@ -580,7 +573,6 @@ onUnmounted(()=>{
     padding: 0.3rem 0.8rem;
     border-radius: 0.8rem;
     font-size: 13.5px;
-    line-height: 1.6;
     text-align: start;
 
     &--assistant {
@@ -598,6 +590,11 @@ onUnmounted(()=>{
     &__text {
         word-break: break-word;
         white-space: pre-wrap;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
 }
 

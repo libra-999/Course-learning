@@ -62,6 +62,15 @@ body {
   background-color: var(--theme-color);
   color: var(--text-color);
 }
+.hljs {
+  width: 100%;
+  background: #0d1117dc;
+  padding: 16px;
+  border-radius: .2rem;
+  overflow-x: auto;
+  font-family: "Fira Code", monospace;
+  overflow-x: scroll;
+}
 
 @media (prefers-color-scheme: light) {
   :root {

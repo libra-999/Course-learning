@@ -1,8 +1,12 @@
 export interface CardIdentity  {
-    id?: string,
+    id?: number,
     name?: string,
     gender?: string,
     national?: string,
     issuedAt?: string,
-    dob?: string
+    dob?: string,
+    height? : number,
+    address?: string,
+    specification?: string
+    signature?: any
 }

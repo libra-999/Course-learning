@@ -1,7 +1,7 @@
 <template>
-    <div class=" w-full h-full py-5">
+    <div class="max-w-[50%] mx-auto h-full py-5">
         <article class=" font-bold text-5xl mb-5">OCR CARD IDENTITY</article>
-        <div class="flex justify-center h-[50%] gap-3 rounded-xl">
+        <div class="flex justify-between h-[50%] gap-3 rounded-xl">
             <UploadImage :files="files" :loading="loading" @select-file="selectFile" @remove-file="removeFile"
                 @convert-file="handleConvert" />
             <TextShow :image="toText?.image" :card-data="toText.cardInfo" />
@@ -28,11 +28,12 @@ const toText = ref<{
     image: '',
     cardInfo: {
         name: '',
-        id: '',
+        id: 0,
         gender: '',
         national: '',
         issuedAt: '',
-        dob: ''
+        dob: '',
+        signature: ''
     },
 });
 
@@ -61,16 +62,16 @@ const handleConvert = async () => {
             const res = await uploadCard(form);
             if (res.code === 200) {
                 const data = res.data
-                // toText.value.image = res.data.url;
                 toText.value.cardInfo = {
                     name: data.name,
                     gender: data.gender,
                     national: data.national,
                     dob: data.dob,
                     id: data.id,
-                    issuedAt: data.period
+                    issuedAt: data.period,
+                    signature: data.signature
                 }
-                boxMessage.messageBox('Upload Successfully', 'success');
+                boxMessage.messageBox('Succeed', 'success');
                 return;
             }
         }

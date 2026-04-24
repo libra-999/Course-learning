@@ -8,6 +8,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { useTheme } from '@/modules/store/theme.ts'
 import i18n from "@/modules/locales";
+import "highlight.js/styles/github-dark.css" // full color text in chat
 
 
 const app = createApp(App);

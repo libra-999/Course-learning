@@ -1,18 +1,18 @@
 <template>
-    <div class="border border-gray-100 rounded-xl overflow-hidden p-2 min-w-[500px] min-h-[700px]">
+    <div class="border border-gray-100 rounded-xl overflow-hidden p-2 min-w-125 min-h-175">
         <el-upload class="mt-5" drag multiple :limit="1" :show-file-list="false" :on-exceed="handleExceed"
             :http-request="handleSelectFile">
             <el-icon class="el-icon--upload">
                 <UploadFilled />
             </el-icon>
             <p>
-                Drop directory here or
-                <em class="font-bold">click to upload</em>
+                Drop image here<br/>
+                <span class="text-gray-300 my-2 text-sm">SUPPORT ONLY FORIEGNER CARD , KHMER'S CARD STILL PROCESSING </span>
             </p>
         </el-upload>
         <div class="w-full h-auto my-5 overflow-hidden">
             <button
-                class="py-3 h-[50px] text-center w-full bg-blue-400 rounded-sm cursor-pointer text-white disabled:opacity-70 disabled:cursor-not-allowed"
+                class="py-3 h-12.5 text-center w-full bg-blue-400 rounded-sm cursor-pointer text-white disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="prop.loading" @click.prevent="handleConvert">
                 <template v-if="prop.loading">
                     <div class="button-loading"></div>
@@ -21,12 +21,12 @@
             </button>
         </div>
         <div class="p-2 mt-2">
-            <p class="text-center text-gray-300">CARD IDENTITY</p>
+            <p class="text-start text-gray-300">Process Image</p>
             <div v-for="(image, index) in imagePreviewUrls" :key="`${image}-${index}`"
                 class="relative my-2 border w-full h-full border-gray-200 rounded-lg overflow-hidden">
-                <img class="w-full h-[150px] object-contain" alt="preview-image" :src="image" />
+                <img class="w-full h-37.5 object-contain" alt="preview-image" :src="image" />
                 <ButtonGlobal value=""
-                    class="h-[5px] w-0.5 absolute bg-white top-2 right-[-12px] cursor-pointer hover:bg-white"
+                    class="h-1.25 w-0.5 absolute bg-white top-2 -right-3 cursor-pointer hover:bg-white"
                     @click="handleRemove(index)">
                     <template #icon-left>
                         <el-icon>
@@ -111,8 +111,6 @@ watch(
     { immediate: true }
 );
 </script>
-
-
 
 <style scoped>
 .button-loading {
