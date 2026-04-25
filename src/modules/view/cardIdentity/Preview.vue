@@ -1,7 +1,7 @@
 <template>
-    <div class="max-w-[50%] mx-auto h-full py-5">
+    <div class="flex flex-col mx-auto h-full xl:max-w-[50%]  py-5 mobile">
         <article class=" font-bold text-5xl mb-5">OCR CARD IDENTITY</article>
-        <div class="flex justify-between h-[50%] gap-3 rounded-xl">
+        <div class="flex justify-between h-[50%] gap-3 rounded-xl mobile__object">
             <UploadImage :files="files" :loading="loading" @select-file="selectFile" @remove-file="removeFile"
                 @convert-file="handleConvert" />
             <TextShow :image="toText?.image" :card-data="toText.cardInfo" />
@@ -87,4 +87,29 @@ const removeFile = (index: number) => {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+
+@media (max-width: $screen-sm){
+    .mobile{
+        width: 100%;
+        height: auto;
+        &__object{
+            gap: .2rem;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+@media (min-width: $screen-sm) and (max-width: $screen-lg) {
+    .mobile{
+        width: 100%;
+        height: auto;
+        &__object{
+            gap: .2rem;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+</style>
