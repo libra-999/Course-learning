@@ -1,7 +1,7 @@
 <template>
-	<el-dropdown trigger="click" @command="handleLanguageChange" style="cursor: pointer;">
-		<div>
-			<img class="w-8 h-8" :src="i18nIcon"/>
+	<el-dropdown trigger="click" @command="handleLanguageChange" class=" cursor-pointer">
+		<div class="overflow-hidden w-9 h-9 bg-white rounded-sm">
+			<img class="w-full h-full object-cover" :src="i18nIcon"/>
 		</div>
 		<template #dropdown>
 			<el-dropdown-menu>

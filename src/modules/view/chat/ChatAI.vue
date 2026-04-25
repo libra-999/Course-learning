@@ -280,7 +280,7 @@ onUnmounted(()=>{
     height: 62px;
     border-radius: 50%;
     border: none;
-    background: white;
+    background: transparent;
     cursor: pointer;
     @include flex-center;
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
