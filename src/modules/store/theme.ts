@@ -18,7 +18,6 @@ export function toggleClassCss(darkMode = false) {
 
 export const useTheme = defineStore('theme', () => {
 	const settings: Ref<App.Theme.ThemeSetting> = ref(initThemeSetting())
-	const changeLang = useStorage("localization", "")
 	type ThemeSchema = App.Theme.ThemeSetting['themeSchema'] // map to themeSchema
 	const themes: ThemeSchema[] = ['light', 'dark']
 
@@ -46,14 +45,8 @@ export const useTheme = defineStore('theme', () => {
 		toggleClassCss(val)
 	}, { immediate: true })
 
-	/* toggle language */
-	function switchLanguage(value: string) {
-		changeLang.value = value
-	}
 
 	return {
-		changeLang,
-		switchLanguage,
 		darkMode,
 		toggleThemeSchema,
 		settings,

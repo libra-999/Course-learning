@@ -14,7 +14,7 @@ export const Locale = {
 export type LocaleType = (typeof Locale)[keyof typeof Locale]
 
 
-const localeKey = localStorage.getItem('localization') || 'en'
+const localeKey = localStorage.getItem('localization') || Locale.EN
 const i18n = createI18n({
 	legacy: false, // must not change to true , vue 3 didn't support
 	locale: localeKey,
@@ -71,7 +71,7 @@ export const useLocale = () => {
 	const changeLocale = (locale: LocaleType) => {
 		if (i18n.locale.value !== locale) {
 			i18n.locale.value = locale
-			localStorage.setItem("i18n", locale)
+			localStorage.setItem("localization", locale)
 		}
 	}
 

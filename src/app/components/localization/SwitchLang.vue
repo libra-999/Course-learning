@@ -8,7 +8,7 @@
 				<el-dropdown-item
 					v-for="item in langOptions"
 					:key="item.value"
-					:disabled="theme.changeLang === item.value"
+					:disabled="currentValue === item.value"
 					:command="item.value"
 				>
 					{{ item.label }}
@@ -21,7 +21,6 @@
 import { Locale, type LocaleType, useLocale } from '@/modules/locales'
 import { useI18n } from 'vue-i18n'
 import { useMessage } from '@/app/utils/message.ts'
-import { useTheme } from '@/modules/store/theme'
 import i18nIcon from  '@/app/assets/image/translate.png'
 
 defineProps({
@@ -37,14 +36,12 @@ const langOptions = [
 	{ label: 'ខ្មែរ', value: Locale.KH },
 ]
 
-const theme = useTheme()
 const message = useMessage()
-const { changeLocale } = useLocale()
+const { changeLocale, currentValue } = useLocale()
 const { t } = useI18n()
 
 function handleLanguageChange(lang: LocaleType) {
 	changeLocale(lang)
-	theme.switchLanguage(lang)
 	message.messageBox(t('language'),"success")
 }
 </script>
