@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { strToDate } from '@/app/utils/dateFormat';
+import { dayMonthFormat } from '@/app/utils/dateFormat';
 import type { CardIdentity } from '@/modules/types/ocr';
 import { ref, watch } from 'vue';
 
@@ -98,9 +98,9 @@ const parseForm = (formData: any) => {
     // custom regex nation
     form.value.national = formData.national?.split('/')[0]
     
-    form.value.dob = strToDate(formData.dob) 
-    form.value.issued_from = strToDate(formData.validFrom)
-    form.value.issued_to = strToDate(formData.validTo)
+    form.value.dob = dayMonthFormat(formData.dob) 
+    form.value.issued_from = dayMonthFormat(formData.validFrom)
+    form.value.issued_to = dayMonthFormat(formData.validTo)
 
     form.value.id = formData.id
 }
