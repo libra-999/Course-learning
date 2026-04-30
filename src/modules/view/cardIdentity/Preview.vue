@@ -27,11 +27,13 @@ const toText = ref<{
 }>({
     image: '',
     cardInfo: {
-        name: '',
+        nameCH: '',
+        nameEN: '',
         id: 0,
         gender: '',
         national: '',
-        issuedAt: '',
+        validFrom: '',
+        validTo:'',
         dob: '',
         signature: ''
     },
@@ -58,17 +60,20 @@ const handleConvert = async () => {
         for (const file of files.value) {
             const form = new FormData();
             form.append('file', file);
-
             const res = await uploadCard(form);
             if (res.code === 200) {
                 const data = res.data
+                const [validFrom, validTo] = data.period.split(" ")
+                
                 toText.value.cardInfo = {
-                    name: data.name,
+                    nameCH: data.nameCH,
+                    nameEN: data.nameEN,
                     gender: data.gender,
                     national: data.national,
                     dob: data.dob,
                     id: data.id,
-                    issuedAt: data.period,
+                    validFrom,
+                    validTo,
                     signature: data.signature
                 }
                 boxMessage.messageBox('Succeed', 'success');

@@ -89,9 +89,8 @@ const form = ref<any>({
 const parseForm = (formData: any) => {
 
     // custom regex name
-    const nameRegex = formData.name.match(/(.*?)\((.*?)\)/)
-    form.value.name_en = nameRegex?.[1]?.trim()
-    form.value.name_ch = nameRegex?.[2]?.trim()
+    form.value.name_en = formData.nameEN ?? ''
+    form.value.name_ch = formData.nameCH ?? ''
 
     // custom regex gender
     form.value.gender = formData.gender?.includes('F') ? 'F' : 'M'
@@ -99,10 +98,11 @@ const parseForm = (formData: any) => {
     form.value.national = formData.national?.split('/')[0]
     // custom regex dob
     form.value.dob = formData.dob?.replace(/\./g, '-')
-    // custom regex issuedData
-    const issued = formData.issuedAt?.split('-')
-    form.value.issued_from = issued?.[0]?.replace(/\./g, '-')
-    form.value.issued_to = issued?.[1]?.replace(/\./g, '-')
+
+    form.value.issued_from = formData.validFrom
+    form.value.issued_to = formData.validTo
+    
+    form.value.id = formData.id
 }
 
 watch(
