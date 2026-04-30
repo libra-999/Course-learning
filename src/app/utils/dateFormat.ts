@@ -6,6 +6,17 @@ export const TIME_QUERY = {
 	startTime: " 00:00:00",
 	endTime: " 23:59:59"
 }
+export const strToDate = (date: any) =>{
+	if (date == "" || date == null){
+		return ""
+	}
+	date = date.trim().replace(/[./]/g,"-")
+	const parts = date.split("-")
+	if (parts[2].length === 4) {
+		return `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`
+	}
+	return ""
+}
 export const dayMonthFormat = (date: Date): string => {
 	const d = new Date(date)
 	const year = d.getFullYear()

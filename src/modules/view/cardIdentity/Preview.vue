@@ -72,8 +72,8 @@ const handleConvert = async () => {
                     national: data.national,
                     dob: data.dob,
                     id: data.id,
-                    validFrom,
-                    validTo,
+                    validFrom: validFrom,
+                    validTo: validTo,
                     signature: data.signature
                 }
                 boxMessage.messageBox('Succeed', 'success');

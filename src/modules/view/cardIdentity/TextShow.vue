@@ -34,7 +34,7 @@
                     </div>
                     <div class="flex flex-col justify-between">
                         <el-form-item label="Place of Birth">
-                            <el-input disabled v-model="form.height" />
+                            <el-input disabled v-model="form.place_dob" />
                         </el-form-item>
                         <div class="flex gap-2">
                             <el-form-item label="Date of Birth">
@@ -62,6 +62,7 @@
 </template>
 
 <script setup lang="ts">
+import { strToDate } from '@/app/utils/dateFormat';
 import type { CardIdentity } from '@/modules/types/ocr';
 import { ref, watch } from 'vue';
 
@@ -96,12 +97,11 @@ const parseForm = (formData: any) => {
     form.value.gender = formData.gender?.includes('F') ? 'F' : 'M'
     // custom regex nation
     form.value.national = formData.national?.split('/')[0]
-    // custom regex dob
-    form.value.dob = formData.dob?.replace(/\./g, '-')
-
-    form.value.issued_from = formData.validFrom
-    form.value.issued_to = formData.validTo
     
+    form.value.dob = strToDate(formData.dob) 
+    form.value.issued_from = strToDate(formData.validFrom)
+    form.value.issued_to = strToDate(formData.validTo)
+
     form.value.id = formData.id
 }
 
