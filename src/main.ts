@@ -10,7 +10,6 @@ import { useTheme } from '@/modules/store/theme.ts'
 import i18n from "@/modules/locales";
 import "highlight.js/styles/github-dark.css" // full color text in chat
 
-
 const app = createApp(App);
 const pinia = createPinia();
 const router = route;
