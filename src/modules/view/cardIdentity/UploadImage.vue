@@ -1,5 +1,5 @@
 <template>
-    <div class="border border-gray-100 rounded-xl overflow-hidden p-2 min-w-125 min-h-175">
+    <div class="border border-gray-100 rounded-xl overflow-hidden p-2 min-w-75 min-h-175">
         <el-upload class="mt-5" drag multiple :limit="1" :show-file-list="false" :on-exceed="handleExceed"
             :http-request="handleSelectFile">
             <el-icon class="el-icon--upload">

@@ -73,3 +73,6 @@ el-icon
 el-icon--left
 el-icon--right
 ```
+
+* deep() : is a key that I can custom style in element-plus element (effective with CSS )
+* v-deep() :  is a key that I can custom style in element-plus element (effective with Scss)

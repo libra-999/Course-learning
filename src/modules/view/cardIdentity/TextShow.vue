@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-xl overflow-hidden  py-7 px-2 min-w-125 min-h-175">
+    <div class="rounded-xl overflow-hidden  py-7 px-2 min-w-75 min-h-175">
         <div v-if="prop.cardData && prop.cardData" class="text-start">
             <el-card shadow="hover" class="rounded-2xl">
                 <div class="flex items-center justify-between mb-6">
@@ -10,7 +10,7 @@
                     <el-tag type="success">OCR Result</el-tag>
                 </div>
                 <el-form label-position="top" class="flex flex-col gap-2">
-                    <div class="flex justify-between">
+                    <div class="mobile flex justify-between">
                         <el-form-item label="Name (English)" class="w-50">
                             <el-input disabled v-model="form.name_en" />
                         </el-form-item>
@@ -18,7 +18,7 @@
                             <el-input disabled v-model="form.name_ch" />
                         </el-form-item>
                     </div>
-                    <div class="flex justify-between">
+                    <div class=" mobile flex justify-between">
                         <el-form-item label="Gender" class="w-25">
                             <el-select disabled v-model="form.gender">
                                 <el-option label="Male" value="M" />
@@ -32,7 +32,7 @@
                             <el-input disabled v-model="form.height" />
                         </el-form-item>
                     </div>
-                    <div class="flex flex-col justify-between">
+                    <div class=" mobile flex flex-col justify-between">
                         <el-form-item label="Place of Birth">
                             <el-input disabled v-model="form.place_dob" />
                         </el-form-item>
@@ -45,7 +45,7 @@
                                 class="h-[60px] w-[200px] my-auto"></el-image>
                         </div>
                     </div>
-                    <div class="flex justify-between gap-2">
+                    <div class="mobile flex justify-between gap-2">
                         <el-form-item label="Valid From">
                             <el-date-picker disabled v-model="form.issued_from" type="date" value-format="YYYY-MM-DD"
                                 class="w-full" />
@@ -116,4 +116,14 @@ watch(
 )
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+@media screen and (max-width:$screen-md) {
+   .mobile {
+     display: flex;
+     flex-direction: column;
+        ::v-deep(.el-form-item){
+            width: 100%;
+        }
+   }
+}
+</style>
