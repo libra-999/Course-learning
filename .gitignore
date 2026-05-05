@@ -26,4 +26,4 @@ dist-ssr
 # config
 credential-aba-payway(test).txt
 
-
+.env.prod

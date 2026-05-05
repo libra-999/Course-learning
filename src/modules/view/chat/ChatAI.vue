@@ -292,6 +292,8 @@ onUnmounted(()=>{
 
 .chat-window {
     position: fixed;
+    resize: both;
+    overflow: hidden;
     bottom: 28px;
     right: 28px;
     width: 330px;
@@ -301,7 +303,6 @@ onUnmounted(()=>{
     box-shadow: $shadow;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     transition: width 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), height 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
 
     &::before {
@@ -437,7 +438,7 @@ onUnmounted(()=>{
 
 .messages {
     flex: 1;
-    overflow-y: auto;
+    overflow: auto;
     padding: 20px 16px;
     scroll-behavior: smooth;
     position: relative;
