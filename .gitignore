@@ -27,3 +27,4 @@ dist-ssr
 credential-aba-payway(test).txt
 
 .env.prod
+.env
