@@ -24,12 +24,6 @@ export async function removeFile(fileName: string) {
 	return remove.data.data
 }
 
-export async function generateCardToken (user: any):Promise<any> {
-	return await apiRequest.post('/api/ocr/card/token',{
-		user_info: user
-	})
-}
-
 export async function uploadCard(files: FormData, _token?: string) {
 	const upload = await apiRequest.post('/api/ocr/card',files, {
 		headers: {
