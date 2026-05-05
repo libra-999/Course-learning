@@ -1,13 +1,16 @@
 <template>
     <div class="rounded-xl overflow-hidden  py-7 px-2 min-w-75 min-h-175">
-        <div v-if="prop.cardData && prop.cardData" class="text-start">
+        <div v-if="form" class="text-start">
             <el-card shadow="hover" class="rounded-2xl">
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h2 class="text-xl font-semibold">Identity Information</h2>
                         <p class="text-gray-500 text-sm">Extracted from ID card <b>{{ form.id === 0 ? '' : '( ' +form.id + ' )' }}</b></p>
                     </div>
-                    <el-tag type="success">OCR Result</el-tag>
+                    <div class="flex flex-col gap-1">
+                        <el-tag type="success">OCR Result</el-tag>
+                        <el-tag type="warning">  Estimate time : {{ estimateCounter }}s / {{ prop.ocr_job_estimate_time }}s</el-tag>    
+                    </div>
                 </div>
                 <el-form label-position="top" class="flex flex-col gap-2">
                     <div class="mobile flex justify-between">
@@ -63,14 +66,35 @@
 
 <script setup lang="ts">
 import { dayMonthFormat } from '@/app/utils/dateFormat';
-import type { CardIdentity } from '@/modules/types/ocr';
-import { ref, watch } from 'vue';
+import { useMessage } from '@/app/utils/message';
+import { ocrData } from '@/modules/api/uploadFile';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 
 const prop = defineProps<{
     image?: string,
-    cardData: CardIdentity
+    ocr_job_id: any,
+    ocr_job_estimate_time:  any,
 }>()
+    const estimateCounter = ref(0)
+
+let checkEstimatesTime : ReturnType<typeof setInterval> 
+let estimateTimer: ReturnType<typeof setInterval> | null = null
+
+const startEstimateCounter = () => {
+  estimateCounter.value = 0
+  estimateTimer = setInterval(() => {
+    if (estimateCounter.value >= prop.ocr_job_estimate_time) {
+      clearInterval(estimateTimer!)
+      estimateTimer = null
+      return
+    }
+
+    estimateCounter.value++
+  }, 1000)
+}
+
+const boxMessage = useMessage();
 const form = ref<any>({
     id: '',
     name_en: '',
@@ -105,15 +129,37 @@ const parseForm = (formData: any) => {
     form.value.id = formData.id
 }
 
-watch(
-    () => prop.cardData,
-    (i) => {
-        if (i != null) {
-            parseForm(i)
-        }
-    },
-    { immediate: true }
-)
+const getOCRData = async (ocr_job_id: any)=>{
+    return await ocrData(ocr_job_id);
+}
+
+const checkStatusOCRData = async ()=>{
+    const value = await getOCRData(prop.ocr_job_id)
+    if(value.jobState  === "active")  return
+    if(value.jobState === "failed") {
+        if(checkEstimatesTime) clearInterval(checkEstimatesTime)
+
+        return boxMessage.notificationBox("Cannot load process data","error")
+    }
+    if (value.jobState  === "completed"){
+        if(checkEstimatesTime) clearInterval(checkEstimatesTime)
+        parseForm(value.jobValue)
+    }
+}
+onMounted(()=> {
+    if(!prop.ocr_job_id) return
+
+    startEstimateCounter()
+    checkStatusOCRData()
+    checkEstimatesTime =  setInterval(checkStatusOCRData, 2000) // 5s
+})
+
+onUnmounted(()=> {
+    if(checkEstimatesTime) clearInterval(checkEstimatesTime)
+    if(estimateTimer) clearInterval(estimateTimer)
+})
+
+
 </script>
 
 <style scoped lang="scss">

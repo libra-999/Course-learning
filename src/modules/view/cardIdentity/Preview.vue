@@ -4,7 +4,7 @@
         <div class="flex justify-between h-[50%] gap-3 rounded-xl mobile__object">
             <UploadImage :files="files" :loading="loading" @select-file="selectFile" @remove-file="removeFile"
                 @convert-file="handleConvert" />
-            <TextShow :image="toText?.image" :card-data="toText.cardInfo" />
+            <TextShow v-if="toText.ocr_job_id" :image="toText?.image" :ocr_job_estimate_time="toText?.ocr_job_estimate_time" :ocr_job_id="toText?.ocr_job_id" />
         </div>
     </div>
 </template>
@@ -13,7 +13,6 @@
 import { useMessage } from '@/app/utils/message';
 import { UploadRuleForm } from '@/app/utils/mimeType';
 import { uploadCard } from '@/modules/api/uploadFile';
-import type { CardIdentity } from '@/modules/types/ocr';
 import TextShow from '@/modules/view/cardIdentity/TextShow.vue';
 import UploadImage from '@/modules/view/cardIdentity/UploadImage.vue';
 import { ref } from 'vue';
@@ -21,22 +20,10 @@ import { ref } from 'vue';
 const files = ref<File[]>([]);
 const boxMessage = useMessage();
 const loading = ref(false);
-const toText = ref<{
-    image: string
-    cardInfo: CardIdentity
-}>({
+const toText = ref<{image: string, ocr_job_id: string, ocr_job_estimate_time : any}>({
+    ocr_job_id: '',
+    ocr_job_estimate_time: 0,
     image: '',
-    cardInfo: {
-        nameCH: '',
-        nameEN: '',
-        id: 0,
-        gender: '',
-        national: '',
-        validFrom: '',
-        validTo:'',
-        dob: '',
-        signature: ''
-    },
 });
 
 const selectFile = async (file: File) => {
@@ -63,19 +50,8 @@ const handleConvert = async () => {
             const res = await uploadCard(form);
             if (res.code === 200) {
                 const data = res.data
-                const [validFrom, validTo] = data.period.split(" ")
-                
-                toText.value.cardInfo = {
-                    nameCH: data.nameCH,
-                    nameEN: data.nameEN,
-                    gender: data.gender,
-                    national: data.national,
-                    dob: data.dob,
-                    id: data.id,
-                    validFrom: validFrom,
-                    validTo: validTo,
-                    signature: data.signature
-                }
+                toText.value.ocr_job_id = data.jobId
+                toText.value.ocr_job_estimate_time = data.secondEstimateTime
                 boxMessage.messageBox('Succeed', 'success');
                 return;
             }

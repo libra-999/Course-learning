@@ -34,17 +34,16 @@ export async function uploadCard(files: FormData, _token?: string) {
 	const upload = await apiRequest.post('/api/ocr/card',files, {
 		headers: {
 			'Content-Type': 'multipart/form-data',
-			// 'x-card-token': token
 		}
 	})
 	return upload.data
 }
 
-export async function ocrCardImage(token: string): Promise<any> {
-	const ocrData = await apiRequest.get('/api/ocr/card', {
+export async function ocrData (ocr_id_uuid: string) : Promise<any> {
+	const ocrData = await apiRequest.get('/api/ocr/card',{
 		headers: {
-			'x-card-token': token
+			'ocr_job_id': ocr_id_uuid
 		}
 	})
-	return ocrData.data
+	return ocrData.data.data
 }

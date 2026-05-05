@@ -34,7 +34,7 @@ export default {
 		},
 		OCR_CARD: {
 			title: 'Card Identity To Text',
-			content: "Generate text from image or card identity , easy to manage in some function that want to use user information epecially KYC's user ",
+			content: "Generate text from image or card identity , easy to manage in some function that want to use user information especially KYC's user ",
 		},
 		PROFILE_DD: {
 			profile: 'Profile',
