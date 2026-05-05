@@ -29,4 +29,4 @@ credential-aba-payway(test).txt
 .env.prod
 .env
 
-credential-aba-payway(test).txt
+aba-credential.txt
