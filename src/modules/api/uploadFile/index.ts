@@ -45,5 +45,5 @@ export async function ocrData (ocr_id_uuid: string) : Promise<any> {
 			'ocr_job_id': ocr_id_uuid
 		}
 	})
-	return ocrData.data.data
+	return ocrData.data
 }

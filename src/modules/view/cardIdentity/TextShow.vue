@@ -130,7 +130,8 @@ const parseForm = (formData: any) => {
 }
 
 const getOCRData = async (ocr_job_id: any)=>{
-    return await ocrData(ocr_job_id);
+    const res = await ocrData(ocr_job_id);
+    return res.data
 }
 
 const checkStatusOCRData = async ()=>{
@@ -138,12 +139,15 @@ const checkStatusOCRData = async ()=>{
     if(value.jobState  === "active")  return
     if(value.jobState === "failed") {
         if(checkEstimatesTime) clearInterval(checkEstimatesTime)
-
         return boxMessage.notificationBox("Cannot load process data","error")
     }
     if (value.jobState  === "completed"){
         if(checkEstimatesTime) clearInterval(checkEstimatesTime)
-        parseForm(value.jobValue)
+        const data = value.jobValue
+        if(data?.status){
+            return boxMessage.notificationBox(data.cause + ", Please try upload again with HD Image","error")
+        }
+        parseForm(value.data.jobValue)
     }
 }
 onMounted(()=> {

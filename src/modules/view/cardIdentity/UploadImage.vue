@@ -1,6 +1,6 @@
 <template>
     <div class="border border-gray-100 rounded-xl overflow-hidden p-2 min-w-75 min-h-175">
-        <el-upload class="mt-5" drag multiple :limit="1" :show-file-list="false" :on-exceed="handleExceed"
+        <el-upload ref="uploadRemoveRef" accept="image/*" class="mt-5" :before-upload="validUpload" drag :limit="1" :show-file-list="false" :on-exceed="handleExceed"
             :http-request="handleSelectFile">
             <el-icon class="el-icon--upload">
                 <UploadFilled />
@@ -42,7 +42,9 @@
 <script setup lang="ts">
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue';
 import { useMessage } from '@/app/utils/message';
+import { UploadRuleForm } from '@/app/utils/mimeType';
 import { Close, UploadFilled } from '@element-plus/icons-vue';
+import { type UploadInstance, type UploadRawFile } from 'element-plus';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 const prop = defineProps<{
@@ -58,6 +60,7 @@ const emit = defineEmits<{
 
 const boxMessage = useMessage();
 const previewUrls = ref(new Map<string, string>());
+const uploadRemoveRef = ref<UploadInstance>()
 const getFileKey = (file: File) => `${file.name}-${file.size}-${file.lastModified}`;
 
 const imagePreviewUrls = computed(() =>
@@ -77,6 +80,7 @@ const handleConvert = () => {
 
 // just remove from ui
 const handleRemove = (index: number) => {
+    uploadRemoveRef.value?.clearFiles();
     emit('removeFile', index);
 };
 
@@ -84,6 +88,20 @@ const handleRemove = (index: number) => {
 const handleExceed = () => {
     boxMessage.notificationBox('You can upload a maximum of 1 files.', 'warning');
 };
+
+// file validate
+const validUpload =(file: UploadRawFile) =>{
+    const fileRef = UploadRuleForm.find((i)=> i.label == 'image')
+
+    if (!fileRef?.types.includes(file.type.toLowerCase())){
+        boxMessage.notificationBox("Only image files are allowed","warning")
+        uploadRemoveRef.value?.clearFiles() // remove image
+        return false
+    }
+
+    return true
+}
+
 
 onBeforeUnmount(() => {
     previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
