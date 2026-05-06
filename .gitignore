@@ -23,10 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# config
-credential-aba-payway(test).txt
+#.env.prod
+#.env
 
-.env.prod
-.env
-
-aba-credential.txt
+#aba-credential.txt
