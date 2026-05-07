@@ -9,7 +9,7 @@
                     </div>
                     <div class="flex flex-col gap-1">
                         <el-tag type="success">OCR Result</el-tag>
-                        <el-tag type="warning">  Estimate time : {{ estimateCounter }}s / {{ prop.ocr_job_estimate_time }}s</el-tag>    
+                        <el-tag type="warning">  Estimate time : ~ {{ estimateCounter }}s / {{ prop.ocr_job_estimate_time }}s</el-tag>    
                     </div>
                 </div>
                 <el-form label-position="top" class="flex flex-col gap-2">
@@ -76,7 +76,7 @@ const prop = defineProps<{
     ocr_job_id: any,
     ocr_job_estimate_time:  any,
 }>()
-    const estimateCounter = ref(0)
+const estimateCounter = ref(0)
 
 let checkEstimatesTime : ReturnType<typeof setInterval> 
 let estimateTimer: ReturnType<typeof setInterval> | null = null
@@ -84,12 +84,11 @@ let estimateTimer: ReturnType<typeof setInterval> | null = null
 const startEstimateCounter = () => {
   estimateCounter.value = 0
   estimateTimer = setInterval(() => {
-    if (estimateCounter.value >= prop.ocr_job_estimate_time) {
-      clearInterval(estimateTimer!)
-      estimateTimer = null
-      return
+    if(estimateCounter.value >= 600) // 10mins
+    {
+        clearInterval(estimateTimer!)
+        return boxMessage.messageBox("This process is taking long time,  please upload image again with high resolution","error")
     }
-
     estimateCounter.value++
   }, 1000)
 }
@@ -143,9 +142,12 @@ const checkStatusOCRData = async ()=>{
     }
     if (value.jobState  === "completed"){
         if(checkEstimatesTime) clearInterval(checkEstimatesTime)
+        clearInterval(estimateTimer!)
+        estimateTimer = null
+
         const data = value.jobValue
         if(data?.status){
-            return boxMessage.notificationBox(data.cause + ", Please try upload again with HD Image","error")
+            return boxMessage.notificationBox(data.cause + ", Please upload image again with high resolution","error")
         }
         parseForm(value.data.jobValue)
     }
@@ -155,7 +157,7 @@ onMounted(()=> {
 
     startEstimateCounter()
     checkStatusOCRData()
-    checkEstimatesTime =  setInterval(checkStatusOCRData, 2000) // 5s
+    checkEstimatesTime =  setInterval(checkStatusOCRData, 2000)
 })
 
 onUnmounted(()=> {

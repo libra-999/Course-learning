@@ -65,6 +65,12 @@ const handleConvert = async () => {
 
 const removeFile = (index: number) => {
     files.value.splice(index, 1);
+    // reset new ocr_job_id
+    toText.value = {
+        ocr_job_id: '',
+        ocr_job_estimate_time: 0,
+        image: ''
+    }
 };
 </script>
 
