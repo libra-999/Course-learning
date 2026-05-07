@@ -29,6 +29,9 @@
 						<el-input v-model="userRef.password" type="password" name="password" show-password
 							:placeholder="`${t('LOGIN.FILL.FORM_ITEM.pwd_placeholder')}`" />
 					</el-form-item>
+					<el-form-item prop="isRemember">
+						<el-checkbox v-model="userRef.isRemember" name="isRemember">Remember your password?</el-checkbox>
+					</el-form-item>
 					<ButtonGlobal @click.prevent="submit" :value="`${t('LOGIN.FILL.FORM_ITEM.submit')}`"
 						class="text-white text-center container-button" />
 				</el-form>
@@ -90,7 +93,7 @@ import { loginStore } from '@/modules/store/auth.ts'
 import { type FormInstance, type FormRules } from 'element-plus'
 import route from '@/modules/route'
 import { useMessage } from '@/app/utils/message.ts'
-import type { LoginRequest, QRCode, User } from '../types/auth'
+import type { LoginRequest, QRCodeData, User } from '../types/auth'
 import { generateQR, getQR, login } from '../api/auth'
 import { minuteFormat, remaingTime } from '@/app/utils/dateFormat'
 import { Refresh, Select } from '@element-plus/icons-vue'
@@ -100,6 +103,8 @@ import { useI18n } from 'vue-i18n'
 import useSocket from '@/app/utils/si'
 import { QR_KEY } from '@/modules/config/socket.config'
 import { useLocale } from '@/modules/locales'
+import Cookies from "js-cookie"
+import { createHash } from '@/app/utils/crypto'
 
 const { t } = useI18n()
 const { currentValue } = useLocale()
@@ -109,7 +114,7 @@ const errorMessage = useMessage()
 const userStore = loginStore()
 const userRefInstance = ref<FormInstance>()
 const { initSocket, sendMessage, onEvent, offEvent } = useSocket<any>({})
-const qr = ref<QRCode>({
+const qr = ref<QRCodeData>({
 	qrToken: '',
 	qrCodeImageUrl: '',
 	qrCountDown: 120,
@@ -119,6 +124,8 @@ const qr = ref<QRCode>({
 const userRef = ref<LoginRequest>({
 	username: '',
 	password: '',
+	isRemember: false
+	
 })
 const userRule: FormRules<LoginRequest> = {
 	username: [
@@ -159,10 +166,23 @@ function leaveQRRoom() {
 async function submit() {
 	if (!userRefInstance.value) return
 	userRefInstance.value.validate()
-
 	try {
-		const loginApi = await login(userRef.value)
+		const payload = {
+			username: userRef.value.username,
+			password: userRef.value.password
+		}
+		const loginApi = await login(payload)
+		if (userRef.value.isRemember){
+			Cookies.set("username",userRef.value.username, { expires: 30}) // expired in a month
+			Cookies.set("password", createHash(userRef.value.password), { expires: 30})
+			Cookies.set("isRemember", userRef.value.isRemember,  {expires: 30})
+		}else{
+			Cookies.remove("username") 
+			Cookies.remove("password")
+			Cookies.remove("isRemember")
+		}
 		if (loginApi.code === 200) {
+
 			const token = loginApi.data.access_token
 			const userDetail = loginApi.data.user
 			const user: User = {
@@ -195,6 +215,7 @@ function startQRCodeCountdown(expired = 120) {
 	tick()
 	qrCountDownTimer.value = setInterval(tick, 1000)
 }
+
 function stopQRCodeCountdown() {
 	if (qrCountDownTimer.value) {
 		clearInterval(qrCountDownTimer.value)
@@ -241,6 +262,7 @@ async function generateQRLogin() {
 		errorMessage.messageBox(t("LOGIN.API.error.qr_generate_display"), 'error')
 	}
 }
+
 async function qrRouteToLogin(data: any) {
 	// prevent null user & token
 	if (!data?.user || !data?.accessToken) return
@@ -264,6 +286,7 @@ async function qrRouteToLogin(data: any) {
 	userStore.login(userDetail, token)
 	await route.replace({ path: '/system' })
 }
+
 async function fetchQrStateByStatus() {
 	if (!qr.value.qrToken) return
 	try {
