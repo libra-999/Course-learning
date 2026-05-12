@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label: 'docker-agent' 
+        label 'docker-agent' 
     }
     environment {
         APP_IMAGE  = "xemon99/vue-test"
@@ -28,7 +28,6 @@ pipeline {
                         env.EXCEPTION_MSG = error.toString()
                         throw error
                     }
-
                 }
             }
         }
@@ -37,13 +36,13 @@ pipeline {
             steps {
                 echo "===> Build image and push server <==="
                 script {
-                     try {
+                    try {
                         dockerBuildAndPush(APP_IMAGE,env.VERSION)
                         echo "✅ push successfully : )"
-                     }catch(Exception error) {
+                    }catch(Exception error) {
                         env.EXCEPTION_MSG = error.toString()
                         throw error
-                     }
+                    }
                 }
             }
         }
@@ -76,25 +75,25 @@ def dockerBuildAndPush(imageName, version) {
         )
     ]) {
         if(env.VERSION ==~ /^dev-v.*/ || env.VERSION ==~ /^prod-v.*/ || env.VERSION ==~ /^uat-v.*/){
-                sh """
-                      set -e
-                      echo "🐳 Building ${imageName}:${version}"
-                      echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
-                      docker build -t ${imageName}:${version} .
-                      docker tag ${imageName}:${version} ${imageName}:lts
-                      docker push ${imageName}:${version}
-                      docker push ${imageName}:lts
-                    
-                """ 
+            sh """
+                    set -e
+                    echo "🐳 Building ${imageName}:${version}"
+                    echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                    docker build -t ${imageName}:${version} .
+                    docker tag ${imageName}:${version} ${imageName}:lts
+                    docker push ${imageName}:${version}
+                    docker push ${imageName}:lts
+                
+            """ 
         }else if (env.VERSION ==~ /^v.*/){
-                sh """
-                      set -e
-                      echo "🐳 Building ${imageName}:${version}"
-                      echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
-                      docker build -t ${imageName}:${version} .
-                      docker push ${imageName}:${version}
-                    
-                   """
+            sh """
+                    set -e
+                    echo "🐳 Building ${imageName}:${version}"
+                    echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                    docker build -t ${imageName}:${version} .
+                    docker push ${imageName}:${version}
+                
+                """
         }
     }
 }
