@@ -3,7 +3,7 @@ pipeline {
         label 'docker-agent' 
     }
     environment {
-        APP_IMAGE  = "xemon99/vue-test"
+        APP_IMAGE  = "xemon99/demo-vue-web"
         APP = "VUE"
         EXCEPTION_MSG = ""
     }
@@ -56,10 +56,7 @@ def getValidTag() {
         error("❌ No tag found on this commit. Docker build requires a release tag.")
     }
 //     ex: prod-v0.0.2 or dev-v0.0.2 or uat-v0.0.2 , ex: if tag 'v0.2.1' it mean release new version
-    if ( tag ==~ /^prod-v?\d+\.\d+\.\d+$/ || tag ==~ /^uat-v?\d+\.\d+\.\d+$/ || tag ==~ /^dev-v?\d+\.\d+\.\d+$/) {
-        return tag
-    }else if (tag ==~ /^v?\d+\.\d+\.\d+$/) {
-        APP_IMAGE = "xemon99/vue-course-app"
+    if ( tag ==~ /^prod-v?\d+\.\d+\.\d+$/ || tag ==~ /^uat-v?\d+\.\d+\.\d+$/ || tag ==~ /^dev-v?\d+\.\d+\.\d+$/ || tag ==~ /^v?\d+\.\d+\.\d+$/) {
         return tag
     }else {
         error("❌ Invalid tag format: ${tag}")
@@ -74,7 +71,7 @@ def dockerBuildAndPush(imageName, version) {
             passwordVariable: 'DOCKER_PASS'
         )
     ]) {
-        if(env.VERSION ==~ /^dev-v.*/ || env.VERSION ==~ /^prod-v.*/ || env.VERSION ==~ /^uat-v.*/){
+        if(env.VERSION ==~ /^dev-v.*/ || env.VERSION ==~ /^prod-v.*/ || env.VERSION ==~ /^uat-v.*/ || env.VERSION ==~ /^v.*/){
             sh """
                     set -e
                     echo "🐳 Building ${imageName}:${version}"
@@ -84,15 +81,6 @@ def dockerBuildAndPush(imageName, version) {
                     docker push ${imageName}:${version}
                     docker push ${imageName}:lts
             """ 
-        }else if (env.VERSION ==~ /^v.*/){
-            sh """
-                    set -e
-                    echo "🐳 Building ${imageName}:${version}"
-                    echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
-                    docker build -t ${imageName}:${version} .
-                    docker push ${imageName}:${version}
-                
-                """
         }
     }
 }
