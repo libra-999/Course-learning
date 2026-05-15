@@ -24,7 +24,7 @@ export async function removeFile(fileName: string) {
 	return remove.data.data
 }
 
-export async function uploadCard(files: FormData, _token?: string) {
+export async function uploadCard(files: FormData) {
 	const upload = await apiRequest.post('/api/ocr/card',files, {
 		headers: {
 			'Content-Type': 'multipart/form-data',

@@ -1,5 +1,12 @@
 <template>
     <div class="border border-gray-100 rounded-xl overflow-hidden p-2 min-w-75 min-h-175">
+        <el-form-item class="w-25">
+            <el-select v-model="selectCountry">
+                <el-option label="China" value="CN" />
+                <el-option label="Hong Kong" value="HK" />
+                <el-option label="Singapore" value="SG"/>
+            </el-select>
+        </el-form-item>
         <el-upload ref="uploadRemoveRef" accept="image/*" class="mt-5" :before-upload="validUpload" drag :limit="1" :show-file-list="false" :on-exceed="handleExceed"
             :http-request="handleSelectFile">
             <el-icon class="el-icon--upload">
@@ -50,10 +57,12 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue';
 const prop = defineProps<{
     files: File[]
     loading: boolean
+    country: string
 }>();
 
 const emit = defineEmits<{
     (event: 'selectFile', file: File): void
+    (event: 'selectCountry', country: string) : void
     (event: 'removeFile', index: number): void
     (event: 'convertFile'): void
 }>();
@@ -83,6 +92,11 @@ const handleRemove = (index: number) => {
     uploadRemoveRef.value?.clearFiles();
     emit('removeFile', index);
 };
+
+const selectCountry = computed({
+    get: ()=> prop.country,
+    set: (value) => emit("selectCountry", value)
+})
 
 // prevent have more than 2 files
 const handleExceed = () => {

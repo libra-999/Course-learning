@@ -3,7 +3,7 @@
         <article class=" font-bold text-5xl mb-5">OCR CARD IDENTITY</article>
         <div class="flex justify-between h-[50%] gap-3 rounded-xl mobile__object">
             <UploadImage :files="files" :loading="loading" @select-file="selectFile" @remove-file="removeFile"
-                @convert-file="handleConvert" />
+                @convert-file="handleConvert" :country="country"  @select-country="selectCountry"/>
             <TextShow v-if="toText.ocr_job_id" :image="toText?.image" :ocr_job_estimate_time="toText?.ocr_job_estimate_time" :ocr_job_id="toText?.ocr_job_id" />
         </div>
     </div>
@@ -17,6 +17,7 @@ import TextShow from '@/modules/view/cardIdentity/TextShow.vue';
 import UploadImage from '@/modules/view/cardIdentity/UploadImage.vue';
 import { ref } from 'vue';
 
+const country = ref("CN")
 const files = ref<File[]>([]);
 const boxMessage = useMessage();
 const loading = ref(false);
@@ -36,6 +37,9 @@ const selectFile = async (file: File) => {
     files.value.push(file);
 };
 
+const selectCountry = (value: string) => {
+    country.value = value
+}
 const handleConvert = async () => {
     if (!files.value.length) {
         boxMessage.notificationBox('Please upload at least one image before converting.', 'warning');
@@ -46,6 +50,7 @@ const handleConvert = async () => {
     try {
         for (const file of files.value) {
             const form = new FormData();
+            form.append('country',country.value)
             form.append('file', file);
             const res = await uploadCard(form);
             if (res.code === 200) {

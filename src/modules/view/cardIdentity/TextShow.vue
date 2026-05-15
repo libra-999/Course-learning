@@ -5,7 +5,7 @@
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h2 class="text-xl font-semibold">Identity Information</h2>
-                        <p class="text-gray-500 text-sm">Extracted from ID card <b>{{ form.id === 0 ? '' : '( ' +form.id + ' )' }}</b></p>
+                        <p class="text-gray-500 text-sm">ID card <b>{{ form.id === 0 ? '' : '( ' +form.id + ' )' }}</b></p>
                     </div>
                     <div class="flex flex-col gap-1">
                         <el-tag type="success">OCR Result</el-tag>
@@ -121,9 +121,11 @@ const parseForm = (formData: any) => {
     // custom regex nation
     form.value.national = formData.national?.split('/')[0]
     
-    form.value.dob = dayMonthFormat(formData.dob) 
-    form.value.issued_from = dayMonthFormat(formData.validFrom)
-    form.value.issued_to = dayMonthFormat(formData.validTo)
+    form.value.dob = formData.dob 
+    const periodDate = form.value.period.split(/\s+/)
+
+    form.value.issued_from = periodDate[0]
+    form.value.issued_to = periodDate[1]
 
     form.value.id = formData.id
 }
@@ -149,7 +151,8 @@ const checkStatusOCRData = async ()=>{
         if(data?.status){
             return boxMessage.notificationBox(data.cause + ", Please upload image again with high resolution","error")
         }
-        parseForm(value.data.jobValue)
+
+        parseForm(value.jobValue)
     }
 }
 onMounted(()=> {
