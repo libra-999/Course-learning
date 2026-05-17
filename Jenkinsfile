@@ -72,11 +72,23 @@ def dockerBuildAndPush(imageName, version) {
         )
     ]) {
         if(env.VERSION ==~ /^dev-v.*/ || env.VERSION ==~ /^prod-v.*/ || env.VERSION ==~ /^uat-v.*/ || env.VERSION ==~ /^v.*/){
+            def env_name = "prod"
+            if (env.VERSION.startsWith("dev-v")){
+                env_name = "dev"
+            }else if (env.VERSION.startsWith("uat-v")){
+                env_name = "uat"
+            }else if (env.VERSION.startsWith("prod-v") || env.VERSION.startsWith("v")){
+                env_name = "prod"
+            }
             sh """
                     set -e
-                    echo "🐳 Building ${imageName}:${version}"
+                    echo "Image: ${imageName}:${version}" 
+                    echo "BuildMode: ${env_name}" 
                     echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
-                    docker build -t ${imageName}:${version} .
+                    docker build \
+                            --build-arg BUILD_MODE=${env_name} \
+                            -t ${imageName}:${version} .
+
                     docker tag ${imageName}:${version} ${imageName}:lts
                     docker push ${imageName}:${version}
                     docker push ${imageName}:lts
