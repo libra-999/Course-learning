@@ -9,7 +9,7 @@ COPY package.json pnpm-lock.yaml ./
 
 RUN npm install -g pnpm
 # install dependecies
-RUN pnpm install --frozen-lockfile  
+RUN pnpm install
 
 # copy all to /app
 COPY . .
