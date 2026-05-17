@@ -11,7 +11,7 @@ RUN pnpm install
 COPY . .
 # Run and build project
 ARG MODE=dev
-RUN npm run build -- --mode=${MODE}
+RUN pnpm run build -- --mode=${MODE}
 
 ## Runtime  ##
 FROM nginx:alpine
