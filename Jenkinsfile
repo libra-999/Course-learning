@@ -66,7 +66,7 @@ def getValidTag() {
 def dockerBuildAndPush(imageName, version) {
     withCredentials([
         usernamePassword(
-            credentialsId: 'DOCKER_HUB',
+            credentialsId: 'docker-hub',
             usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS'
         )
