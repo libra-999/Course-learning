@@ -1,13 +1,10 @@
 FROM node:22-alpine AS builder
 # create directory app
 WORKDIR /app
-
-# avoid script error
-ENV CI=true
 # copy package and pnpm-lock.yml
 COPY package.json pnpm-lock.yaml ./
 
-RUN npm install -g pnpm
+RUN corepack enable
 # install dependecies
 RUN pnpm install
 
