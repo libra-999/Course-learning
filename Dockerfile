@@ -13,7 +13,7 @@ RUN pnpm install --frozen-lockfile --reporter=append-only
 COPY . .
 # Run and build project
 ARG MODE=dev
-RUN pnpm run build -- --mode=${MODE}
+RUN pnpm run build:${MODE}
 
 ## Runtime  ##
 FROM nginx:alpine
