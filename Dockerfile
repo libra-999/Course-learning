@@ -1,12 +1,13 @@
 FROM node:22-alpine AS builder
 # create directory app
 WORKDIR /app
-# copy package and pnpm-lock.yml
-COPY package.json pnpm-lock.yaml ./
+ENV CI=true
 
 RUN corepack enable
-# install dependecies
-RUN pnpm install
+
+# copy package and pnpm-lock.yml
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --reporter=append-only
 
 # copy all to /app
 COPY . .
