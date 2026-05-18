@@ -3,7 +3,7 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 ENV CI=true
 
-RUN corepack enable
+RUN corepack enable  && corepack prepare pnpm@10.25.0 --activate
 
 # copy package and pnpm-lock.yml
 COPY package.json pnpm-lock.yaml ./
