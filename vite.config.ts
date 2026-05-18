@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), '')
 	const apiProxy = `/${env.VITE_SERVER_VERSION}`
 	return {
-		base : env.PATH,
 		server: {
 			host: '0.0.0.0', // allow anywhere
 			port: 7001, // port access
