@@ -11,5 +11,5 @@ export async function BotApi(contents: any, deviceName: string): Promise<any>{
 }
 
 export async function healthServer() :Promise<any> {
-    return await axios.get(`${SERVER_URL}`)
+    return await axios.get(`${SERVER_URL}/`)
 }
