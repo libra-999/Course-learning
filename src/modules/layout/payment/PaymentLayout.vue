@@ -20,6 +20,9 @@
 .mobile {
 	width: 30%;
 	margin: auto;
+	& a {
+		max-width: 50%;
+	}
 }
 @media (max-width: $screen-sm) {
 	.mobile {
@@ -27,10 +30,11 @@
 		nav {
 			width: 100%;
 			display: flex;
-			justify-content: center;
-			flex-wrap: wrap;
-			a {
-				max-width: max-content;
+			gap: .2rem;
+			align-items: center;
+			flex-direction: column;
+			& a {
+				width: 100%;
 			}
 		}
 	}

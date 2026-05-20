@@ -9,7 +9,7 @@
         </div>
         <div class="overflow-auto flex flex-wrap gap-4 p-3">
             <BookCard v-for="book in dataBook" :key="book.id" :book-data="book" />
-            <div v-if="dataBook.length === 0" class="w-full h-full text-center">
+            <div v-if="dataBook.length === 0" class="w-full h-full text-center m-auto">
                 <p class="text-gray-200 font-bold italic">Empty Data Book ... </p>
             </div>
         </div>
@@ -67,10 +67,5 @@ watch(search, () => {
 <style lang="scss" scoped>
 .mobile{
     margin: auto;
-}
-@media (max-width: $screen-sm) {
-    .mobile {
-        @include mobile-responsive(100%, auto, 10px 0, null)
-    }
 }
 </style>

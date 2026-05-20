@@ -757,7 +757,10 @@ onUnmounted(()=>{
 
 @media (max-width: $screen-sm) {
     .chat-window {
-        height: 90%;
+        height: 100%;
+        width: 100%;
+        right: 0;
+        bottom: 0;
     }
 }
 </style>
