@@ -6,7 +6,7 @@
         <slot name="icon-left"/>
             <span v-if="value" class="w-full">{{ value }}</span>
         <slot name="icon-right"/>
-    </button>
+    </button> 
 </template>
 <script setup lang="ts">
     const props = defineProps<{

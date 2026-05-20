@@ -41,7 +41,7 @@
                         </el-form-item>
                         <div class="flex gap-2">
                             <el-form-item label="Date of Birth">
-                                <el-date-picker disabled v-model="form.dob" type="date" value-format="YYYY-MM-DD"
+                                <el-input disabled v-model="form.dob"
                                     class="w-full" />
                             </el-form-item>
                             <el-image :src="`form:image/base64, ${form.signature}`"
@@ -50,11 +50,11 @@
                     </div>
                     <div class="mobile flex justify-between gap-2">
                         <el-form-item label="Valid From">
-                            <el-date-picker disabled v-model="form.issued_from" type="date" value-format="YYYY-MM-DD"
+                            <el-input disabled v-model="form.issued_from" 
                                 class="w-full" />
                         </el-form-item>
                         <el-form-item label="Valid To">
-                            <el-date-picker disabled v-model="form.issued_to" type="date" value-format="YYYY-MM-DD"
+                            <el-input disabled v-model="form.issued_to"
                                 class="w-full" />
                         </el-form-item>
                     </div>
@@ -65,7 +65,6 @@
 </template>
 
 <script setup lang="ts">
-import { dayMonthFormat } from '@/app/utils/dateFormat';
 import { useMessage } from '@/app/utils/message';
 import { ocrData } from '@/modules/api/uploadFile';
 import { onMounted, onUnmounted, ref } from 'vue';
@@ -84,7 +83,7 @@ let estimateTimer: ReturnType<typeof setInterval> | null = null
 const startEstimateCounter = () => {
   estimateCounter.value = 0
   estimateTimer = setInterval(() => {
-    if(estimateCounter.value >= 600) // 10mins
+    if(estimateCounter.value >= 120) // 2mins
     {
         clearInterval(estimateTimer!)
         return boxMessage.messageBox("This process is taking long time,  please upload image again with high resolution","error")
@@ -122,10 +121,9 @@ const parseForm = (formData: any) => {
     form.value.national = formData.national?.split('/')[0]
     
     form.value.dob = formData.dob 
-    const periodDate = form.value.period.split(/\s+/)
-
-    form.value.issued_from = periodDate[0]
-    form.value.issued_to = periodDate[1]
+    const [startDate , endDate] = formData.period.split(" ")
+    form.value.issued_from = startDate
+    form.value.issued_to = endDate
 
     form.value.id = formData.id
 }
