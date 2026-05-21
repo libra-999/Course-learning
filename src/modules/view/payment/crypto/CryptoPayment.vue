@@ -1,6 +1,6 @@
 <template>
-	<Loading v-if="loading"/>
-	<Product v-else :payload="data" :submit="submit"/>
+	<Loading v-if="loading" />
+	<Product v-else :payload="data" :submit="submit" />
 </template>
 <script setup lang="ts">
 
@@ -9,7 +9,7 @@ import type { NowpaymentModel } from '@/modules/types/payment/crypto'
 import { createInvoice } from '@/modules/api/payment/crypto'
 import Loading from '@/app/components/Loading.vue'
 import { useMessage } from '@/app/utils/message.ts'
-import Product from '@/app/components/system/payment/crypto/Product.vue'
+import Product from '@/app/components/System/payment/crypto/Product.vue'
 
 const errorMessage = useMessage()
 const loading = ref(false)
@@ -22,7 +22,7 @@ const data = ref<NowpaymentModel>({
 	pay_currency: 'btc',
 })
 
-const submit = async ()=> {
+const submit = async () => {
 	loading.value = true
 	try {
 		const req = await createInvoice(data.value);
@@ -36,12 +36,12 @@ const submit = async ()=> {
 				'error'
 			)
 		}
-	}catch (error: any){
+	} catch (error: any) {
 		throw errorMessage.messageBox(
 			error.response?.message,
 			'error'
 		)
-	}finally {
+	} finally {
 		loading.value = false
 	}
 }

@@ -67,23 +67,22 @@
 				<Cardbox :title="`${t('MAIN_LAYOUT.ROLE.title')}`" :content="`${t('MAIN_LAYOUT.ROLE.content')}`"
 					:icon="Avatar" path="/system/table" />
 				<!-- Chat BOT-->
-				 <Cardbox :title="`${t('MAIN_LAYOUT.BOT.title')}`" :content="`${t('MAIN_LAYOUT.BOT.content')}`"
-				  	:icon="ChatDotRound" path="/system/bot"/>
-				 <!-- OCR Card Identity-->
-				 <Cardbox :title="`${t('MAIN_LAYOUT.OCR_CARD.title')}`" :content="`${t('MAIN_LAYOUT.OCR_CARD.content')}`" 
-				 	:icon="Postcard" path="/system/card-identity"/>
+				<Cardbox :title="`${t('MAIN_LAYOUT.BOT.title')}`" :content="`${t('MAIN_LAYOUT.BOT.content')}`"
+					:icon="ChatDotRound" path="/system/bot" />
+				<!-- OCR Card Identity-->
+				<Cardbox :title="`${t('MAIN_LAYOUT.OCR_CARD.title')}`" :content="`${t('MAIN_LAYOUT.OCR_CARD.content')}`"
+					:icon="Postcard" path="/system/card-identity" />
 			</div>
 		</div>
 	</div>
 	<!-- Timeline form-->
 	<el-dialog width="500" v-model="isTimelineShow" :show-close="true">
-		<p :class="`${themeStore.settings.themeSchema == 'dark' ? 'text-white text-2xl font-bold' : ''}text-2xl font-bold`">
+		<p
+			:class="`${themeStore.settings.themeSchema == 'dark' ? 'text-white text-2xl font-bold' : ''}text-2xl font-bold`">
 			{{ t("MAIN_LAYOUT.TIMELINE.title") }}
 		</p>
-		<el-form 
-			:class="`${themeStore.settings.themeSchema != 'dark' ? '' : 'text-white'} mt-6 font-bold w-full` " :model="timelineModel"
-			:rules="timelineRule" 
-			:ref="timelineInstance">
+		<el-form :class="`${themeStore.settings.themeSchema != 'dark' ? '' : 'text-white'} mt-6 font-bold w-full`"
+			:model="timelineModel" :rules="timelineRule" :ref="timelineInstance">
 			<div class="flex justify-between">
 				<el-form-item style="
 						display: flex;
@@ -103,9 +102,10 @@
 				</el-form-item>
 			</div>
 			<el-form-item prop="content">
-				<span class="mr-4">{{ t("MAIN_LAYOUT.TIMELINE.FORM_ITEM.content")}}</span>
-				<el-input name="content" v-model="timelineModel.content" :placeholder="`${t('MAIN_LAYOUT.TIMELINE.FORM_ITEM.content_placeholder')}`"
-					type="textarea" style="width: 240px" />
+				<span class="mr-4">{{ t("MAIN_LAYOUT.TIMELINE.FORM_ITEM.content") }}</span>
+				<el-input name="content" v-model="timelineModel.content"
+					:placeholder="`${t('MAIN_LAYOUT.TIMELINE.FORM_ITEM.content_placeholder')}`" type="textarea"
+					style="width: 240px" />
 			</el-form-item>
 			<ButtonGlobal @click.prevent="addTimeline"
 				:class="`${themeStore.settings.themeSchema != 'dark' ? 'bg-gray-800 text-white hover:bg-gray-600' : 'text-white'}`"
@@ -117,18 +117,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { Avatar, ChatDotRound, DataLine, DocumentAdd, Postcard, UploadFilled } from '@element-plus/icons-vue'
-import Timeline, { type Activities } from '@/app/components/card/Timeline.vue'
+import Timeline, { type Activities } from '@/app/components/Card/Timeline.vue'
 import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { timelineStore } from '@/modules/store/line.ts'
 import { type FormInstance, type FormRules } from 'element-plus'
 import { useMessage } from '@/app/utils/message.ts'
-import ThemeSwitch from '@/app/components/theme/ThemeSwitch.vue'
+import ThemeSwitch from '@/app/components/Theme/ThemeSwitch.vue'
 import { useTheme } from '@/modules/store/theme.ts'
-import Cardbox from '@/app/components/card/Cardbox.vue'
+import Cardbox from '@/app/components/Card/Cardbox.vue'
 import { loginStore } from '@/modules/store/auth'
 import route from '@/modules/route'
-import ScanQR from '@/app/components/scan/ScanQR.vue'
-import SwitchLang from '@/app/components/localization/SwitchLang.vue'
+import ScanQR from '@/app/components/Scan/ScanQR.vue'
+import SwitchLang from '@/app/components/Localization/SwitchLang.vue'
 import { useI18n } from 'vue-i18n'
 
 const message = useMessage()

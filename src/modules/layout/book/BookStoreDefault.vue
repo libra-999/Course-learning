@@ -4,7 +4,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import BookShow from '../../view/book/BookShow.vue';
+import BookShow from '../../view/Book/BookShow.vue';
 
 </script>
 <style lang="scss" scoped>

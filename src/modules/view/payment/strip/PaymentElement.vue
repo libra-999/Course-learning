@@ -1,14 +1,7 @@
 <template>
 	<VueStripeProvider :publishable-key="PUBLISH_KEY">
-		<VueStripeElements
-			v-if="clientSecret"
-			:client-secret="clientSecret"
-			:options="optionStripeElement"
-		>
-			<PaymentForm
-				:client-secret="clientSecret"
-				:option-payment="optionPaymentElement"
-			/>
+		<VueStripeElements v-if="clientSecret" :client-secret="clientSecret" :options="optionStripeElement">
+			<PaymentForm :client-secret="clientSecret" :option-payment="optionPaymentElement" />
 		</VueStripeElements>
 	</VueStripeProvider>
 </template>
@@ -16,7 +9,7 @@
 import { onMounted, ref } from 'vue'
 import { stripPayment } from '@/modules/api/payment/strip'
 import { VueStripeElements, VueStripeProvider } from '@vue-stripe/vue-stripe'
-import PaymentForm from '@/app/components/system/payment/strip/PaymentForm.vue'
+import PaymentForm from '@/app/components/System/payment/strip/PaymentForm.vue'
 
 // env and custom element in stripe
 const PUBLISH_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY

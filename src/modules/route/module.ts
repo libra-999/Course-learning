@@ -1,14 +1,14 @@
-import BookStoreDefault from "@/modules/layout/book/BookStoreDefault.vue";
-import TestDefault from "@/modules/layout/test/TestDefault.vue";
-import PaymentLayout from "@/modules/layout/payment/PaymentLayout.vue";
-import PurchaseABA from "@/modules/view/payment/aba/Purchase.vue";
-import PurchaseStrip from "@/modules/view/payment/strip/Purchase.vue";
-import CryptoPayment from "@/modules/view/payment/crypto/CryptoPayment.vue";
-import PurchaseABACheckout from "@/modules/layout/payment/PurchaseABACheckout.vue";
-import UploadProgressLayout from "@/modules/layout/uploadFile/UploadProgressLayout.vue";
-import TableLayout from "@/modules/layout/table/TableLayout.vue";
-import Chat from "@/modules/view/chat/Chat.vue";
-import Preview from "@/modules/view/cardIdentity/Preview.vue";
+import BookStoreDefault from "@/modules/layout/Book/BookStoreDefault.vue";
+import TestDefault from "@/modules/layout/Test/TestDefault.vue";
+import PaymentLayout from "@/modules/layout/Payment/PaymentLayout.vue";
+import PurchaseABA from "@/modules/view/Payment/aba/Purchase.vue";
+import PurchaseStrip from "@/modules/view/Payment/strip/Purchase.vue";
+import CryptoPayment from "@/modules/view/Payment/crypto/CryptoPayment.vue";
+import PurchaseABACheckout from "@/modules/layout/Payment/PurchaseABACheckout.vue";
+import UploadProgressLayout from "@/modules/layout/UploadFile/UploadProgressLayout.vue";
+import TableLayout from "@/modules/layout/Table/TableLayout.vue";
+import Chat from "@/modules/view/Chat/Chat.vue";
+import Preview from "@/modules/view/CardIdentity/Preview.vue";
 
 
 export const module = [

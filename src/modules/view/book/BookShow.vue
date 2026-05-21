@@ -21,12 +21,12 @@
 <script setup lang="ts">
 import { getBooks } from '../../api/book';
 import { usePagination } from '@/app/utils/pagination.ts';
-import Pagination from '@/app/components/pagination/Pagination.vue';
+import Pagination from '@/app/components/Pagination/Pagination.vue';
 import { onMounted, ref, watch } from 'vue';
 import type { Book } from '../../types/book';
 import Loading from '@/app/components/Loading.vue';
 import { useMessage } from '@/app/utils/message.ts'
-import BookCard from '@/app/components/system/book/BookCard.vue';
+import BookCard from '@/app/components/System/book/BookCard.vue';
 
 const dataBook = ref<Book[]>([]);
 const loading = ref(false);
@@ -65,7 +65,7 @@ watch(search, () => {
 })
 </script>
 <style lang="scss" scoped>
-.mobile{
+.mobile {
     margin: auto;
 }
 </style>

@@ -2,11 +2,7 @@
 	<div class="text-black w-full mobile">
 		<!-- upload with progressing -->
 		<div class="m-auto">
-			<ProgressUpload
-				:pictures="pictures"
-				@upload-submit="progressSubmit"
-				@remove-image="progressRemoveFile"
-			/>
+			<ProgressUpload :pictures="pictures" @upload-submit="progressSubmit" @remove-image="progressRemoveFile" />
 		</div>
 	</div>
 </template>
@@ -17,7 +13,7 @@ import { createUploadFiles, removeFile } from '@/modules/api/uploadFile'
 import { v4 as uuidV4 } from 'uuid'
 import { FileRuleResp } from '@/app/utils/mimeType.ts'
 import { useMessage } from '@/app/utils/message.ts'
-import ProgressUpload from '@/app/components/system/uploadFile/ProgressUpload.vue'
+import ProgressUpload from '@/app/components/System/uploadFile/ProgressUpload.vue'
 
 const pictures = ref<UploadItem[]>([])
 const message = useMessage()
@@ -67,8 +63,8 @@ const progressSubmit = async (file: File) => {
 		const item = getItems()
 		if (data && item) {
 			item.percent = 100
-			message.messageBox('Uploaded Successfully','success')
-		}else {
+			message.messageBox('Uploaded Successfully', 'success')
+		} else {
 			return message.messageBox('Upload Service have something wrong', 'error')
 		}
 	} catch (e) {
@@ -77,7 +73,7 @@ const progressSubmit = async (file: File) => {
 		if (item) {
 			item.percent = 0
 		}
-		throw message.messageBox(`${e}`,'error')
+		throw message.messageBox(`${e}`, 'error')
 	}
 }
 // remove file
@@ -98,9 +94,10 @@ const progressRemoveFile = async (fileName: string, id: string) => {
 	width: 30%;
 	margin: 1rem auto;
 }
+
 @media (max-width: $screen-sm) {
 	.mobile {
-		@include mobile-responsive(100%, 100%, null ,0.5rem 1rem);
+		@include mobile-responsive(100%, 100%, null, 0.5rem 1rem);
 	}
 }
 </style>

@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
-import NotFound from '@/modules/view/error/404.vue'
-import InternalServer from '@/modules/view/error/500.vue'
-import UnAuth from '@/modules/view/error/401.vue'
+import NotFound from '@/modules/view/Error/404.vue'
+import InternalServer from '@/modules/view/Error/500.vue'
+import UnAuth from '@/modules/view/Error/401.vue'
 
 export const invalidPage: RouteRecordRaw[] = [
 	{
