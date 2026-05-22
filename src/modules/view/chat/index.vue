@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import ChatAI from '@/modules/view/chat/ChatAI.vue';
+import ChatAI from '@/modules/view/Chat/ChatAI.vue';
 
 
 </script>

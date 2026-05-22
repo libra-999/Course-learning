@@ -118,7 +118,6 @@
 import { onMounted, ref } from 'vue'
 import { Avatar, ChatDotRound, DataLine, DocumentAdd, Postcard, UploadFilled } from '@element-plus/icons-vue'
 import Timeline, { type Activities } from '@/app/components/Card/Timeline.vue'
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
 import { timelineStore } from '@/modules/store/line.ts'
 import { type FormInstance, type FormRules } from 'element-plus'
 import { useMessage } from '@/app/utils/message.ts'
@@ -127,9 +126,10 @@ import { useTheme } from '@/modules/store/theme.ts'
 import Cardbox from '@/app/components/Card/Cardbox.vue'
 import { loginStore } from '@/modules/store/auth'
 import route from '@/modules/route'
-import ScanQR from '@/app/components/Scan/ScanQR.vue'
 import SwitchLang from '@/app/components/Localization/SwitchLang.vue'
 import { useI18n } from 'vue-i18n'
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
+import ScanQR from '@/app/components/Opencamera/ScanQR.vue'
 
 const message = useMessage()
 const { t } = useI18n()

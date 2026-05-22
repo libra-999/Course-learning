@@ -24,9 +24,9 @@ import { usePagination } from '@/app/utils/pagination.ts';
 import Pagination from '@/app/components/Pagination/Pagination.vue';
 import { onMounted, ref, watch } from 'vue';
 import type { Book } from '../../types/book';
-import Loading from '@/app/components/Loading.vue';
 import { useMessage } from '@/app/utils/message.ts'
-import BookCard from '@/app/components/System/book/BookCard.vue';
+import Loading from '@/app/components/Loading/Loading.vue';
+import BookCard from '@/app/components/Card/BookCard.vue';
 
 const dataBook = ref<Book[]>([]);
 const loading = ref(false);

@@ -62,9 +62,9 @@ export default {
 					waiting: 'The QR code will be expired in ',
 					scanned:
 						'The QR code has been scanned, please confirm login on your mobilephone',
-					confirmed: 'Login successful, redirecting...',
-					expired: 'The QR code has expired, please refresh',
-					cancelled: 'Login has been cancelled, please refresh',
+					confirmed: 'Login Successfully, redirecting...',
+					expired: 'The QR code has been expired!',
+					cancelled: 'Login has been cancelled!',
 				},
 			},
 		},
@@ -73,27 +73,27 @@ export default {
 			FORM_ITEM: {
 				username: 'Username',
 				username_placeholder: 'Input Your Name',
-                username_isNull: 'Please input username',
-                username_length_validate: 'Username should be 7 length at least',
+                username_isNull: 'Username is null!',
+                username_length_validate: 'Invalid format username!',
                 
 				pwd: 'Password',
-                pwd_isNull: 'Please input password',
-                pwd_length_validate: 'Password should be 6 at least',
-                pwd_pattern_validate: 'Incorrect format password.(ex: Sport11(0) )',
+                pwd_isNull: 'Password is null!',
+                pwd_length_validate: 'Password should be 6 characters at least!',
+                pwd_pattern_validate: 'Invalid password format!',
 				pwd_placeholder: 'Input Your Password',
 				submit: 'Submit',
 			},
 		},
         API: {
             success:{
-                scan_polling_login: 'Scan login succeed!'
+                scan_polling_login: 'Scan Successfully'
             },
             error:{
-                qr_generate_display : 'Failed to display QR!',
-                qr_generate_url_login: 'Invalid Image Url!',
-                qr_generate_login: 'Failed to generate QR!',
-                scan_polling_token_login: 'Invalid QR Token',
-                wrong_login: 'Something wrong with login'      
+                qr_generate_display : 'Error to display QR!',
+                qr_generate_url_login: 'Invalid Image!',
+                qr_generate_login: 'Generating QR Failed!',
+                scan_polling_token_login: 'Invalid QR Token!',
+                wrong_login: 'Error login!'      
             }
         }
 	},

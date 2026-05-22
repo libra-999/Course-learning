@@ -13,7 +13,7 @@ import { createUploadFiles, removeFile } from '@/modules/api/uploadFile'
 import { v4 as uuidV4 } from 'uuid'
 import { FileRuleResp } from '@/app/utils/mimeType.ts'
 import { useMessage } from '@/app/utils/message.ts'
-import ProgressUpload from '@/app/components/System/uploadFile/ProgressUpload.vue'
+import ProgressUpload from '@/app/components/UploadFile/ProgressUpload.vue'
 
 const pictures = ref<UploadItem[]>([])
 const message = useMessage()

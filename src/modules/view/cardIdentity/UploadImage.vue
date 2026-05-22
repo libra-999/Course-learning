@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue';
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
 import { useMessage } from '@/app/utils/message';
 import { UploadRuleForm } from '@/app/utils/mimeType';
 import { Close, UploadFilled } from '@element-plus/icons-vue';

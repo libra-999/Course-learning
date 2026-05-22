@@ -1,5 +1,5 @@
-<template>
-	<div class="flex place-items-center h-full mobile">
+<template> 
+	<div class="mobile  h-full">
 		<nav v-if="$route.path === '/system/payment'">
 			<RouterLink class="text-white border-2 rounded-sm bg-blue-400 w-max p-2 mx-2" :to="$route.path + '/aba'">ABA
 				Payment</RouterLink>
@@ -18,8 +18,10 @@
 </script>
 <style lang="scss" scoped>
 .mobile {
-	width: 30%;
-	margin: auto;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	& a {
 		max-width: 50%;
 	}

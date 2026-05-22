@@ -13,8 +13,8 @@
 import { useMessage } from '@/app/utils/message';
 import { UploadRuleForm } from '@/app/utils/mimeType';
 import { uploadCard } from '@/modules/api/uploadFile';
-import TextShow from '@/modules/view/cardIdentity/TextShow.vue';
-import UploadImage from '@/modules/view/cardIdentity/UploadImage.vue';
+import TextShow from '@/modules/view/CardIdentity/TextShow.vue';
+import UploadImage from '@/modules/view/CardIdentity/UploadImage.vue';
 import { ref } from 'vue';
 
 const country = ref("CN")

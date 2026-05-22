@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue';
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
 import { useMessage } from '@/app/utils/message';
 import { addPermissionInRole, permissionList, removePermissionInRole, rolePermission } from '@/modules/api/role';
 import { loginStore } from '@/modules/store/auth';

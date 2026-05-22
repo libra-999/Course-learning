@@ -17,7 +17,7 @@ import {
 	VueStripePaymentElement,
 } from '@vue-stripe/vue-stripe'
 import { ref } from 'vue'
-import Loading from '@/app/components/Loading.vue'
+import Loading from '@/app/components/Loading/Loading.vue'
 import { useMessage } from '@/app/utils/message.ts'
 
 const { confirmPayment } = usePaymentIntent()

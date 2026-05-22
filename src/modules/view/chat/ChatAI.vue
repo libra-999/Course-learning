@@ -115,7 +115,7 @@
 import { CloseBold, Position } from '@element-plus/icons-vue'
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import LogoChatAI from '@/app/assets/image/live_chat_AI.gif'
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
 import { BotApi, healthServer } from '@/modules/api/bot'
 import type { Message, QuickPrompt } from '@/modules/types/chat'
 import { useMessage } from '@/app/utils/message'

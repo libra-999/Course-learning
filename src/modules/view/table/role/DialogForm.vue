@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue';
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
 import { switchStatusCode, useMessage } from '@/app/utils/message';
 import { roleAdd, roleDeleteAll, roleUpdate } from '@/modules/api/role';
 import { loginStore } from '@/modules/store/auth';

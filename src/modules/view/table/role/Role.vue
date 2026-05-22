@@ -118,14 +118,14 @@
 </template>
 
 <script setup lang="ts">
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue';
-import Loading from '@/app/components/Loading.vue';
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
+import Loading from '@/app/components/Loading/Loading.vue';
 import { dayMonthFormat } from '@/app/utils/dateFormat';
 import { switchStatusCode, useMessage } from '@/app/utils/message';
 import { roleDelete, rolePage } from '@/modules/api/role';
 import { type RoleUpdateReq, type QueryParams, type RoleItem, type RoleQueryParam } from '@/modules/types/role';
-import DialogForm from '@/modules/view/table/role/DialogForm.vue';
-import RolePermissionView from '@/modules/view/table/role/RolePermissionView.vue';
+import DialogForm from '@/modules/view/Table/Role/DialogForm.vue';
+import RolePermissionView from '@/modules/view/Table/Role/RolePermissionView.vue';
 import { Delete, Edit, EditPen, Plus, Refresh, Search } from '@element-plus/icons-vue';
 import type { FormInstance } from 'element-plus';
 import { onMounted, ref } from 'vue';

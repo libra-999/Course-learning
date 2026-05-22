@@ -28,8 +28,8 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import ButtonGlobal from '../button/ButtonGlobal.vue';
 import { Back, Right } from '@element-plus/icons-vue';
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
 
 // create a fields     
 const props = defineProps<{

@@ -44,17 +44,17 @@
     <!-- Detail Book-->
      <el-dialog v-model="dialogDetail" width="auto" align-center>
         <Loading v-if="loading"/>
-        <div v-else>
+        <div v-else>;
             <strong> {{ props.bookData.id }}</strong>
         </div>
     </el-dialog>
 </template>
 <script setup lang="ts">
 import {  ref } from 'vue';
+import Loading from '@/app/components/Loading/Loading.vue';
 import type { Book } from '@/modules/types/book';
 import { viewBook } from '@/modules/api/book';
-import Loading from '@/app/components/Loading.vue';
-import Rating from '@/app/components/button/Rating.vue';
+import Rating from '@/app/components/Button/Rating.vue';
 
 const props = defineProps<{
     bookData: Book

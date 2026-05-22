@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus'
 import { loginStore } from '@/modules/store/auth'
 import { isTokenValid } from '@/app/utils/authToken'
 import { module } from '@/modules/route/module.ts'
-import GuestLayout from '@/modules/layout/Base/GuestLayout.vue'
+import GuestLayout from '@/modules/layout/GuestLayout.vue'
 import i18n from '@/modules/locales'
 
 const t = i18n.global.t
