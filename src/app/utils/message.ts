@@ -56,7 +56,7 @@ export const switchStatusCode = (value: number, messageAPI: string) => {
 			break
 		}
 		case 400: {
-			message.messageBox('Bad Request with some fields are null!', 'error')
+			message.messageBox('Bad Request!', 'error')
 			break
 		}
 		case 32: {

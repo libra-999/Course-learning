@@ -2,10 +2,12 @@ export interface TimeRange {
 	beginTime: string
 	endTime: string
 }
+
 export const TIME_QUERY = {
 	startTime: " 00:00:00",
 	endTime: " 23:59:59"
 }
+
 export const strToDate = (date: any) =>{
 	if (date == "" || date == null){
 		return ""
@@ -17,6 +19,7 @@ export const strToDate = (date: any) =>{
 	}
 	return ""
 }
+
 export const dayMonthFormat = (date: Date): string => {
 	const d = new Date(date)
 	const year = d.getFullYear()
@@ -24,27 +27,32 @@ export const dayMonthFormat = (date: Date): string => {
 	const day = String(d.getDay()).padStart(2, '0') // pad = 2 digit
 	return `${year}-${month}-${day}`
 }
+
 export const dayTimeFormat = (d: Date): string => {
 	const dayMonthFormat = dayTimeFormat(d)
 	const hour = String(d.getHours()).padStart(2, '0')
 	const minute = String(d.getMinutes()).padStart(2, '0')
 	return `${dayMonthFormat} ${hour}:${minute}`
 }
+
 export const minuteFormat = (value: any) => {
 	const totalSecond = Math.max(0, Number(value))
 	const minute = String(Math.floor(totalSecond / 60)).padStart(2, '0')
 	const second = String(totalSecond % 60).padStart(2, '0')
 	return `${minute}:${second}`
 }
+
 export const timeStampMinuteFormat = (value: number): string => {
     return new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
+
 export const remaingTime = (second: string | number) => {
 	return Math.max(
 		0,
 		Math.ceil((new Date(second).getTime() - Date.now()) / 1000),
 	)
 }
+
 export const getToday = (): TimeRange => {
 	const currentDate = new Date()
 	const begin = dayMonthFormat(currentDate) + TIME_QUERY.startTime
@@ -54,6 +62,7 @@ export const getToday = (): TimeRange => {
 		endTime: end,
 	}
 }
+
 export const getYesterday = (): TimeRange => {
 	const currentDate = new Date()
 	currentDate.setDate(currentDate.getDate() - 1)
@@ -64,6 +73,7 @@ export const getYesterday = (): TimeRange => {
 		endTime: end,
 	}
 }
+
 export const getLastWeek = (): TimeRange => {
 	const startDayOfWeek= new Date()
 	const endDayOfWeek = new Date()
@@ -76,6 +86,7 @@ export const getLastWeek = (): TimeRange => {
 		endTime: end
 	}
 }
+
 export const getLastMonth = (): TimeRange => {
 	const currentDate = new Date()
 	const startDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1) // start first 1st
@@ -88,6 +99,7 @@ export const getLastMonth = (): TimeRange => {
 		endTime: end
 	}
 }
+
 export const getLastYear = (): TimeRange => {
 	const currentDate = new Date()
 	const startDayOfYear = new Date()

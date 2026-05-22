@@ -43,6 +43,7 @@ export const UploadRuleForm: UploadRule[] = [
 		types: ['application/gzip'],
 	},
 ]
+
 export const FileRuleResp = (file: File): UploadErrorResp => {
 	const checkFileType = UploadRuleForm.find((item) =>
 		item.types.includes(file.type.toLowerCase()),
