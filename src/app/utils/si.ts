@@ -33,7 +33,7 @@ export default function useSocket<T>({
 	const _options = { ...defaultOptions, ...options }
 	const authLogin = loginStore()
 	let socket: Socket | null = null
-	const SOCKET_URL = '/socket.io'
+	const SOCKET_URL = '/'
 
 	function onConneted() {
 		console.log('ConnectID: ' + socket?.id)
