@@ -6,7 +6,7 @@
         },
         {
             "source": "/:path*",
-            "destination": "http://52.220.126.56:7000/:path*"
+            "destination": "http://52.220.126.56:7000/"
         }
     ]
 }
