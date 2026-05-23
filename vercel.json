@@ -5,7 +5,7 @@
             "destination": "http://52.220.126.56:7000/dev/pkdVdjhT/api/:path*"
         },
         {
-            "source": "/socket.io/:path*",
+            "source": "/:path*",
             "destination": "http://52.220.126.56:7000/:path*"
         }
     ]
