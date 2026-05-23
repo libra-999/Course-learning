@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
 				'/socket.io' : {
 					target: env.VITE_SERVER_SOCKET_URL,
 					changeOrigin: true,
-					rewrite: (p) => p.replace(new RegExp(`^${env.VITE_SERVER_PROXY}`), '')
+					ws: true,
 				}
 			},
 		},

@@ -33,7 +33,7 @@ export default function useSocket<T>({
 	const _options = { ...defaultOptions, ...options }
 	const authLogin = loginStore()
 	let socket: Socket | null = null
-	const SOCKET_URL = import.meta.env.VITE_SERVER_SOCKET_URL
+	const SOCKET_URL = '/socket.io'
 
 	function onConneted() {
 		console.log('ConnectID: ' + socket?.id)
@@ -55,7 +55,7 @@ export default function useSocket<T>({
 			if (!socket.connected) socket.connect()
 			return
 		}
-		socket = io('/socket.io', {
+		socket = io(SOCKET_URL, {
 			auth: accessToken ? { token: accessToken } : {},
 			extraHeaders: {
 				authorization: accessToken ? accessToken : '',
