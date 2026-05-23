@@ -55,7 +55,7 @@ export default function useSocket<T>({
 			if (!socket.connected) socket.connect()
 			return
 		}
-		socket = io(SOCKET_URL, {
+		socket = io('/socket.io', {
 			auth: accessToken ? { token: accessToken } : {},
 			extraHeaders: {
 				authorization: accessToken ? accessToken : '',
