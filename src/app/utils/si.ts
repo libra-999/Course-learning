@@ -56,6 +56,7 @@ export default function useSocket<T>({
 			return
 		}
 		socket = io(SOCKET_URL, {
+			path: '/socket.io',
 			auth: accessToken ? { token: accessToken } : {},
 			extraHeaders: {
 				authorization: accessToken ? accessToken : '',
