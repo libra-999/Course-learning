@@ -8,12 +8,12 @@ import route from '@/modules/route'
 import { loginStore } from '@/modules/store/auth'
 import i18n from '@/modules/locales'
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL
+const SERVER_PROXY = import.meta.env.VITE_SERVER_PROXY
 const SERVER_VERSION = import.meta.env.VITE_SERVER_VERSION
 
 const t = i18n.global.t
 const apiRequest: AxiosInstance = axios.create({
-	baseURL: `${SERVER_URL}/${SERVER_VERSION}`,
+	baseURL: `${SERVER_PROXY}/${SERVER_VERSION}`,
 	timeout: 50000, // 5s
 })
 
