@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import internalError from '@/app/assets/image/500.jpg'
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
 import { useRouter } from 'vue-router'
 
 const image = ref(internalError)

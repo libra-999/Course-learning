@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import img404 from '@/app/assets/image/404.jpg'
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
 import { useRouter } from 'vue-router'
 
 const img = ref(img404)

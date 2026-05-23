@@ -16,7 +16,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import ButtonGlobal from '@/app/components/button/ButtonGlobal.vue'
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
 import { useRouter } from 'vue-router'
 import img401 from '@/app/assets/image/401.jpg'
 
