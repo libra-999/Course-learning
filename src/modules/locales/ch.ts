@@ -37,6 +37,10 @@ export default {
 			profile: '轮廓',
 			logout: '退出',
 		},
+		MENU : {
+			title: '仪表板',
+			content: '构建带有子子菜单的示例侧边栏',
+		},
 		TIMELINE: {
 			title: '时间线',
 			button_input: '输入',

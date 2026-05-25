@@ -9,6 +9,7 @@ import Preview from "@/modules/view/CardIdentity/Preview.vue";
 import Test from "@/app/components/Test/Test.vue";
 import PaymentABA from "@/modules/view/Payment/PaymentABA.vue";
 import BookLayout from "@/modules/view/Book/index.vue";
+import Navbar from "@/modules/layout/Navbar.vue";
 
 
 export const module = [
@@ -69,6 +70,11 @@ export const module = [
       name: 'Card to Text',
       meta: { requried: true},
       component: Preview
+   },{
+      path:  '/system/menu',
+      name: 'Menu',
+      meta: { required: true},
+      component: Navbar
    }
 
 ]

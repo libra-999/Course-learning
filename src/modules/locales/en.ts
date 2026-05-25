@@ -40,6 +40,11 @@ export default {
 			profile: 'Profile',
 			logout: 'Logout',
 		},
+		MENU : {
+			title: 'Dashboard',
+			content: 'Build a sample sidebar with child submenu',
+		},
+		
 		TIMELINE: {
 			title: 'TimeLine',
 			button_input: 'Input',

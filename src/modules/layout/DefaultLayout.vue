@@ -72,6 +72,9 @@
 				<!-- OCR Card Identity-->
 				<Cardbox :title="`${t('MAIN_LAYOUT.OCR_CARD.title')}`" :content="`${t('MAIN_LAYOUT.OCR_CARD.content')}`"
 					:icon="Postcard" path="/system/card-identity" />
+				<!-- Home dashboard -->
+				<Cardbox :title="`${t('MAIN_LAYOUT.MENU.title')}`" :content="`${t('MAIN_LAYOUT.MENU.content')}`"
+					:icon="HomeFilled" path="/system/menu" />
 			</div>
 		</div>
 	</div>
@@ -116,7 +119,7 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Avatar, ChatDotRound, DataLine, DocumentAdd, Postcard, UploadFilled } from '@element-plus/icons-vue'
+import { Avatar, ChatDotRound, DataLine, DocumentAdd, HomeFilled, Postcard, UploadFilled } from '@element-plus/icons-vue'
 import Timeline, { type Activities } from '@/app/components/Card/Timeline.vue'
 import { timelineStore } from '@/modules/store/line.ts'
 import { type FormInstance, type FormRules } from 'element-plus'

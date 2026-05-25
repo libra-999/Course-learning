@@ -31,6 +31,7 @@ apiRequest.interceptors.request.use(
 		return Promise.reject(error)
 	},
 )
+
 /* server error resp endpoint */
 apiRequest.interceptors.response.use(
 	(resp: AxiosResponse) => {
