@@ -1,5 +1,12 @@
 <template>
 	<div class="text-black w-full mobile">
+		<ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
+			<template #icon-right>
+				<el-icon>
+					<ArrowLeftBold/>
+				</el-icon>
+			</template>
+		</ButtonGlobal>
 		<!-- upload with progressing -->
 		<div class="m-auto">
 			<ProgressUpload :pictures="pictures" @upload-submit="progressSubmit" @remove-image="progressRemoveFile" />
@@ -14,7 +21,11 @@ import { v4 as uuidV4 } from 'uuid'
 import { FileRuleResp } from '@/app/utils/mimeType.ts'
 import { useMessage } from '@/app/utils/message.ts'
 import ProgressUpload from '@/app/components/UploadFile/ProgressUpload.vue'
+import { useRouter } from 'vue-router';
+import { ArrowLeftBold } from '@element-plus/icons-vue'
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
 
+const router = useRouter()
 const pictures = ref<UploadItem[]>([])
 const message = useMessage()
 // validation file type
@@ -23,6 +34,10 @@ const validateFile = (file: File) => {
 	if (getFile.error) {
 		throw message.notificationBox(`${getFile.error}`, 'error')
 	}
+}
+
+const back = ()=> {
+	router.back()
 }
 // upload file
 const progressSubmit = async (file: File) => {

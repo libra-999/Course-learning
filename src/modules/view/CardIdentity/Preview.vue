@@ -1,5 +1,12 @@
 <template>
     <div class="flex flex-col mx-auto h-full xl:max-w-[50%]  py-5 mobile">
+        <ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
+			<template #icon-right>
+				<el-icon>
+					<ArrowLeftBold/>
+				</el-icon>
+			</template>
+		</ButtonGlobal>
         <article class=" font-bold text-5xl mb-5">OCR CARD IDENTITY</article>
         <div class="flex justify-between h-[50%] gap-3 rounded-xl mobile__object">
             <UploadImage :files="files" :loading="loading" @select-file="selectFile" @remove-file="removeFile"
@@ -10,13 +17,17 @@
 </template>
 
 <script setup lang="ts">
+import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
 import { useMessage } from '@/app/utils/message';
 import { UploadRuleForm } from '@/app/utils/mimeType';
 import { uploadCard } from '@/modules/api/uploadFile';
 import TextShow from '@/modules/view/CardIdentity/TextShow.vue';
 import UploadImage from '@/modules/view/CardIdentity/UploadImage.vue';
+import { ArrowLeftBold } from '@element-plus/icons-vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const route = useRouter()
 const country = ref("CN")
 const files = ref<File[]>([]);
 const boxMessage = useMessage();
@@ -26,6 +37,8 @@ const toText = ref<{image: string, ocr_job_id: string, ocr_job_estimate_time : a
     ocr_job_estimate_time: 0,
     image: '',
 });
+
+const back = () => route.back()
 
 const selectFile = async (file: File) => {
     // check type file

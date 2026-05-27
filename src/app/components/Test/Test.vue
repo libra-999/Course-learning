@@ -1,5 +1,12 @@
 <template>
 	<div class="test-container">
+		<ButtonGlobal class=" absolute top-1 left-1 p-4" value="" @click="back">
+			<template #icon-right>
+				<el-icon>
+					<ArrowLeftBold/>
+				</el-icon>
+			</template>
+		</ButtonGlobal>
 		<div class="number-show-mobile">
 			<KeepAlive>
 				<span v-for="(key, index) in boxValue" :key="index"
@@ -16,10 +23,17 @@
 </template>
 <script setup lang="ts">
 import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
+import { ArrowLeftBold } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const boxValue = ref<number[]>([0])
 const count = ref<number>(0)
+const router = useRouter()
+
+const back = ()=> {
+	router.back()
+}
 
 const handleReset = () => {
 	count.value = 0
@@ -56,4 +70,6 @@ const handleClickAdd = () => {
 		}
 	}
 }
+
+
 </style>
