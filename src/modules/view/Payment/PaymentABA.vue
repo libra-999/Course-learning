@@ -1,13 +1,8 @@
 <template>
-	<form 
-		class="text-white"
-		:id="config.id"  
-		:method="config.method" 
-		:target="config.target_name"
-		:action="config.URL"
+	<form class="text-white" :id="config.id" :method="config.method" :target="config.target_name" :action="config.URL"
 		@submit.prevent="openCheckout">
 		<!-- Get key and data from server side -->
-		<input v-for="(value, key) in checkoutPayload" :key="key" type="hidden" :name="key" :value="value" /> 
+		<input v-for="(value, key) in checkoutPayload" :key="key" type="hidden" :name="key" :value="value" />
 		<!-- Get key and data from server side -->
 		<div
 			:class="`${themeStore.settings.themeSchema != 'dark' ? 'text-black border-blue-100' : 'text-white bg-gray-800 border-[0.3px] border-solid border-[rgba(255,255,255,0.18)]'} w-full max-w-sm bg-neutral-primary-soft p-6 border-2  rounded-l shadow-xs text-black mx-2`">
@@ -17,8 +12,8 @@
 			<div>
 				<div class="flex items-center space-x-3 mb-6">
 					<div class="flex items-center space-x-1 rtl:space-x-reverse">
-						<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-							height="24" viewBox="0 0 24 24" v-for="index in stars" :key="index">
+						<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							viewBox="0 0 24 24" v-for="index in stars" :key="index">
 							<path fill="#facc15"
 								d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
 						</svg>
@@ -62,9 +57,9 @@ const themeStore = useTheme()
 const checkoutPayload = ref<Record<string, string | number>>({})
 
 const config = ref({
-	URL : "https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase",
-	target_name : "aba_webservice", // default name
-	method: "POST", 
+	URL: "https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase",
+	target_name: "aba_webservice", // default name
+	method: "POST",
 	id: "aba_merchant_request" // default ID from plugin
 })
 const item = ref({
@@ -75,7 +70,7 @@ const item = ref({
 
 const submit = async () => {
 	try {
-		const req = await createPayment({data: item.value})
+		const req = await createPayment({ data: item.value })
 		checkoutPayload.value = req.data.checkout // set value from server side to checkoutPayload
 	} catch (error: any) {
 		throw errorMessage.messageBox(error, 'error')
@@ -88,7 +83,6 @@ const openCheckout = async () => {
 	}
 	// eslint-disable-next-line no-undef
 	AbaPayway.checkout()
-	
 }
 </script>
 <style lang="scss" scoped></style>

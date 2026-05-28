@@ -37,6 +37,8 @@ export interface Transaction {
 }
 
 export type currencyType= "USD" | "KHR"
+
 export type paywayType= "pre-auth" | "purchase"
+
 export type paymentOption = "cards" | "abapay_khqr" | "abapay_khqr_deeplink" | "alipay" | "wechat" | "google_pay"
 

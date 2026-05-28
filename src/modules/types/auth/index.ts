@@ -3,6 +3,7 @@ export interface LoginRequest {
 	password: string
 	isRemember: any
 }
+
 export interface User {
 	id?: string
 	email: string
@@ -10,6 +11,7 @@ export interface User {
 	is_online: boolean
 	created_at: string
 }
+
 export interface QRCodeData {
 	qrCountDown?: any
 	qrCodeExpired?: any

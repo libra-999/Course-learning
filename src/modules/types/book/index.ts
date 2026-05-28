@@ -3,6 +3,7 @@ export interface Response<T> {
     totalItems: number,
     items : T[]
 }
+
 export interface VolumeInfo  {
     title: string,
     authors: string [] | null,
@@ -74,11 +75,18 @@ export interface Book {
 }
 
 export type industryType = "OTHER" | "ISBN_10" | "ISBN_13"
+
 export type printType = "ALL" | "BOOK" | "MAGAZINE"
+
 export type maturityRatingType = "NOT_MATURE" | "MATURE"
+
 export type countryType = "US" | "GB" | "CA" | "AU" | "DE" | "FR" | "IT" | "ES" | "JP" | "CN" | "IN" | "BR" | "RU" | "MX" | "KR" | "NL" | "SE" | "CH" | "BE" | "AT" | "DK" | "NO" | "FI" | "IE" | "NZ" | "KH"
+
 export type saleabilityType = "FOR_SALE" | "FREE" | "NOT_FOR_SALE" | "FOR_PREORDER"
+
 export type viewabilityType = "PARTIAL" | "ALL_PAGES" | "NO_PAGES" | "UNKNOWN"
-export type textToSpeedPermissionType = "ALLOWED" | "ALLOWED_FOR_ACCESSIBILITY" | "NOT_ALLOWED" 
+
+export type textToSpeedPermissionType = "ALLOWED" | "ALLOWED_FOR_ACCESSIBILITY" | "NOT_ALLOWED"
+ 
 export type accessViewStatusType = "SAMPLE" | "FULL_PUBLIC_DOMAIN" | "FULL_RESTRICTED" | "NONE"
 

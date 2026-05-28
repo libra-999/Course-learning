@@ -60,4 +60,5 @@ route.beforeEach((to) => {
 	}
 	return true
 })
+
 export default route

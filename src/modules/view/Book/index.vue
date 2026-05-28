@@ -1,14 +1,14 @@
 <template>
-    <div class="book-layout h-full flex place-items-center">
-        <ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
+	<div class="book-layout h-full flex place-items-center">
+		<ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
 			<template #icon-right>
 				<el-icon>
-					<ArrowLeftBold/>
+					<ArrowLeftBold />
 				</el-icon>
 			</template>
 		</ButtonGlobal>
-        <BookShow/>
-    </div>
+		<BookShow />
+	</div>
 </template>
 <script setup lang="ts">
 import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
@@ -17,13 +17,13 @@ import { ArrowLeftBold } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
-const back = ()=> {
+const back = () => {
 	router.back()
 }
 </script>
 <style lang="scss" scoped>
-.book-layout{
-    color: var(--text-color);
-    overflow: hidden;
+.book-layout {
+	color: var(--text-color);
+	overflow: hidden;
 }
 </style>
