@@ -82,6 +82,7 @@ export default {
 				pwd_pattern_validate: '密码格式不正确。 ( 例如: Sport11(0) )',
 				pwd_placeholder: '输入您的密码',
 				submit: '提交',
+				remember: '让我登录？'
 			},
 		},
 		API: {

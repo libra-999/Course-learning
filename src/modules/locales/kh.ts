@@ -49,6 +49,7 @@ export default {
 				content: 'មាតិកា',
 				content_placeholder: 'បញ្ចូលមាតិកា',
 				add: 'បន្ថែម',
+				remember: 'ចងចាំ?'
 			},
 		},
 	},

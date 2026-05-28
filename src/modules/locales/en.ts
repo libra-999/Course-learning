@@ -87,6 +87,7 @@ export default {
                 pwd_pattern_validate: 'Invalid password format!',
 				pwd_placeholder: 'Input Your Password',
 				submit: 'Submit',
+				remember: 'Keep me sign in?'
 			},
 		},
         API: {

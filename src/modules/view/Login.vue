@@ -30,7 +30,7 @@
 							:placeholder="`${t('LOGIN.FILL.FORM_ITEM.pwd_placeholder')}`" />
 					</el-form-item>
 					<el-form-item prop="isRemember">
-						<el-checkbox v-model="userRef.isRemember" name="isRemember">Remember your password?</el-checkbox>
+						<el-checkbox v-model="userRef.isRemember" name="isRemember">{{ t('LOGIN.FILL.FORM_ITEM.remember') }}</el-checkbox>
 					</el-form-item>
 					<ButtonGlobal @click.prevent="submit" :value="`${t('LOGIN.FILL.FORM_ITEM.submit')}`"
 						class="text-white text-center container-button" />
