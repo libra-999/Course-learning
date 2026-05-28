@@ -5,7 +5,7 @@ import { toggleHTMLClass } from '@/app/utils/common.ts'
 type ThemeSchema = App.Theme.ThemeSetting['themeSchema']
 const themes: ThemeSchema[] = ['light', 'dark']
 
-export function initThemeSetting(): App.Theme.ThemeSetting {
+function initThemeSetting(): App.Theme.ThemeSetting {
    const savedTheme = localStorage.getItem ('themeSchema')
    const themeSchema: ThemeSchema = savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : 'light'
    return {
@@ -13,7 +13,7 @@ export function initThemeSetting(): App.Theme.ThemeSetting {
    }
 }
 
-export function toggleClassCss(darkMode = false) {
+function toggleClassCss(darkMode = false) {
    const {add, remove} = toggleHTMLClass ('dark')
    if (darkMode) add ()
    else remove ()
