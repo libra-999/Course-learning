@@ -3,7 +3,7 @@ import { menuRoute } from "@/modules/api/menu";
 import { menuRouteConstant } from "@/modules/route/module.ts";
 
 
-const modules = import.meta.glob("@/modules/view/**/*.vue")
+const modules = import.meta.glob("@/modules/view/System/**/*.vue")
 export const permissionStore = defineStore("permission", {
    state: () => ({
       routes: [] as any[],
@@ -95,6 +95,7 @@ function loadView(path: any) {
    for (const p in modules) {
       const viewPath = p.replace('/src/modules/view/System/', '').replace('.vue', '')
 
+      // Ex: apiPath = index , viewPath = index (true)
       if (viewPath.toLowerCase() === routePath.toLowerCase()) {
          return modules[p]
       }
