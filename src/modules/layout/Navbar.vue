@@ -9,8 +9,6 @@ import { permissionStore } from '@/modules/store/permission';
 
 const permission = permissionStore()
 const route = permission.generateRoutes()
-
-console.log(route)
 </script>
 
 <style scoped>

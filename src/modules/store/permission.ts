@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { menuRoute } from "@/modules/api/menu";
 import { menuRouteConstant } from "@/modules/route/module.ts";
-
+import MenuLayout from "@/modules/layout/Navbar.vue"
 
 const modules = import.meta.glob("@/modules/view/System/**/*.vue")
 export const permissionStore = defineStore("permission", {
@@ -62,13 +62,14 @@ function filterAsyncRouter(asyncRouteMap: any[], lastRoute: boolean = false, typ
             menuType: route.menuType,
          }
 
+        
          if (route.menuType === 1) {
             route.component = loadView(route.path)
          }
 
-         if (route.menuType === 0) {
-            route.redirect = children.find((item: any) => item.menuType === 1)?.path
-         }
+         // if (route.menuType === 0) {
+         //    route.redirect = children.find((item: any) => item.menuType === 1)?.path
+         // }
 
          route.children = filterAsyncRouter(children, route, type)
          if (!route.children.length) {
@@ -91,7 +92,6 @@ function filterAsyncRouter(asyncRouteMap: any[], lastRoute: boolean = false, typ
 
 function loadView(path: any) {
    const routePath = path.replace(/^\/system\//i, '')
-
    for (const p in modules) {
       const viewPath = p.replace('/src/modules/view/System/', '').replace('.vue', '')
 
