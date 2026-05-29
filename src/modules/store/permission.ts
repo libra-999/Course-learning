@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { menuRoute } from "@/modules/api/menu";
 import { menuRouteConstant } from "@/modules/route/module.ts";
-import MenuLayout from "@/modules/layout/Navbar.vue"
+import ParentLink from "@/app/components/ParentView/index.vue"
+
 
 const modules = import.meta.glob("@/modules/view/System/**/*.vue")
 export const permissionStore = defineStore("permission", {
@@ -50,45 +51,40 @@ export const permissionStore = defineStore("permission", {
 });
 
 function filterAsyncRouter(asyncRouteMap: any[], lastRoute: boolean = false, type: boolean = false) {
-   return asyncRouteMap.filter(route => route.menuType !== 2)
+   return asyncRouteMap.filter(route => route.menuType !== 2) // no filter button permission
       .map(route => {
          const children = route.children || []
+
          route.path = normalizaPath(route.path)
          route.name = route.routingName
+
          route.meta = {
+            ...route.meta,
             title: route.menuName,
             icon: route.icon,
             requireAuth: true,
             menuType: route.menuType,
+            isCache : route.meta?.isCache || false,
+            affix: route.meta?.affix || false
          }
-
         
+         const childRoute = filterAsyncRouter(children,route,type)
+         
+         if (route.menuType === 0){
+            route.component =  ParentLink
+         }
          if (route.menuType === 1) {
             route.component = loadView(route.path)
          }
 
-         // if (route.menuType === 0) {
-         //    route.redirect = children.find((item: any) => item.menuType === 1)?.path
-         // }
-
-         route.children = filterAsyncRouter(children, route, type)
-         if (!route.children.length) {
+         if (childRoute.length > 0 ) {
+            route.children = childRoute
+         }else{
             delete route.children
          }
          return route
       })
 }
-
-// function filterChildren(childrenMap: any[], lastRouter: any = false) {
-//    const children: any[] = []
-//    childrenMap.forEach(i => {
-//       i.path = lastRouter ? lastRouter.path + '/' + i.path : i.path
-//       if (i.children && i.children.length) {
-//          children.push(...filterChildren(i.children, i))
-//       } else children.push(i)
-//    })
-//    return children
-// }
 
 function loadView(path: any) {
    const routePath = path.replace(/^\/system\//i, '')
