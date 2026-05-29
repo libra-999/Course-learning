@@ -20,11 +20,6 @@ export default defineConfig (({mode}) => {
                target: env.VITE_SERVER_URL,
                changeOrigin: true,
                rewrite: (p) => p.replace (new RegExp (`^${env.VITE_SERVER_PROXY}`), '')
-            },
-            '/socket.io': {
-               target: env.VITE_SERVER_SOCKET_URL,
-               changeOrigin: true,
-               ws: true,
             }
          },
       },
