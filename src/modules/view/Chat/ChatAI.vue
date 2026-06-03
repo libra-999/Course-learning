@@ -203,7 +203,12 @@ const buildBotContents = () =>
 const replaceMessage = (id: number, payload: Partial<Omit<Message, 'id' | 'role'>>): void => {
     const idx = messages.value.findIndex((message) => message.id === id)
     if (idx === -1) return
-    messages.value[idx] = { ...messages.value[idx], ...payload }
+
+    // avoid idx has null index while putting in message 
+    const currentMsg = messages.value[idx]
+    if(!currentMsg) return 
+    
+    messages.value[idx] = { ...currentMsg, ...payload }
 }
 
 const sendMessage = async (): Promise<void> => {

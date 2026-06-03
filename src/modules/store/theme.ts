@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 import { toggleHTMLClass } from '@/app/utils/common.ts'
 
 
-type ThemeSchema = App.Theme.ThemeSetting['themeSchema']
+type ThemeSchema = App.Profile.Theme['themeSchema']
 const themes: ThemeSchema[] = ['light', 'dark']
 
-function initThemeSetting(): App.Theme.ThemeSetting {
+function initThemeSetting(): App.Profile.Theme {
    const savedTheme = localStorage.getItem ('themeSchema')
    const themeSchema: ThemeSchema = savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : 'light'
    return {

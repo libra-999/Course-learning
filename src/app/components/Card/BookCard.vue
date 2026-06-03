@@ -6,7 +6,7 @@
       <div class="pt-5 px-3">
          <div class="flex items-center gap-3">
             <img
-                class="size-10 object-cover rounded-full border-2 border-gray-300"
+                class="w-[35px] h-[35px] object-cover rounded-full border-2 border-gray-300"
                 :src="`${props.bookData.volumeInfo.imageLinks?.thumbnail}`"
                 alt="empty image"
             />
@@ -66,7 +66,6 @@
    <el-dialog v-model="dialogDetail" width="auto" align-center>
       <Loading v-if="loading"/>
       <div v-else>
-         ;
          <strong> {{ props.bookData.id }}</strong>
       </div>
    </el-dialog>

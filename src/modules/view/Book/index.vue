@@ -1,5 +1,5 @@
 <template>
-	<div class="book-layout h-full flex place-items-center">
+	<div class="book-layout h-full flex place-items-center px-2 py-4">
 		<ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
 			<template #icon-right>
 				<el-icon>

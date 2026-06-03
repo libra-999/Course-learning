@@ -1,5 +1,5 @@
-import MarkdownIT from 'markdown-it'
 import hljs from 'highlight.js'
+import MarkdownIt from 'markdown-it'
 
 
 export function toggleHTMLClass(name: string) {
@@ -33,7 +33,7 @@ export const allowCamera = () => {
 
 export const renderRawText = (text: string) => {
 	if (text === null && text === '') return ''
-	const md = new MarkdownIT({
+	const md = new MarkdownIt({
 		highlight: (str: any, lang: any) => {
 			if (lang && hljs.getLanguage(lang)) {
 				return `<pre class="hljs"><code>${
@@ -45,4 +45,20 @@ export const renderRawText = (text: string) => {
 	})
 
 	return md.render(text)
+}
+
+
+export const getNormalPath = (path:string) => {
+	if (path.length === 0 || !path || path === "undefined") return path 
+	let res = path.replace('/\/+/g','/').replace('/system','/').replace('/system/menu/','/')
+
+	if(res[res.length - 1] === '/') {
+		res.slice(0,res.length - 1)
+	}
+	return res
+}
+
+export const rewriteMenuPath = (parentPath?: string, childPath?: string) => {
+	if (childPath) return `/system/menu/${childPath}`
+	return `/system/menu/${parentPath}`
 }

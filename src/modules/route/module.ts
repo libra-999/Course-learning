@@ -9,17 +9,49 @@ import Preview from "@/modules/view/CardIdentity/Preview.vue";
 import Test from "@/app/components/Test/Test.vue";
 import PaymentABA from "@/modules/view/Payment/PaymentABA.vue";
 import BookLayout from "@/modules/view/Book/index.vue";
-import Navbar from "@/modules/layout/Navbar.vue";
 import Dashboard from "@/modules/view/System/Dashboard/index.vue";
+import Bot from "@/modules/view/System/Setting/Bot/index.vue";
+import Navbar from "@/modules/layout/Navbar.vue";
+import Setting from "@/modules/view/System/Setting/index.vue";
+import Mng from "@/modules/view/System/Mng/index.vue";
+import User from "@/modules/view/System/Mng/User/index.vue";
 
 
 export const menuRouteConstant = [
    {
-      path: '/dashboard',
-      name: 'Home',
-      meta: { requireAuth: true },
-      component: Dashboard,
+      path: 'dashboard',
+      name: 'Dashboard',
+      meta: { requiredAuth: true },
+      component: Dashboard
    },
+   {
+      path: 'setting',
+      name: 'Setting',
+      meta: { requiredAuth: true },
+      component: Setting,
+      children: [
+         {
+            path: 'bot/index',
+            name: 'Bot',
+            meta: { requiredAuth: true },
+            component: Bot
+         }
+      ]
+   },
+   {
+      path: 'mng',
+      name: 'Management',
+      meta: { requiredAuth: true },
+      component: Mng,
+      children: [
+         {
+            path: 'user/index',
+            name: 'User',
+            meta: { requiredAuth: true },
+            component: User
+         }
+      ]
+   }
 ]
 
 export const module = [
@@ -52,7 +84,7 @@ export const module = [
          {
             path: 'crypto',
             component: CryptoPayment,
-         },{
+         }, {
             path: 'aba-checkout',
             component: PaymentABA
          }
@@ -73,18 +105,19 @@ export const module = [
    {
       path: '/system/bot',
       name: 'Chat',
-      meta: {requiredAuth: true},
+      meta: { requiredAuth: true },
       component: Chat
-   },{
+   }, {
       path: '/system/card-identity',
       name: 'Card to Text',
-      meta: { requiredAuth: true},
+      meta: { requiredAuth: true },
       component: Preview
-   },{
-      path:  '/system/menu',
+   }, {
+      path: '/system/menu',
       name: 'Menu',
-      meta: { requiredAuth: true},
+      meta: { requiredAuth: true },
       component: Navbar,
       children: [...menuRouteConstant]
-   }
+   },
+
 ]

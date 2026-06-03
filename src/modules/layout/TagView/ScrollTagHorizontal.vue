@@ -1,52 +1,49 @@
 <template>
-    <el-scrollbar 
-        class="scroll" 
-        :vertical="false" 
-        ref="scrollWrapper"
-        @wheel.prevent="handleScroll"
-        >
-        <slot/>
+    <el-scrollbar class="scrollRef" :vertical="false" ref="scrollRef" @wheel.prevent="handleScroll">
+        <slot />
     </el-scrollbar>
 </template>
 
 <script setup lang="ts">
 import { tagViewStore } from '@/modules/store/tagview';
-import { computed, getCurrentInstance, onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 
 
 const tagStore = tagViewStore()
 const tagSpacing = ref(4)// 4 px
-const { proxy } = getCurrentInstance() as any
 const emit = defineEmits(['scroll'])
+const scrollRef = ref<any>(null)
+const visitView = computed(() => tagStore.visitViews)
 
-const scrollWrapper = computed(()=> proxy.$refs.scrollContainer.$refs.wrapRef)
+const scrollWrapper = computed<HTMLElement | undefined>(() => {
+    return scrollRef.value?.wrapRef
+})
 const emitScroll = () => emit('scroll')
-
-onMounted(()=> {
-    scrollWrapper.value?.addEventListener('scroll',emitScroll,true)
-})
-onBeforeMount(()=> {
-    scrollWrapper.value?.removeEventListener('scroll',emitScroll)
-})
-
-const handleScroll = (e: WheelEvent)=> {
-    const eventDelta = (e as any).wheelDelta || -e.deltaY * 40
+const handleScroll = (e: WheelEvent) => {
     const wrapper = scrollWrapper.value
-
     if (!wrapper) return
-    wrapper.scrollLeft = wrapper.scrollLeft + eventDelta / 4
+
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+    wrapper.scrollLeft += delta
 }
 
-const visitView = computed(()=> tagStore.visitViews)
-const moveToTarget = (currentTags: any) =>{
-    const container = proxy.$refs.scrollContainer.$el
-    const containerWidth = container.offsetWidth
+onMounted(() => {
+    scrollWrapper.value?.addEventListener('scroll', emitScroll, true)
+})
+onBeforeMount(() => {
+    scrollWrapper.value?.removeEventListener('scroll', emitScroll)
+})
+
+
+const moveToTarget = (currentTags: any) => {
+    const container = scrollRef.value?.$el as HTMLElement | undefined
     const wrapper = scrollWrapper.value
 
-    if (!wrapper) return // wrapper is null
+    if (!wrapper || !container) return // wrapper is null
 
+    const containerWidth = container.offsetWidth
     let firstTag = null
-    let lastTag =null
+    let lastTag = null
 
     // set tag index into varibal
     if (visitView.value.length > 0) {
@@ -54,23 +51,23 @@ const moveToTarget = (currentTags: any) =>{
         lastTag = visitView.value[visitView.value.length - 1]
     }
 
-    if (firstTag === currentTags){
+    if (firstTag === currentTags) {
         wrapper.scrollLeft = 0
-    }else if (lastTag === currentTags){
+    } else if (lastTag === currentTags) {
         wrapper.scrollLeft = wrapper.scrollWidth - containerWidth
-    }else{
+    } else {
         const tagList = document.getElementsByClassName('tag-view-item')
         const currentIndex = visitView.value.findIndex(item => item === currentTags)
-        let preTag : any = null
+        let preTag: any = null
         let nextTag: any = null
 
-        for (const k in tagList){
-            if (k !== 'length' && Object.hasOwnProperty.call(tagList, k)){
+        for (const k in tagList) {
+            if (k !== 'length' && Object.hasOwnProperty.call(tagList, k)) {
                 const tagElement = tagList[k] as HTMLElement
-                if (tagElement.dataset.path === visitView.value[currentIndex - 1]?.path){
+                if (tagElement.dataset.path === visitView.value[currentIndex - 1]?.path) {
                     preTag = tagElement
                 }
-                if(tagElement.dataset.path === visitView.value[currentIndex + 1]?.path){
+                if (tagElement.dataset.path === visitView.value[currentIndex + 1]?.path) {
                     nextTag = tagElement
                 }
             }
@@ -80,9 +77,9 @@ const moveToTarget = (currentTags: any) =>{
         const afterNextTagOffsetLeft = nextTag.offsetLeft + nextTag.offsetWidth + tagSpacing
         const beforePreTagOffsetLeft = preTag.offsetLeft - tagSpacing.value
 
-        if (afterNextTagOffsetLeft > wrapper.scrollLeft + containerWidth){
+        if (afterNextTagOffsetLeft > wrapper.scrollLeft + containerWidth) {
             wrapper.scrollLeft = afterNextTagOffsetLeft - containerWidth
-        }else if(beforePreTagOffsetLeft < wrapper.scrollLeft){
+        } else if (beforePreTagOffsetLeft < wrapper.scrollLeft) {
             wrapper.scrollLeft = beforePreTagOffsetLeft
         }
     }
@@ -111,11 +108,10 @@ defineExpose({
         height: 20px;
     }
 
-    .scroll-slot{
+    .scroll-slot {
         display: inline-flex;
         align-items: center;
         gap: 5px;
     }
 }
-
 </style>

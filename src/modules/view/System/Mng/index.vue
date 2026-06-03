@@ -1,6 +1,7 @@
 <template>
     <div>
         Management Layout
+        <router-view/>
     </div>
 </template>
 

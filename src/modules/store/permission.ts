@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { menuRoute } from "@/modules/api/menu";
 import { menuRouteConstant } from "@/modules/route/module.ts";
 import ParentLink from "@/app/components/ParentView/index.vue"
+import { getNormalPath } from "@/app/utils/common";
 
 
 const modules = import.meta.glob("@/modules/view/System/**/*.vue")
@@ -55,7 +56,7 @@ function filterAsyncRouter(asyncRouteMap: any[], lastRoute: boolean = false, typ
       .map(route => {
          const children = route.children || []
 
-         route.path = normalizaPath(route.path)
+         route.path = getNormalPath(route.path)
          route.name = route.routingName
 
          route.meta = {
@@ -99,13 +100,6 @@ function loadView(path: any) {
 
    console.warn(`Cannot found path : ${path}`)
    return undefined
-}
-
-function normalizaPath(path: string) {
-   if (!path) return ''
-   return path
-      .replace(/\/+/g, '/')
-      .replace(/^\/System/i, '/system')
 }
 
 
