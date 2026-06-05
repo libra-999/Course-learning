@@ -23,7 +23,6 @@ function toggleSideBar() {
   useApp.toggleSideBar()
 }
 
-// watch or dynamic calling data
 </script>
 
 <style scoped lang="scss">

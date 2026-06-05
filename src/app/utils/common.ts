@@ -68,3 +68,7 @@ export const rewriteMenuPath = (parentPath?: string, childPath?: string) => {
 	if (childPath) return `/system/menu/${childPath}`
 	return `/system/menu/${parentPath}`
 }
+
+export const isExternal = (path: string) => {
+	return /^(https?:|mailto:|tel:)/.test(path)
+}
