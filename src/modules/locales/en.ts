@@ -108,5 +108,12 @@ export default {
 			internal_server: "Server Internal!",
 			unauthorized: "Unauthorized!"
 		}
+	},
+	MENU: {
+		home: "Home",
+		menu: "Menu",
+		TOP: {
+			more: "More menus"
+		}
 	}
 }

@@ -12,7 +12,8 @@ export const permissionStore = defineStore("permission", {
       addRoutes: [],
       defaultRoutes: [] as any[],
       tagRoutes: [], // tag route
-      sidebarRoutes: []
+      sidebarRoutes: [],
+      topBarRoutes: []
    }),
    actions: {
       setRoutes(routes: any) {
@@ -24,6 +25,9 @@ export const permissionStore = defineStore("permission", {
       },
       setTagRoute(routes: any) {
          this.tagRoutes = routes
+      },
+      setTopBarRoute(route: any){
+         this.topBarRoutes = route
       },
       setSidebarRoute(routes: any) {
          this.sidebarRoutes = routes
@@ -43,6 +47,7 @@ export const permissionStore = defineStore("permission", {
                this.setRoutes(rewriteRoutes)
                this.setSidebarRoute(sideBarRoutes)
                this.setTagRoute(defaultRoutes)
+               this.setTopBarRoute(defaultRoutes)
 
                resolve(rewriteRoutes)
             })

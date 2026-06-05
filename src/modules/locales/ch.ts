@@ -103,5 +103,12 @@ export default {
 			internal_server: "服务器内部!",
 			unauthorized: "未经授权!"
 		}
+	},
+	MENU: {
+		home: "首页",
+		menu: "菜单页",
+		TOP: {
+			more: "更多菜单"
+		}
 	}
 }

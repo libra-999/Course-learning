@@ -47,10 +47,16 @@ export const renderRawText = (text: string) => {
 	return md.render(text)
 }
 
+export const splitNormalPath = (path: string )=>{
+	if (path.length === 0 || !path || path === "undefined"){
+		return path
+	}
+	return path.replace('/\/+/g','/').replace(/\/$/, '')
+}
 
 export const getNormalPath = (path:string) => {
 	if (path.length === 0 || !path || path === "undefined") return path 
-	let res = path.replace('/\/+/g','/').replace('/system','/').replace('/system/menu/','/')
+	let res = splitNormalPath(path).replace('/system','/').replace('/system/menu/','/')
 
 	if(res[res.length - 1] === '/') {
 		res.slice(0,res.length - 1)

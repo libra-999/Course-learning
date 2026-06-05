@@ -1,6 +1,13 @@
 import { defineStore } from "pinia";
 
 
+export const ProfileSetting: App.Profile.Setting = {
+    topNav: false,
+    tagIcon: false,
+    tagViews: true,
+    sideBarLogo: true
+}
+
 const { sideBarLogo, topNav, tagIcon, tagViews }= ProfileSetting
 const storageSetting : any = localStorage.getItem('layout') ?? ''
 

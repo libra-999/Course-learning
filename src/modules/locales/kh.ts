@@ -103,4 +103,11 @@ export default {
 			unauthorized: 'មិនមានសិទ្ធិចូល',
 		},
 	},
+	MENU: {
+		home: "ទំព័រដើម",
+		menu: "តារាងទំព័រ",
+		TOP: {
+			more: "មានទំព័រទៀត"
+		}
+	}
 }

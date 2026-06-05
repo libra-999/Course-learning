@@ -1,5 +1,5 @@
 <template>
-   <div class="px-2 py-1 cursor-pointer w-max " @click="toggleHamburger">
+   <div class="px-2 cursor-pointer h-full w-max" @click="toggleHamburger">
       <el-icon class="hamburger-icon" v-if="!prop.isActive">
          <Expand/>
       </el-icon>
@@ -26,9 +26,9 @@ const toggleHamburger = () => {
 
 <style lang="scss" scoped>
 .hamburger-icon {
-   display: inline;
    font-size: 1.3rem;
    vertical-align: middle;
-   color: $default;
+   color: $text;
+   height: 100%;
 }
 </style>
