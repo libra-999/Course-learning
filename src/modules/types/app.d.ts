@@ -9,6 +9,8 @@ declare namespace App {
 			tagViews: true,
 			tagIcon: false,
 			sideBarLogo : true,
+			fixedHeader: true
+
 		}
 	}
 }

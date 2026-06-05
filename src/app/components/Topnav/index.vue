@@ -47,7 +47,9 @@ const route = useRoute()
 const router = useRouter()
 
 // fetching data
-const rawRoute = computed<MenuRoute[]>(()=> { return usePermission.topBarRoutes.length !=0 ? usePermission.topBarRoutes : []})
+const rawRoute = computed<MenuRoute[]>(()=> { 
+    return usePermission.topBarRoutes.length !=0 ? usePermission.topBarRoutes : []}
+)
 const topMenus = computed<any>(() => {
     return rawRoute.value.map((item)=> normalizePath(item))
 })
@@ -62,9 +64,10 @@ const activeMenu = computed<any>(()=> {
 watch(activeMenu, (p)=> {activeRoutes(p)},{ immediate: true})
 
 // action
-function normalizePath(item: MenuRoute, parentPath: string = ''){
+function normalizePath(item: MenuRoute, parentPath: string = ''): any{
+    console.log("Data:" + item)
     const path = resolvePath(item.path, parentPath)
-    return { ...item, path, parentPath, meta: {...item.meta, title: item.meta?.title || item.menuName, icon: item.icon} ,children: item.children?.map((i)=> {normalizePath(i, path)}) || []}
+    return { ...item, path, parentPath, meta: {...item.meta, title: item.meta?.title || item.menuName, icon: item.icon} ,children: item.children?.map((i)=> normalizePath(i, path)) || []}
 
 }
 function getTitle(item: any){
@@ -87,7 +90,7 @@ function resolvePath(path: string, parentPath: string = ''){
     }
 
     if (parentPath){
-        return `${normalPath}/${parentPath}`
+        return `${parentPath}/${normalPath}`
     }
     return `/system/menu/${normalPath}`
 }
@@ -103,7 +106,7 @@ function handleSelect(key:string) {
         return
     }
 
-    activeRoutes(selectedRoute)
+    activeRoutes(selectedRoute.path)
     if (selectedRoute.children?.length){
         router.push(selectedRoute.children[0].path)
         return
@@ -128,7 +131,7 @@ function activeRoutes(path: string){
 
     console.log("ActiveRoutes:"  + selectRoute)
     if (selectRoute?.children?.length){
-        usePermission.setSidebarRoute(selectRoute)
+        usePermission.setSidebarRoute(selectRoute.children)
         useApp.toggleSideBarHide(false)
         return selectRoute.children
     }

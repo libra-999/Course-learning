@@ -8,6 +8,7 @@ import { isTokenValid } from '@/app/utils/authToken'
 import { module } from '@/modules/route/module.ts'
 import GuestLayout from '@/modules/layout/GuestLayout.vue'
 import i18n from '@/modules/locales'
+import { permissionStore } from '@/modules/store/permission'
 
 const t = i18n.global.t
 const route: Router = createRouter({
@@ -41,6 +42,8 @@ const route: Router = createRouter({
 route.beforeEach((to) => {
 	const authStore = loginStore()
 	const isAuth = isTokenValid(authStore.access_token)
+	const usePermission = permissionStore()
+
 
 	// Route protected
 	if (to.meta.requireAuth && !isAuth) {
@@ -53,6 +56,8 @@ route.beforeEach((to) => {
 			query: { redirect: to.fullPath },
 		}
 	}
+
+	if(isAuth && usePermission.routes.length ===0 ) usePermission.generateRoutes()
 
 	// Guest
 	if (to.meta.isFree && isAuth) {

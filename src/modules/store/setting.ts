@@ -5,10 +5,11 @@ export const ProfileSetting: App.Profile.Setting = {
     topNav: false,
     tagIcon: false,
     tagViews: true,
-    sideBarLogo: true
+    sideBarLogo: true,
+    fixedHeader: true
 }
 
-const { sideBarLogo, topNav, tagIcon, tagViews }= ProfileSetting
+const { sideBarLogo, topNav, tagIcon, tagViews , fixedHeader }= ProfileSetting
 const storageSetting : any = localStorage.getItem('layout') ?? ''
 
 export const settingStore = defineStore("setting", {
@@ -17,6 +18,7 @@ export const settingStore = defineStore("setting", {
         topNav:  storageSetting.topNav ? topNav : storageSetting.topNav ,
         tagIcon:  storageSetting.tagIcon ? tagIcon : storageSetting.tagIcon ,
         tagViews:  storageSetting.tagViews ? tagViews : storageSetting.tagViews ,
+        fixedHeader: storageSetting.fixedHeader ? fixedHeader : storageSetting.fixedHeader,
     }),
     actions : {
     }

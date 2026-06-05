@@ -11,10 +11,10 @@ import PaymentABA from "@/modules/view/Payment/PaymentABA.vue";
 import BookLayout from "@/modules/view/Book/index.vue";
 import Dashboard from "@/modules/view/System/Dashboard/index.vue";
 import Bot from "@/modules/view/System/Setting/Bot/index.vue";
-import Navbar from "@/modules/layout/Navbar.vue";
 import Setting from "@/modules/view/System/Setting/index.vue";
 import Mng from "@/modules/view/System/Mng/index.vue";
 import User from "@/modules/view/System/Mng/User/index.vue";
+import FullSideNav from "@/modules/layout/FullSideNav.vue";
 
 
 export const menuRouteConstant = [
@@ -116,7 +116,7 @@ export const module = [
       path: '/system/menu',
       name: 'Menu',
       meta: { requiredAuth: true },
-      component: Navbar,
+      component: FullSideNav,
       children: [...menuRouteConstant]
    },
 
