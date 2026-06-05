@@ -1,32 +1,10 @@
-# 📝 Dependencies 
-```
-- element-plus  # manage template or component
-- strip-js      # manage payment with real payment 
-- tailwind      # style control by tailwind
-- axios         # implement route calling 
-- crypto-js     # hash function 
-- pinia         # cache storing
-- vue-router    # route managing
-- uuid          # auto generate ID
-- pino          # sl4j
-- multer        # file configure
-- mongoose      # unofficial mongo ,but easies to used (build-in some query)
+**TEST**
+1. socket URL: http://52.220.126.56:7000
+2. server URL: [/dev-api] --> (http://52.220.126.56:7000/dev/pkdVdjhT/api/dev-api)
 
-```
-###  Patter Design of VUE
-``` 
-src/
-├── app/
-    ├── utils/
-    ├── component/
-    ├── assets/
-├── modules/
-    ├── plugins/
-    ├── api/
-    ├── route/
-    ├── layout/
-    ├── store/
-    ├── types/
-└── App.vue
-└── main.ts
-```
+**PROD**
+1. https://prod-course.duckdns.org/pkdVdjhT/api/prod-api
+2. https://prod-course.duckdns.org/pkdVdjhT/api
+
+## Endpoint
+Client Demo --> [**web-course**](https://course-vue-22.vercel.app)
