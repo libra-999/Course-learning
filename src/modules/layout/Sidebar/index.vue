@@ -1,19 +1,10 @@
 <template>
     <div :class="{ 'has-logo': showLogo }" class="sidebar-container">
-        <Logo v-if="showLogo" :collapse="isCollapse" />
+        <Logo v-show="showLogo" :collapse="isCollapse" />
         <el-scrollbar wrap-class="scrollbar-wrapper">
-            <el-menu 
-                :default-active="activeMenu" 
-                :collapse="isCollapse" 
-                :unique-opened="true"
-                :collapse-transition="false" 
-                mode="vertical">
-                 <SidebarItem
-                    v-for="item in sidebarRouters"
-                    :key="item.path"
-                    :item="item"
-                    :base-path="item.path"
-                    />
+            <el-menu :default-active="activeMenu" :collapse="isCollapse" :unique-opened="true"
+                :collapse-transition="false" mode="vertical">
+                <SidebarItem v-for="item in sidebarRouters" :key="item.path" :item="item" :base-path="item.path" />
             </el-menu>
         </el-scrollbar>
     </div>
@@ -35,9 +26,8 @@ const useSetting = settingStore()
 const usePermission = permissionStore()
 
 const sidebarRouters: any = computed(() => usePermission.sidebarRoutes)
-const showLogo = computed(() => useSetting.sideBarLogo)
 const isCollapse = computed(() => !useApp.sidebar.opened)
-
+const showLogo = computed(() => useSetting.sideBarLogo)
 
 const activeMenu = computed(() => {
     const { meta, path } = route
@@ -50,14 +40,16 @@ const activeMenu = computed(() => {
 
 <style lang="scss" scoped>
 .sidebar-container {
-    background-color: $text;
+    background-color: $defaultSidebarItem;
     color: $surface;
 
+
     .scrollbar-wrapper {
-        background-color: $text;
+        background-color: $default;
     }
 
     .el-menu {
+        background-color: $defaultSidebarItem;
         border: none;
         height: 100%;
         width: 100% !important;
@@ -70,17 +62,19 @@ const activeMenu = computed(() => {
         }
 
         .el-menu-item {
-            color: $surface;
+            color: $text;
+            background-color: $default;
 
             &.is-active {
-                color: var(--menu-active-text, #409eff);
+                color: $primary;
                 background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;
             }
         }
 
         .el-sub-menu__title {
-            color: $surface;
+            color: $text;
         }
     }
 }
+
 </style>

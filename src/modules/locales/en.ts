@@ -114,6 +114,10 @@ export default {
 		menu: "Menu",
 		TOP: {
 			more: "More menus"
-		}
+		},
+		setting: "Setting",
+		bot: "Bot",
+		management: "Management",
+		user: "User"
 	}
 }

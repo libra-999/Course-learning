@@ -1,12 +1,13 @@
 <template>
   <div :class="classObj" class="sn-container">
     <div v-if="device === 'mobile' && sidebar.opened" class="sn-container-draw-bg" @click="handleClickDevice" />
-    <Sidebar v-if="!sidebar.hide" class="sn-container-sidebarHide" />
+    <Sidebar v-if="!sidebar.hide" />
     <div :class="{ hasTagsView: needTagViews, sidebarHide: sidebar.hide }" class="sn-container-main">
       <div :class="{ 'fixed-header': fixHeaders }">
         <Navbar />
         <Tagview v-if="needTagViews" />
       </div>
+      <AppMain/>
     </div>
   </div>
 </template>
@@ -19,6 +20,7 @@ import { appStore } from '@/modules/store/app';
 import { settingStore } from '@/modules/store/setting';
 import { useWindowSize } from '@vueuse/core';
 import { computed, watch, watchEffect } from 'vue';
+import AppMain from '@/modules/layout/AppMain.vue';
 
 const useSetting = settingStore()
 const useApp = appStore()
@@ -63,13 +65,18 @@ function handleClickDevice() {
   position: relative;
   height: 100%;
   width: 100%;
+  display: flex;
 
   &.mobile.openSidebar {
     position: fixed;
     top: 0;
   }
 
-  &-drawer-ng {
+  &-main{
+    width: 100%;
+  }
+
+  &-draw-bg {
     background: #000;
     opacity: 0.3;
     width: 100%;
@@ -78,20 +85,20 @@ function handleClickDevice() {
     position: absolute;
     z-index: 999;
   }
-
-  &-fixed-header {
+  .fixed-header {
     position: fixed;
     top: 0;
     right: 0;
     z-index: 9;
     transition: width 0.28s;
+    width: calc(100% - 200px);
   }
 
-  &-hideSidebar .fixed-header {
+  .hideSidebar .fixed-header {
     width: calc(100% - 54px);
   }
 
-  &-sidebarHide .fixed-header {
+  .hideSidebar .fixed-header {
     width: 100%;
   }
 }

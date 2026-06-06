@@ -28,7 +28,7 @@ const toggleHamburger = () => {
 .hamburger-icon {
    font-size: 1.3rem;
    vertical-align: middle;
-   color: $text;
+   color: $default;
    height: 100%;
 }
 </style>

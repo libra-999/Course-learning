@@ -1,6 +1,6 @@
 import hljs from 'highlight.js'
 import MarkdownIt from 'markdown-it'
-
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 export function toggleHTMLClass(name: string) {
 	function add() {
@@ -71,4 +71,8 @@ export const rewriteMenuPath = (parentPath?: string, childPath?: string) => {
 
 export const isExternal = (path: string) => {
 	return /^(https?:|mailto:|tel:)/.test(path)
+}
+
+export const getIcon = (icon: string) => {
+	return ElementPlusIconsVue[icon as keyof typeof ElementPlusIconsVue]
 }

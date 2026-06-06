@@ -31,7 +31,7 @@ function toggleSideBar() {
   overflow: hidden;
   height: 60px;
   position: relative;
-  background: $default;
+  color: $default;
   box-shadow: 0 1px 4px $text;
 
   &-hbg {
@@ -48,8 +48,7 @@ function toggleSideBar() {
 
   &-topnav{
     position: absolute;
-    top: 0;
-    color: $text;
+    top: 0;    
     left: 50px;
   }
 

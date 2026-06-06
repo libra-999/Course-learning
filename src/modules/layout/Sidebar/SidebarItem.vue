@@ -3,6 +3,7 @@
         <template v-if="showSingleChild">
             <AppLink :to="singleChildPath">
                 <el-menu-item :index="singleChildPath" :class="{ 'submenu-title-noDropdown': !isNest }">
+                    <Icon :name="item.icon" />
                     <template #title>
                         <span class="menu-title" :title="getTooltip(singleChildTitle)">
                             {{ singleChildTitle }}
@@ -14,6 +15,7 @@
 
         <el-sub-menu v-else :index="resolvedItemPath" teleported>
             <template #title>
+                <Icon :name="item.icon" />
                 <span class="menu-title" :title="getTooltip(itemTitle)">
                     {{ itemTitle }}
                 </span>
@@ -29,10 +31,11 @@
 import { computed, ref } from 'vue'
 import { isExternal } from '@/app/utils/common'
 import AppLink from '@/modules/layout/Sidebar/Link.vue'
+import Icon from '@/app/components/Card/Icon.vue'
 
 const props = defineProps({
     item: {
-        type: Object,
+        type: Object as any,
         required: true
     },
     isNest: {
@@ -48,15 +51,13 @@ const props = defineProps({
 const onlyOneChild = ref<any>({})
 
 const visibleChildren = computed(() => {
-    return (props.item.children || []).filter((child: any) => !child.hidden)
+    return (props.item.children || []).filter((child: any) => !child.hidden && child.menuType !== 2)
 })
 
 const showSingleChild = computed(() => {
-    return (
-        hasOneShowingChild(props.item.children, props.item) &&
+    return hasOneShowingChild(props.item.child, props.item) &&
         (!onlyOneChild.value.children || onlyOneChild.value.noShowingChildren) &&
-        !props.item.alwaysShow
-    )
+        props.item.menuType === 1
 })
 
 const resolvedItemPath = computed(() => {
@@ -132,7 +133,7 @@ function resolvePath(routePath = '') {
 }
 
 function getTitle(route: any) {
-    return route?.meta?.title || route?.menuName || route?.name || route?.path || ''
+    return route?.menuName || ''
 }
 
 function getTooltip(title: string) {
@@ -145,5 +146,28 @@ function getTooltip(title: string) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: $text;
+    text-align: center;
+}
+
+
+:deep(.el-menu-item) {
+    background-color: $defaultSidebarChildBg !important;
+    color: $text !important;
+}
+
+:deep(.el-menu-item:hover) {
+    background-color: $defaultSidebarChildHoverBg !important;
+    color: $text !important;
+}
+
+:deep(.el-sub-menu__title:hover) {
+    background-color:  #21354778 !important;
+    color:  $text !important;
+}
+
+:deep(.el-sub-menu__icon-arrow) {
+    color: $text;
+    font-size: 16px;
 }
 </style>

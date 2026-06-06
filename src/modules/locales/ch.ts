@@ -109,6 +109,10 @@ export default {
 		menu: "菜单页",
 		TOP: {
 			more: "更多菜单"
-		}
+		},
+		setting: "设置模块",
+		bot: "机器人",
+		management: "管理模块",
+		user: "用户"
 	}
 }

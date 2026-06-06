@@ -9,8 +9,8 @@
 
         <template v-for="(item, index) in topMenus">
             <el-menu-item v-if="Number(index) < visibleNumber" :key="index" :index="item.path">
-                <!-- <svg-icon v-if="item.icon" :icon-class="item.icon"/>
-                {{ getTitle(item) }} -->
+                <!-- <svg-icon v-if="item.icon" :icon-class="item.icon"/> -->
+                {{ getTitle(item) }}
             </el-menu-item>
         </template>
 
@@ -160,7 +160,7 @@ onBeforeUnmount(()=> {
 .topnav-topbar.el-menu--horizontal > .el-menu-item {
   height: 60px !important;
   line-height: 60px !important;
-  color: #999093 !important;
+  color: $default !important;
   padding: 0 10px !important;
 }
 

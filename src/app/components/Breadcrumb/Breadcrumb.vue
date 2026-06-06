@@ -78,9 +78,12 @@ function handleLink(item: BreadcrumbItem) {
         cursor: text;
     }
     a {
-        color: $text;
+        color: $default;
         cursor: pointer;
         font-weight: 500;
+        &:hover {
+            color: $gray;
+        }
     }
 }
 </style>
