@@ -133,7 +133,7 @@ function resolvePath(routePath = '') {
 }
 
 function getTitle(route: any) {
-    return route?.menuName || ''
+    return route?.menuName || route.name || ''
 }
 
 function getTooltip(title: string) {

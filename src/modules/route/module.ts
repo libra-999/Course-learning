@@ -9,15 +9,21 @@ import Preview from "@/modules/view/CardIdentity/Preview.vue";
 import Test from "@/app/components/Test/Test.vue";
 import PaymentABA from "@/modules/view/Payment/PaymentABA.vue";
 import BookLayout from "@/modules/view/Book/index.vue";
-import Dashboard from "@/modules/view/System/Dashboard/index.vue";
 import Bot from "@/modules/view/System/Setting/Bot/index.vue";
 import Setting from "@/modules/view/System/Setting/index.vue";
 import Mng from "@/modules/view/System/Mng/index.vue";
 import User from "@/modules/view/System/Mng/User/index.vue";
 import FullSideNav from "@/modules/layout/FullSideNav.vue";
+import Dashboard from "@/modules/view/System/Dashboard/index.vue"
 
 
 export const apiMenuRouteConstant = [
+   {
+      path: 'Dashboard',
+      name: 'Dashboard',
+      meta: { requiredAuth: true },
+      component: Dashboard,
+   },
    {
       path: 'setting',
       name: 'Setting',
@@ -50,11 +56,18 @@ export const apiMenuRouteConstant = [
 
 export const staticMenuRouteConstant = [
    {
-      path: 'dashboard',
-      name: 'Dashboard',
-      meta: { requiredAuth: true },
-      component: Dashboard
-   },
+      id: "falsld",
+      path: "Dashboard",
+      menuName: "Dashboard",
+      menuType: 1,
+      routingName: "Dashboard",
+      orderMenuNumber: 1,
+      icon: "Histogram",
+      meta: {
+            isCache: true
+      },
+      children: []
+   }
 ]
 
 export const module = [
