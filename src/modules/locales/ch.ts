@@ -113,6 +113,7 @@ export default {
 		setting: "设置模块",
 		bot: "机器人",
 		management: "管理模块",
-		user: "用户"
+		user: "用户",
+		dashboard: "仪表板"
 	}
 }

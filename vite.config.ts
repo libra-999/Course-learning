@@ -1,10 +1,9 @@
-import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 import { clientLogPlugin } from './src/app/utils/terminalLog'
 import PostCssPxToRem from 'postcss-pxtorem'
-import { loadEnv } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 
 
 const pathSrc = path.resolve (__dirname, 'src')

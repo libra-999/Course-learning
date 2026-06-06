@@ -118,6 +118,7 @@ export default {
 		setting: "Setting",
 		bot: "Bot",
 		management: "Management",
-		user: "User"
+		user: "User",
+		dashboard: "Dashboard"
 	}
 }
