@@ -12,25 +12,25 @@ export const tagViewStore = defineStore("tagView", {
             this.addVisitView(view)
         },
         addCacheView(view : any) {
-            if(this.cacheViews.includes(view.menuName)) return // keep the same
+            if(this.cacheViews.includes(view.name)) return // keep the same
 
             if (view.meta.isCache){
-                this.cacheViews.push(view.menuName)
+                this.cacheViews.push(view.name)
             }
         },
         addIframeView(view: any) {
             if (this.iframeViews.some(v => v.path === view.path)) return 
             this.visitViews.push(
                 Object.assign({}, view ,{
-                    title:view.menuName || "no name"
+                    title:view.name || "no name"
                 })
             )
         },
         addVisitView (view: any){
             if (this.visitViews.some(v => v.path === view.path)) return 
             this.visitViews.push(
-                Object.assign({}, view ,{
-                    title:view.menuName || "no name"
+                Object.assign({}, view ,{  
+                    title:view.name || "no name"
                 })
             )
         },
@@ -63,7 +63,7 @@ export const tagViewStore = defineStore("tagView", {
         },
         deleteCacheView(view: any) {
            return new Promise(resolve =>{
-                const index = this.cacheViews.indexOf(view.menuName)
+                const index = this.cacheViews.indexOf(view.name)
                 if (index > -1 && this.cacheViews.splice(index,1)){
                     resolve([...this.cacheViews])
                 }
@@ -82,7 +82,7 @@ export const tagViewStore = defineStore("tagView", {
                         return true
                     }
                     
-                    const indexCache = this.cacheViews.indexOf(i.menuName)
+                    const indexCache = this.cacheViews.indexOf(i.name)
                     if (indexCache > -1) {
                         this.cacheViews.splice(indexCache,1)
                     }
@@ -103,7 +103,7 @@ export const tagViewStore = defineStore("tagView", {
                         return true
                     }
                     
-                    const indexCache = this.cacheViews.indexOf(i.menuName)
+                    const indexCache = this.cacheViews.indexOf(i.name)
                     if (indexCache > -1) {
                         this.cacheViews.splice(indexCache,1)
                     }

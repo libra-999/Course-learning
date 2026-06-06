@@ -1,16 +1,17 @@
 <template>
     <div id="tag-view-container" class="tag-view-container">
-        <ScrollTagHorizontal ref="scrollRef" @scroll="()=> closeMenu()">
+        <ScrollTagHorizontal class="tag-view-container-scroll" ref="scrollRef" @scroll="() => closeMenu()">
             <router-link 
-                v-for="tag in visitView"
-                :key="tag.path"
+                :class="{ 'active' : isCurrentActive(tag)}"
+                class="tag-view-container-scroll-item" 
+                v-for="tag in visitView" 
+                :key="tag.path" 
                 :data-path="tag.path"
-                :to="{path: tag.path, query: tag.query}"
+                :to="{ path: tag.path, query: tag.query }" 
                 @contextmenu.prevent="openMenu(tag, $event)"
-                @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
-                >
-                {{ tag.menuName }}
-                <span v-if="!isAffix(tag)" @click.prevent.stop="">
+                @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
+                {{ tag.name }}
+                <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
                     <el-icon>
                         <CloseBold />
                     </el-icon>
@@ -21,10 +22,10 @@
         <ul v-show="visible">
             <li @click="refreshSelectedTag(selectTag)">
                 <el-icon>
-                    <RefreshRight/>
+                    <RefreshRight />
                 </el-icon>
             </li>
-            <li @click="closeAllTags(selectTag)" ></li>
+            <li @click="closeAllTags(selectTag)"></li>
         </ul>
     </div>
 </template>
@@ -47,9 +48,13 @@ const scrollRef = ref<any>(null)
 const route = useRoute()
 const router = useRouter()
 
+const useTagView = tagViewStore()
+const usePermission = permissionStore()
+
 const { proxy } = getCurrentInstance() as any
-const visitView = computed(() => tagViewStore().visitViews)
-const routeTag = computed(() => permissionStore().routes)
+const visitView = computed(() => useTagView.visitViews)
+const routeTag = computed(() => usePermission.routes)
+
 
 const tagStore = tagViewStore()
 
@@ -60,22 +65,6 @@ function isAffix(tag: any) {
 // active tag
 function isCurrentActive(rt: any) {
     return rt.path === route.path
-}
-// first tag
-function firstTag() {
-    try {
-        return selectTag.value.fullPath === '/menu' || selectTag.value.fullPath === visitView.value[1].fullPath
-    } catch {
-        return false
-    }
-}
-// last tag
-function lastTag() {
-    try {
-        return selectTag.value.fullPath === visitView.value[visitView.value.length - 1].fullPath
-    } catch {
-        return false
-    }
 }
 function addTags() {
     const { name } = route
@@ -139,40 +128,18 @@ function toLastView(visitView: any, view?: any) {
     if (latestView) {
         router.push(latestView.fullPath)
     } else {
-        if (view.menuName === 'Dashboard') {
+        if (view.name === 'Menu') {
             router.replace({ path: '/redirect' + view.fullPath })
         } else {
-            router.push('/')
+            router.push('/system/menu')
         }
     }
 }
-
-
 function closeSelectedTag(view: any) {
-    proxy.$tab.closePage(view).then(({ }) => {
-        if (isCurrentActive(view)) {
-            toLastView(visitView, view)
+    closePage(view).then((v: any) => {
+        if(isCurrentActive(view)){
+            toLastView(v.visitView,view)
         }
-    })
-}
-function closeRightTags() {
-    proxy.$tab.closeRightPage(selectTag.value).then((v: any) => {
-        if (!v.find((i: any) => i.fullPath === route.fullPath)) {
-            toLastView(v)
-        }
-    })
-}
-function closeLeftTags() {
-    proxy.$tab.closeLeftPage(selectTag.value).then((v: any) => {
-        if (!v.find((i: any) => i.fullPath === route.fullPath)) {
-            toLastView(v)
-        }
-    })
-}
-function closeOtherTags() {
-    router.push(selectTag.value).catch(() => { })
-    proxy.$tab.closeOtherPage(selectTag.value).then(() => {
-        moveToCurrentTag()
     })
 }
 function closeAllTags(view: any) {
@@ -204,10 +171,24 @@ function openMenu(tag: any, e: any) {
     visible.value = true
     selectTag.value = tag
 }
+async function closePage (obj:any){
+ 
+    if (obj === undefined) {
+      return useTagView.deleteView(router.currentRoute.value).then((v: any) => {
+        const latestView = v.slice(-1)[0]
+        if (latestView) {
+          return router.push(latestView.fullPath)
+        }
+        return router.push('/system/menu')
+      })
+    }
+    return useTagView.deleteView(obj)
+
+}
 
 watch([route, visible], (value) => {
     addTags(),
-        moveToCurrentTag()
+    moveToCurrentTag()
 
     if (value) {
         document.body.addEventListener('click', closeMenu)
@@ -222,4 +203,54 @@ onMounted(() => {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tag-view-container {
+  height: 34px;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.051);
+  box-shadow: 0 1px 3px 0 rgba(147, 146, 146, 0.12), 0 0 3px 0 rgba(225, 222, 222, 0.04);
+
+  &-scroll {
+    text-align: start;
+    &-item {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      height: 26px;
+      line-height: 26px;
+      border: 1px solid var(--tags-item-border, #d8dce5);
+      color: var(--tags-item-text, #495060);
+      background: var(--tags-item-bg, #fff);
+      padding: 0 8px;
+      font-size: 12px;
+      margin-left: 5px;
+      margin-top: 4px;
+
+      &:first-of-type {
+        margin-left: 15px;
+      }
+
+      &:last-of-type {
+        margin-right: 15px;
+      }
+
+      &.active {
+        background-color: $defaultSidebarItem;
+        color: #fff;
+
+        &::before {
+          content: '';
+          background: #fff;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+</style>
