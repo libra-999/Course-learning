@@ -63,8 +63,10 @@ const { t } = useI18n()
         gap: .8rem;
         color: $text;
         & .sidebar-logo-link-img{
+            visibility: visible;
             vertical-align: middle;
         }
     }
+    
 }
 </style>
