@@ -17,13 +17,7 @@ import User from "@/modules/view/System/Mng/User/index.vue";
 import FullSideNav from "@/modules/layout/FullSideNav.vue";
 
 
-export const menuRouteConstant = [
-   {
-      path: 'dashboard',
-      name: 'Dashboard',
-      meta: { requiredAuth: true },
-      component: Dashboard
-   },
+export const apiMenuRouteConstant = [
    {
       path: 'setting',
       name: 'Setting',
@@ -52,6 +46,15 @@ export const menuRouteConstant = [
          }
       ]
    }
+]
+
+export const staticMenuRouteConstant = [
+   {
+      path: 'dashboard',
+      name: 'Dashboard',
+      meta: { requiredAuth: true },
+      component: Dashboard
+   },
 ]
 
 export const module = [
@@ -117,7 +120,7 @@ export const module = [
       name: 'Menu',
       meta: { requiredAuth: true },
       component: FullSideNav,
-      children: [...menuRouteConstant]
+      children: [...staticMenuRouteConstant, ...apiMenuRouteConstant]
    },
 
 ]

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { menuRoute } from "@/modules/api/menu";
-import { menuRouteConstant } from "@/modules/route/module.ts";
+import { apiMenuRouteConstant as menuRouteConstant, staticMenuRouteConstant } from "@/modules/route/module.ts";
 import ParentLink from "@/app/components/ParentView/index.vue"
 import { getNormalPath } from "@/app/utils/common";
 
@@ -45,7 +45,7 @@ export const permissionStore = defineStore("permission", {
 
                this.setDefaultRoute(sideBarRoutes)
                this.setRoutes(rewriteRoutes)
-               this.setSidebarRoute(sideBarRoutes)
+               this.setSidebarRoute([...staticMenuRouteConstant,...sideBarRoutes])
                this.setTagRoute(defaultRoutes)
                this.setTopBarRoute(defaultRoutes)
 

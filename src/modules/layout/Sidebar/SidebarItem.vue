@@ -55,7 +55,7 @@ const visibleChildren = computed(() => {
 })
 
 const showSingleChild = computed(() => {
-    return hasOneShowingChild(props.item.child, props.item) &&
+    return hasOneShowingChild(props.item.children, props.item) &&
         (!onlyOneChild.value.children || onlyOneChild.value.noShowingChildren) &&
         props.item.menuType === 1
 })
