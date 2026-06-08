@@ -1,7 +1,6 @@
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
-import { clientLogPlugin } from './src/app/utils/terminalLog'
 import PostCssPxToRem from 'postcss-pxtorem'
 import { defineConfig, loadEnv } from 'vite'
 
@@ -23,7 +22,7 @@ export default defineConfig (({mode}) => {
          },
       },
       // basicSsl() = testing for handling in secure
-      plugins: [vue (), tailwindcss (), clientLogPlugin ()],
+      plugins: [vue (), tailwindcss ()],
       test: {
          globals: true,
       },

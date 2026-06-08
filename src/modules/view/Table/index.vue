@@ -1,14 +1,14 @@
 <template>
-	<div>
-		<ButtonGlobal class=" absolute top-2 right-1 text-white" value="" @click="back">
-			<template #icon-right>
-				<el-icon>
-					<CloseBold />
-				</el-icon>
-			</template>
-		</ButtonGlobal>
-		<Role />
-	</div>
+   <div>
+      <ButtonGlobal class=" absolute top-2 right-1 text-white" value="" @click="back">
+         <template #icon-right>
+            <el-icon>
+               <CloseBold/>
+            </el-icon>
+         </template>
+      </ButtonGlobal>
+      <Role/>
+   </div>
 </template>
 
 <script setup lang="ts">
@@ -18,8 +18,8 @@ import { CloseBold } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 
 
-const route = useRouter()
-const back = () => route.back()
+const route = useRouter ()
+const back = () => route.back ()
 </script>
 
 <style lang="scss" scoped></style>

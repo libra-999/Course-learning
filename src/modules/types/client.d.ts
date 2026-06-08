@@ -1,6 +1,5 @@
 type AnyTypeModule = any
 
-// markdown format 
 declare module "markdown-it" {
    const MarkdownIT: any
    export default MarkdownIT

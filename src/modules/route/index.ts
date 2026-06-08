@@ -10,60 +10,61 @@ import GuestLayout from '@/modules/layout/GuestLayout.vue'
 import i18n from '@/modules/locales'
 import { permissionStore } from '@/modules/store/permission'
 
+
 const t = i18n.global.t
-const route: Router = createRouter({
-	history: createWebHistory(),
-	routes: [
-		{
-			path: '/',
-			redirect: '/guest',
-		},
-		{
-			name: 'login',
-			path: '/login',
-			component: Login,
-		},
-		{
-			path: '/guest',
-			component: GuestLayout,
-			meta: { isFree: true },
-		},
-		{
-			path: '/system',
-			component: DefaultLayout,
-			name: 'home',
-			meta: { requireAuth: true },
-			children: [...module],
-		},
-		...invalidPage,
-	],
+const route: Router = createRouter ({
+   history: createWebHistory (),
+   routes: [
+      {
+         path: '/',
+         redirect: '/guest',
+      },
+      {
+         name: 'login',
+         path: '/login',
+         component: Login,
+      },
+      {
+         path: '/guest',
+         component: GuestLayout,
+         meta: {isFree: true},
+      },
+      {
+         path: '/system',
+         component: DefaultLayout,
+         name: 'home',
+         meta: {requireAuth: true},
+         children: [...module],
+      },
+      ...invalidPage,
+   ],
 })
 
-route.beforeEach((to) => {
-	const authStore = loginStore()
-	const isAuth = isTokenValid(authStore.access_token)
-	const usePermission = permissionStore()
-
-
-	// Route protected
-	if (to.meta.requireAuth && !isAuth) {
-		ElMessage({
-			message: t('REQUEST_AXIOS.error.unauthorized'),
-			type: 'error',
-		})
-		return {
-			path: '/login',
-			query: { redirect: to.fullPath },
-		}
-	}
-
-	if(isAuth && usePermission.routes.length ===0 ) usePermission.generateRoutes()
-
-	// Guest
-	if (to.meta.isFree && isAuth) {
-		return (to.query.redirect as string) || '/system'
-	}
-	return true
+route.beforeEach ((to) => {
+   const authStore = loginStore ()
+   const isAuth = isTokenValid (authStore.access_token)
+   const usePermission = permissionStore ()
+   
+   
+   // Route protected
+   if (to.meta.requireAuth && !isAuth) {
+      ElMessage ({
+         message: t ('REQUEST_AXIOS.error.unauthorized'),
+         type: 'error',
+      })
+      return {
+         path: '/login',
+         query: {redirect: to.fullPath},
+      }
+   }
+   
+   if (isAuth && usePermission.routes.length === 0) usePermission.generateRoutes ()
+   
+   // Guest
+   if (to.meta.isFree && isAuth) {
+      return (to.query.redirect as string) || '/system'
+   }
+   return true
 })
 
 export default route
