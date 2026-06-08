@@ -1,5 +1,5 @@
 <template>
-   <div class="border border-gray-100 rounded-xl overflow-hidden p-2 min-w-75 min-h-175">
+   <div class="border border-gray-100 rounded-xl overflow-hidden p-2 min-w-75 w-125 min-h-175">
       <el-form-item class="w-25">
          <el-select v-model="selectCountry">
             <el-option label="China" value="CN"/>
@@ -14,8 +14,8 @@
             <UploadFilled/>
          </el-icon>
          <p>
-            Drop image here<br/>
-            <span class="text-gray-300 my-2 text-sm">SUPPORT ONLY FORIEGNER CARD , KHMER'S CARD STILL PROCESSING </span>
+            {{ t('UPLOAD.ocr.q_1') }}<br/>
+            <span class="text-gray-300 my-2 text-sm">{{ t('UPLOAD.ocr.q_2') }}</span>
          </p>
       </el-upload>
       <div class="w-full h-auto my-5 overflow-hidden">
@@ -25,11 +25,11 @@
             <template v-if="prop.loading">
                <div class="button-loading"></div>
             </template>
-            <span v-else>Convert</span>
+            <span v-else>{{ t('UPLOAD.ocr.convert') }}</span>
          </button>
       </div>
       <div class="p-2 mt-2">
-         <p class="text-start text-gray-300">Process Image</p>
+         <p class="text-start text-gray-300">{{ t('UPLOAD.ocr.list_images') }}</p>
          <div v-for="(image, index) in imagePreviewUrls" :key="`${image}-${index}`"
               class="relative my-2 border w-full h-full border-gray-200 rounded-lg overflow-hidden">
             <img class="w-full h-37.5 object-contain" alt="preview-image" :src="image"/>
@@ -54,6 +54,7 @@ import { UploadRuleForm } from '@/app/utils/mimeType';
 import { Close, UploadFilled } from '@element-plus/icons-vue';
 import { type UploadInstance, type UploadRawFile } from 'element-plus';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 
 const prop = defineProps<{
@@ -69,6 +70,7 @@ const emit = defineEmits<{
    (event: 'convertFile'): void
 }> ();
 
+const { t } = useI18n()
 const boxMessage = useMessage ();
 const previewUrls = ref (new Map<string, string> ());
 const uploadRemoveRef = ref<UploadInstance> ()

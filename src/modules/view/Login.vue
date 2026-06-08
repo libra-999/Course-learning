@@ -200,7 +200,7 @@ async function submit() {
             is_online: userDetail.is_online,
             created_at: userDetail.created_at,
          }
-         errorMessage.messageBox (loginApi.message, 'success')
+         errorMessage.messageBox (t('LOGIN.API.success.login_success'), 'success')
          userStore.login (user, token)
          return route.replace ({path: '/system'})
       }

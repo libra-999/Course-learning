@@ -15,7 +15,7 @@
          <!-- Header -->
          <div class="form-header">
             <div class="aba-logo">
-               <span class="aba-title">ABA Payment</span>
+               <span class="aba-title">{{ t('PAYMENT.ABA.title') }}</span>
             </div>
             <span class="aba-badge">
 					<span class="badge-dot"/>
@@ -27,7 +27,7 @@
          <div class="form-grid">
             <!-- Merchant ID -->
             <div class="field-group col-span-2">
-               <label class="field-label">Merchant ID</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.merchant_id') }}</label>
                <el-input
                    v-model="ruleForm.merchant_id"
                    class="aba-input"
@@ -37,7 +37,7 @@
 
             <!-- First & Last Name -->
             <div class="field-group">
-               <label class="field-label">First Name</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.first_name') }}</label>
                <el-input
                    v-model="ruleForm.firstname"
                    type="text"
@@ -47,7 +47,7 @@
                />
             </div>
             <div class="field-group">
-               <label class="field-label">Last Name</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.last_name') }}</label>
                <el-input
                    v-model="ruleForm.lastname"
                    type="text"
@@ -59,7 +59,7 @@
 
             <!-- Email -->
             <div class="field-group col-span-2">
-               <label class="field-label">Email</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.email') }}</label>
                <el-input
                    v-model="ruleForm.email"
                    type="text"
@@ -85,7 +85,7 @@
 
             <!-- Phone -->
             <div class="field-group">
-               <label class="field-label">Phone</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.phone') }}</label>
                <el-input
                    v-model="ruleForm.phone"
                    type="text"
@@ -112,7 +112,7 @@
 
             <!-- Request Time -->
             <div class="field-group">
-               <label class="field-label">Request Time</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.request_time') }}</label>
                <el-input
                    v-model="ruleForm.req_time"
                    type="text"
@@ -124,7 +124,7 @@
 
             <!-- Transaction No -->
             <div class="field-group col-span-2">
-               <label class="field-label">Transaction No</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.trans_no') }}</label>
                <el-input
                    v-model="ruleForm.tran_id"
                    type="text"
@@ -136,7 +136,7 @@
 
             <!-- Amount & Currency -->
             <div class="field-group">
-               <label class="field-label">Amount</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.amount') }}</label>
                <el-input
                    v-model="ruleForm.amount"
                    type="number"
@@ -146,7 +146,7 @@
                />
             </div>
             <div class="field-group">
-               <label class="field-label">Currency</label>
+               <label class="field-label">{{ t('PAYMENT.ABA.currency') }}</label>
                <el-select
                    v-model="ruleForm.currency"
                    placeholder="Select"
@@ -181,7 +181,7 @@
                   <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
                   <path d="M3 3v5h5"/>
                </svg>
-               Check Transaction
+               {{ t('PAYMENT.ABA.BUTTON.check_tran') }}
             </button>
             <button
                 class="aba-btn btn-primary"
@@ -198,7 +198,7 @@
                >
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                </svg>
-               Pay Now
+               {{ t('PAYMENT.ABA.BUTTON.pay') }}
             </button>
             <button
                 class="aba-btn btn-secondary"
@@ -216,7 +216,7 @@
                   <line x1="12" y1="1" x2="12" y2="23"/>
                   <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                </svg>
-               Exchange Rate
+              {{ t('PAYMENT.ABA.BUTTON.exchange') }}
             </button>
             <button
                 class="aba-btn btn-secondary"
@@ -236,7 +236,7 @@
                   <rect x="3" y="14" width="7" height="7"/>
                   <path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 20h3"/>
                </svg>
-               Generate QR
+              {{ t('PAYMENT.ABA.BUTTON.generate_qr') }}
             </button>
             <button
                 class="aba-btn btn-ghost col-span-2"
@@ -254,7 +254,7 @@
                   <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
                   <line x1="1" y1="10" x2="23" y2="10"/>
                </svg>
-               Link Card
+               {{ t('PAYMENT.ABA.BUTTON.link') }}
             </button>
          </div>
       </el-form>
@@ -305,6 +305,7 @@ import type { FormInstance } from 'element-plus'
 import type { PaywayABA, Transaction } from '@/modules/types/payment/aba'
 import { createPayment, generateQRImage, getRate, getTransaction, manageCard, } from '@/modules/api/payment/aba'
 import { useMessage } from '@/app/utils/message.ts'
+import { useI18n } from 'vue-i18n'
 
 
 const buildReqTime = () => {
@@ -377,6 +378,7 @@ const dataResp = ref<object> ()
 const rateXML = ref ()
 const openDialog = ref (false)
 const errorMessage = useMessage ()
+const { t } = useI18n()
 
 const submitForm = async () => {
    if (!ruleFormRef.value) return

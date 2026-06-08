@@ -3,14 +3,14 @@
    <div class="w-auto mobile" v-else>
       <div>
          <div class="m-4 flex justify-end">
-            <el-input v-model="search" clearable placeholder="Search by title, author, publisher..." class="w-60!">
+            <el-input v-model="search" clearable :placeholder="t('BOOK.input_search')" class="w-60!">
             </el-input>
          </div>
       </div>
       <div class="overflow-auto flex flex-wrap gap-4 p-3">
          <BookCard v-for="book in dataBook" :key="book.id" :book-data="book"/>
          <div v-if="dataBook.length === 0" class="w-full h-full text-center m-auto">
-            <p class="text-gray-200 font-bold italic">Empty Data Book ... </p>
+            <p class="text-gray-200 font-bold italic">{{ t('BOOK.empty') }} </p>
          </div>
       </div>
       <div class=" flex justify-end mt-4">
@@ -27,8 +27,9 @@ import type { Book } from '../../types/book';
 import { useMessage } from '@/app/utils/message.ts'
 import Loading from '@/app/components/Loading/Loading.vue';
 import BookCard from '@/app/components/Card/BookCard.vue';
+import { useI18n } from 'vue-i18n';
 
-
+const { t } = useI18n()
 const dataBook = ref<Book[]> ([]);
 const loading = ref (false);
 const search = ref ("");

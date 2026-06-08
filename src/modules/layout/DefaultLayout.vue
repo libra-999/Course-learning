@@ -16,8 +16,13 @@
             <p class="uppercase lg:text-center text-start sm:text-start text-5xl font-bold">
                {{ t ("MAIN_LAYOUT.title_2") }}🤔
             </p>
-            <div class="flex justify-between mt-5">
-               <ThemeSwitch :theme-schema="themeStore.settings.themeSchema" :is-dark="themeStore.darkMode"
+            <div :class="{
+               flex: true,
+               'mt-5': true,
+               'justify-between': !isMobile,
+               'justify-end': isMobile
+            }">
+               <ThemeSwitch v-if="!isMobile" :theme-schema="themeStore.settings.themeSchema" :is-dark="themeStore.darkMode"
                             @switch="themeStore.toggleThemeSchema"/>
                <div class="text-white flex justify-center h-10 gap-2  place-items-center">
                   <SwitchLang/>
@@ -142,6 +147,7 @@ import SwitchLang from '@/app/components/Localization/SwitchLang.vue'
 import { useI18n } from 'vue-i18n'
 import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
 import ScanQR from '@/app/components/Opencamera/ScanQR.vue'
+import { isMobile } from '@/app/utils/common'
 
 
 const message = useMessage ()
@@ -167,7 +173,7 @@ const timelineModel = ref<Activities> ({
 })
 const addTimeline = async () => {
    timeStore.isSave ({...timelineModel.value})
-   message.messageBox ('Add Successfully', 'success')
+   message.messageBox (t('MAIN_LAYOUT.TIMELINE.SUCCESS.add_success'), 'success')
 }
 
 /* load timeline */

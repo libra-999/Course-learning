@@ -1,7 +1,7 @@
 export default {
    TITLE_SYSTEM: 'Vue',
    language: 'English',
-   
+
    MAIN_LAYOUT: {
       title_1: 'Vue 3 Learning Tutorial',
       title_2: 'From Zero to Zero ',
@@ -12,17 +12,17 @@ export default {
       BOOK: {
          title: 'Book API',
          content:
-             'Google book API with  , list product book as list and view detail of book ',
+            'Google book API with  , list product book as list and view detail of book ',
       },
       PAYMENT: {
          title: 'Payment Type',
          content:
-             'Learned the structure and fields should be have when implement payment feature into project',
+            'Learned the structure and fields should be have when implement payment feature into project',
       },
       FILE: {
          title: 'Upload Files',
          content:
-             'Build a view to upload files with multiple types and loading progress base image uploaded',
+            'Build a view to upload files with multiple types and loading progress base image uploaded',
       },
       ROLE: {
          title: 'Nest Table',
@@ -44,7 +44,7 @@ export default {
          title: 'Dashboard',
          content: 'Build a sample sidebar with child submenu',
       },
-      
+
       TIMELINE: {
          title: 'TimeLine',
          button_input: 'Input',
@@ -55,6 +55,9 @@ export default {
             content_placeholder: 'Please input title',
             add: 'Add',
          },
+         SUCCESS: {
+            add_success: "Added Timeline!"
+         }
       },
    },
    LOGIN: {
@@ -66,7 +69,7 @@ export default {
             status: {
                waiting: 'The QR code will be expired in ',
                scanned:
-                   'The QR code has been scanned, please confirm login on your mobilephone',
+                  'The QR code has been scanned, please confirm login on your mobilephone',
                confirmed: 'Login Successfully, redirecting...',
                expired: 'The QR code has been expired!',
                cancelled: 'Login has been cancelled!',
@@ -80,7 +83,7 @@ export default {
             username_placeholder: 'Input Your Name',
             username_isNull: 'Username is null!',
             username_length_validate: 'Invalid format username!',
-            
+
             pwd: 'Password',
             pwd_isNull: 'Password is null!',
             pwd_length_validate: 'Password should be 6 characters at least!',
@@ -92,7 +95,8 @@ export default {
       },
       API: {
          success: {
-            scan_polling_login: 'Scan Successfully'
+            login_success: "Login Successfully!",
+            scan_polling_login: 'Scan Successfully!'
          },
          error: {
             qr_generate_display: 'Error to display QR!',
@@ -103,6 +107,62 @@ export default {
          }
       }
    },
+   TEST: {
+      button_submit: 'Click',
+      button_reset: 'Reset'
+   },
+   BOOK: {
+      input_search: "Search by title, author, publisher...",
+      empty: 'No Data'
+   },
+   PAYMENT: {
+      ABA: {
+         title: 'ABA Payment',
+         merchant_id: 'Merchant ID',
+         first_name: 'First Name',
+         last_name: 'Last Name',
+         email: 'Email',
+         phone: 'Phone Number',
+         request_time: 'Issued Date',
+         trans_no: 'Transaction No',
+         amount: 'Amount',
+         currency: 'Currency',
+         BUTTON: {
+            check_tran: 'Check Transaction',
+            pay: 'Pay Now',
+            exchange: 'Exchange Rate',
+            generate_qr: 'Generated QR',
+            link: 'Link Card'
+         }
+      },
+      CRYPTO: {
+         buy: 'Buy now'
+      }
+   },
+   UPLOAD: {
+      progress: {
+         title: 'Upload With Progress',
+         q_1: 'Drop directory here or',
+         q_2: 'click to upload',
+         list_current_images: 'Current upload in progress',
+         empty_image: 'No Files'
+      },
+      ocr: {
+         title: 'OCR Identity card',
+         q_1: 'Drop image here',
+         q_2: 'SUPPORT ONLY FORIEGNER CARD',
+         convert: 'Convert',
+         list_images: 'Process Image'
+      }
+   },
+   BOT: {
+      robot_name: 'Assistant',
+      description: 'Ask me anything about our community',
+      online: 'Online',
+      offline: 'Offline',
+      prompt: 'Ask me anything...'
+   },
+
    REQUEST_AXIOS: {
       error: {
          internal_server: "Server Internal!",
@@ -110,6 +170,15 @@ export default {
       }
    },
    MENU: {
+      PARENT: {
+         setting_title: "Setting",
+         management_title: "Management",
+         children: {
+            user: "User",
+            dashboard: "Dashboard",
+            bot: "Bot"
+         }
+      },
       home: "Home",
       menu: "Menu",
       TOP: {
@@ -120,5 +189,12 @@ export default {
       management: "Management",
       user: "User",
       dashboard: "Dashboard"
+   },
+   PAGINATION: {
+      page: '',
+      previous: 'Previous',
+      next: 'Next'
    }
+
+
 }

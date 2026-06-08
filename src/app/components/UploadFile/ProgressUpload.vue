@@ -1,6 +1,6 @@
 <template>
    <div class="mb-5 color-text-theme ">
-      <span class="text-5xl font-bold font-mono"> Upload With Progress</span>
+      <span class="text-5xl font-bold font-mono">{{ t('UPLOAD.progress.title') }}</span>
       <el-upload
           class="mt-5 custom-upload"
           drag
@@ -12,14 +12,14 @@
             <UploadFilled/>
          </el-icon>
          <p>
-            Drop directory here or
-            <em class="font-bold">click to upload</em>
+            {{ t('UPLOAD.progress.q_1') }}
+            <em class="font-bold">{{ t('UPLOAD.progress.q_2') }}</em>
          </p>
       </el-upload>
    </div>
    <div class="font-sans border color-text-theme  border-t-gray-200 border-l-0 border-r-0 border-b-0">
       <p class="font-bold text-xl text-start mt-2 py-5">
-         Current upload in progress
+         {{ t('UPLOAD.progress.list_current_images') }}
       </p>
       <div
           v-if="!prop.pictures?.length"
@@ -31,7 +31,7 @@
 					<Folder/>
 				</el-icon>
 			</span>
-         <span>Empty Files</span>
+         <span>{{ t('UPLOAD.progress.empty_image') }}</span>
       </div>
       <div v-else class="w-full">
          <!-- Progress Bar -->
@@ -69,6 +69,7 @@
 <script setup lang="ts">
 import { Close, Folder, UploadFilled } from '@element-plus/icons-vue'
 import type { UploadItem } from '@/modules/types/uploadFile'
+import { useI18n } from 'vue-i18n';
 
 
 const prop = defineProps<{
@@ -81,6 +82,8 @@ const handleEmit = (file: any) => {
 const handleDeleteImage = (fileName: string, index: string) => {
    emit ('removeImage', fileName, index)
 }
+const { t } = useI18n()
+
 </script>
 <style scoped>
 :deep(.custom-upload .el-upload-dragger) {

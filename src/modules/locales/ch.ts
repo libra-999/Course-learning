@@ -51,6 +51,9 @@ export default {
             content_placeholder: '请输入标题',
             add: '添加',
          },
+         SUCCESS:{
+            add_success: "添加时间线!"
+         }
       },
    },
    LOGIN: {
@@ -87,6 +90,7 @@ export default {
       },
       API: {
          success: {
+            login_success: "登录成功!",
             scan_polling_login: '扫码登录成功！',
          },
          error: {
@@ -94,10 +98,66 @@ export default {
             qr_generate_url_login: '图片网址无效！',
             qr_generate_login: '生成二维码失败！',
             scan_polling_token_login: '二维码令牌无效',
-            wrong_login: '登录有问题',
+            wrong_login: '登录有问题!',
          },
       },
    },
+   TEST: {
+     button_submit: '点击',
+     button_reset: '重置' 
+   },
+   BOOK:{
+      input_search: "按标题、作者、出版商搜索...",
+      empty: '无数据...'
+   },
+   PAYMENT:{
+      ABA: {
+         title: '支付 ABA' ,
+         merchant_id : '商户ID',
+         first_name: '名',
+         last_name: '姓',
+         email: '邮件',
+         phone: '电话号码',
+         request_time:'签发日期',
+         trans_no: '交易编号',
+         amount:'数量',
+         currency: '货币',
+         BUTTON: {
+            check_tran:'检查交易',
+            pay:'立即付款',
+            exchange: '汇率',
+            generate_qr: '生成QR',
+            link: '链接卡'
+         }
+      },
+      CRYPTO: {
+         buy: '立即购买'
+      }
+   },
+   UPLOAD: {
+      progress:{
+         title: '上传有进度',
+         q_1: '将目录拖放到此处或',
+         q_2: '点击上传',
+         list_current_images: '当前上传正在进行中',
+         empty_image: '没有文件'
+      } ,
+      ocr: {
+         title: 'OCR 身份证',
+         q_1: '将图像拖放到此处',
+         q_2: '仅支持外国人卡',
+         convert: '转变'   ,
+         list_images: '过程图像'      
+      }
+   },
+   BOT: {
+      robot_name: '助手',
+      description: '向我询问有关我们社区的任何问题',
+      online: '在线',
+      offline: '离线',
+      prompt: '有什么问题问我...'
+   },
+
    REQUEST_AXIOS: {
       error: {
          internal_server: "服务器内部!",
@@ -105,6 +165,15 @@ export default {
       }
    },
    MENU: {
+      PARENT: {
+         setting_title: "环境",
+         management_title: "管理",
+         children: {
+            user: "用户模块",
+            bot: "机器人模块",
+            dashboard: "仪表板",
+         }
+      },
       home: "首页",
       menu: "菜单页",
       TOP: {
@@ -115,5 +184,10 @@ export default {
       management: "管理模块",
       user: "用户",
       dashboard: "仪表板"
+   },
+   PAGINATION: {
+      page: '',
+      previous: '上一页',
+      next: '下一页'
    }
 }

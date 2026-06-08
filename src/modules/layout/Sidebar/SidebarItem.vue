@@ -5,9 +5,9 @@
             <el-menu-item :index="resolvedItemPath" :class="{ 'dashboard-menu': item.menuName === 'Dashboard' }">
                <Icon :name="item.icon"/>
                <template #title>
-                        <span class="menu-title" :title="getTooltip(singleChildTitle)">
-                            {{ itemTitle }}
-                        </span>
+                  <span class="menu-title" :title="getTooltip(singleChildTitle)">
+                        {{ t(`${'MENU.PARENT.children.'.concat(itemTitle)}`) }}
+                  </span>
                </template>
             </el-menu-item>
          </AppLink>
@@ -17,7 +17,7 @@
          <template #title>
             <Icon :name="item.icon"/>
             <span class="menu-title" :title="getTooltip(itemTitle)">
-                    {{ itemTitle }}
+                    {{ t(`MENU.PARENT.${itemTitle}_title`) }}
                 </span>
          </template>
 
@@ -32,6 +32,7 @@ import { computed, ref } from 'vue'
 import { isExternal } from '@/app/utils/common'
 import AppLink from '@/modules/layout/Sidebar/Link.vue'
 import Icon from '@/app/components/Card/Icon.vue'
+import { useI18n } from 'vue-i18n'
 
 
 const props = defineProps ({
@@ -50,6 +51,7 @@ const props = defineProps ({
 })
 
 const onlyOneChild = ref<any> ({})
+const { t } = useI18n()
 
 const visibleChildren = computed (() => {
    return (props.item.children || []).filter ((child: any) => !child.hidden && child.menuType !== 2)
@@ -64,7 +66,7 @@ const resolvedItemPath = computed (() => {
 })
 
 const itemTitle = computed (() => {
-   return getTitle (props.item)
+   return getTitle (props.item).toLowerCase()
 })
 
 const singleChildTitle = computed (() => {
@@ -108,6 +110,7 @@ function getTitle(route: any) {
 function getTooltip(title: string) {
    return title && title.length > 8 ? title : ''
 }
+
 </script>
 
 <style lang="scss" scoped>

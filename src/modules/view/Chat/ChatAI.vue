@@ -19,10 +19,10 @@
                      <img :src="LogoChatAI" @click="clearMessage"/>
                   </div>
                   <div class="chat-header__meta">
-                     <p class="chat-header__name">Lemon Assistant</p>
+                     <p class="chat-header__name">Lemon {{ t('BOT.robot_name') }}</p>
                      <p class="chat-header__status">
                         <span class="chat-header__status-dot" :class="{'is-offline': aiStatus !== 'Online'}"/>
-                        {{ aiStatus }}
+                        {{ aiStatus == 'Offline' ? t('BOT.offline'): t('BOT.online') }}
                      </p>
                   </div>
                </div>
@@ -59,7 +59,7 @@
                      </svg>
                   </div>
                   <h4 class="welcome__title">Hello! 👋</h4>
-                  <p class="welcome__sub">Ask me anything about our community.</p>
+                  <p class="welcome__sub">{{  t('BOT.description') }}.</p>
                   <ul class="quick-list">
                      <li v-for="p in quickPrompts" :key="p.label"
                          :class="`quick-list__item ${aiStatus === 'Offline' ? 'cursor-not-allowed':' cursor-pointer'}`"
@@ -93,7 +93,7 @@
             <footer class="chat-footer">
                <div class="input-wrap" :class="{ 'input-wrap--focused': inputFocused }">
                         <textarea ref="inputEl" :disabled="aiStatus === 'Offline'" v-model="inputText"
-                                  class="chat-textarea" placeholder="Ask anything…"
+                                  class="chat-textarea" :placeholder="t('BOT.prompt')"
                                   rows="1" @keydown.enter.exact.prevent="sendMessage" @focus="inputFocused = true"
                                   @blur="inputFocused = false" @input="autoResize"/>
 
@@ -124,6 +124,7 @@ import { useMessage } from '@/app/utils/message'
 import { timeStampMinuteFormat } from '@/app/utils/dateFormat'
 import platform from 'platform'
 import { renderRawText } from '@/app/utils/common'
+import { useI18n } from 'vue-i18n'
 
 
 const TEXTAREA_MAX_HEIGHT = 124
@@ -131,6 +132,7 @@ const BOT_ERROR_NOTIFY = 'It has something wrong with bot, Please try again late
 const BOT_FALLBACK_REPLY = 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ'
 const BOT_ERROR_REPLY = 'សុំទោស ប្រព័ន្នកំពុងមានបញ្ហា'
 
+const { t } = useI18n()
 const isOpen = ref (false)
 const inputFocused = ref (false)
 const isLoading = ref (false)

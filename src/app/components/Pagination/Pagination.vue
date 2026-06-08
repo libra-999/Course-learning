@@ -1,6 +1,6 @@
 <template>
    <!-- Prev -->
-   <ButtonGlobal @click="nextPage(modelValue - 1)" :disabled="modelValue === 1" style="color: white;" value="Previous">
+   <ButtonGlobal @click="nextPage(modelValue - 1)" :disabled="modelValue === 1" style="color: white;" :value="t('PAGINATION.previous')">
       <template #icon-left>
          <el-icon>
             <Back style="color: aliceblue;"/>
@@ -18,7 +18,7 @@
       {{ p }}
    </button>
    <!-- Next -->
-   <ButtonGlobal value="Next" style="color: white;" @click="nextPage(modelValue + 1)" :disabled="modelValue === totals">
+   <ButtonGlobal :value="t('PAGINATION.next')" style="color: white;" @click="nextPage(modelValue + 1)" :disabled="modelValue === totals">
       <template #icon-right>
          <el-icon>
             <Right/>
@@ -30,15 +30,14 @@
 import { computed } from 'vue';
 import { Back, Right } from '@element-plus/icons-vue';
 import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
-
-// create a fields     
+import { useI18n } from 'vue-i18n';
+ 
 const props = defineProps<{
    total: number,
    modelValue: number,
    size: number
 }> ();
-
-// event child 
+const { t } = useI18n() 
 const emit = defineEmits<{
    (event: 'update:modelValue', value: number): number
 }> ();

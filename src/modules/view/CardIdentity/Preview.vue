@@ -7,7 +7,7 @@
             </el-icon>
          </template>
       </ButtonGlobal>
-      <article class=" font-bold text-5xl mb-5">OCR CARD IDENTITY</article>
+      <article class=" font-bold text-5xl mb-5">{{ t('UPLOAD.ocr.title') }}</article>
       <div class="flex justify-between h-[50%] gap-3 rounded-xl mobile__object">
          <UploadImage :files="files" :loading="loading" @select-file="selectFile" @remove-file="removeFile"
                       @convert-file="handleConvert" :country="country" @select-country="selectCountry"/>
@@ -26,9 +26,11 @@ import TextShow from '@/modules/view/CardIdentity/TextShow.vue';
 import UploadImage from '@/modules/view/CardIdentity/UploadImage.vue';
 import { ArrowLeftBold } from '@element-plus/icons-vue';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
 
+const { t } = useI18n()
 const route = useRouter ()
 const country = ref ("CN")
 const files = ref<File[]> ([]);
