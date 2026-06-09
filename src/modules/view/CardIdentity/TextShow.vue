@@ -86,7 +86,7 @@ let estimateTimer: ReturnType<typeof setInterval> | null = null
 const startEstimateCounter = () => {
    estimateCounter.value = 0
    estimateTimer = setInterval (() => {
-      if (estimateCounter.value >= 120) // 2mins
+      if (estimateCounter.value >= 180) // 2mins
       {
          clearInterval (estimateTimer!)
          return boxMessage.messageBox ("This process is taking long time,  please upload image again with high resolution", "error")
