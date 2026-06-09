@@ -1,6 +1,6 @@
 <template>
    <Loading v-if="loading"/>
-   <div class="w-auto mobile" v-else>
+   <div class="w-auto overflow-hidden mobile" v-else>
       <div>
          <div class="m-4 flex justify-end">
             <el-input v-model="search" clearable :placeholder="t('BOOK.input_search')" class="w-60!">

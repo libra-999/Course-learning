@@ -1,5 +1,5 @@
 <template>
-   <div class="flex flex-col mx-auto h-full xl:max-w-[50%]  py-5 mobile">
+   <div class="flex flex-col mx-auto h-full xl:max-w-[50%] py-5">
       <ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
          <template #icon-right>
             <el-icon>
@@ -8,7 +8,7 @@
          </template>
       </ButtonGlobal>
       <article class=" font-bold text-5xl mb-5">{{ t('UPLOAD.ocr.title') }}</article>
-      <div class="flex justify-between h-[50%] gap-3 rounded-xl mobile__object">
+      <div class="flex justify-between h-[50%] gap-3 rounded-xl">
          <UploadImage :files="files" :loading="loading" @select-file="selectFile" @remove-file="removeFile"
                       @convert-file="handleConvert" :country="country" @select-country="selectCountry"/>
          <TextShow v-if="toText.ocr_job_id" :image="toText?.image"
@@ -97,30 +97,4 @@ const removeFile = (index: number) => {
 </script>
 
 <style lang="scss" scoped>
-
-@media (max-width: $screen-sm) {
-   .mobile {
-      width: 100%;
-      height: auto;
-
-      &__object {
-         gap: .2rem;
-         display: flex;
-         flex-direction: column;
-      }
-   }
-}
-
-@media (min-width: $screen-sm) and (max-width: $screen-lg) {
-   .mobile {
-      width: 100%;
-      height: auto;
-
-      &__object {
-         gap: .2rem;
-         display: flex;
-         flex-direction: column;
-      }
-   }
-}
 </style>

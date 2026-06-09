@@ -1,6 +1,6 @@
 <template>
    <div>
-      <ButtonGlobal class=" absolute top-2 right-1 text-white" value="" @click="back">
+      <ButtonGlobal class=" absolute top-2 mobile right-1 text-white" value="" @click="back">
          <template #icon-right>
             <el-icon>
                <CloseBold/>
@@ -19,7 +19,15 @@ import { useRouter } from 'vue-router';
 
 
 const route = useRouter ()
-const back = () => route.back ()
+const back = () => route.back()
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@media screen and (max-width: 728px){
+   .mobile {
+      position: absolute;
+      top: 12%;
+      z-index: 100;
+   }
+}
+</style>
