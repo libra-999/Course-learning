@@ -6,7 +6,7 @@
       <div class="pt-5 px-3">
          <div class="flex items-center gap-3">
             <img
-                class="w-[35px] h-[35px] object-cover rounded-full border-2 border-gray-300"
+                class="w-8.75 h-8.75 rounded-[50%] object-cover border-2 border-gray-300"
                 :src="`${props.bookData.volumeInfo.imageLinks?.thumbnail}`"
                 alt="empty image"
             />
@@ -35,7 +35,7 @@
          <!-- <a :href="props.bookData.selfLink" target="_blank" rel="noreferrer"> -->
          <img
              :src="`${props.bookData.volumeInfo.imageLinks?.smallThumbnail}`"
-             class="w-full h-full object-cover rounded-lg"
+             class="w-full h-full object-cover"
              alt="empty image"
          />
          <!-- </a> -->
@@ -63,8 +63,8 @@
       >
    </div>
    <!-- Detail Book-->
-   <el-dialog v-model="dialogDetail" width="auto" align-center>
-      <Loading v-if="loading"/>
+   <el-dialog v-model="dialogDetail" class="relative overflow-hidden" width="auto" align-center>
+      <em v-if="loading">Loading...</em>
       <div v-else>
          <strong> {{ props.bookData.id }}</strong>
       </div>
@@ -72,7 +72,6 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import Loading from "@/app/components/Loading/Loading.vue";
 import type { Book } from "@/modules/types/book";
 import { viewBook } from "@/modules/api/book";
 import Rating from "@/app/components/Button/Rating.vue";
@@ -98,7 +97,7 @@ const getBook = async (id: string) => {
    }
 };
 </script>
-<style scoped>
+<style lang="scss" scoped >
 .border-card {
    border: 0.8px solid rgba(224, 224, 224, 0.3);
    border-radius: 14px;
@@ -106,7 +105,7 @@ const getBook = async (id: string) => {
    overflow: hidden;
    color: var(--text-color);
 
-   & .etag {
+   &.etag {
       position: absolute;
       right: 1rem;
       top: 0.5rem;
