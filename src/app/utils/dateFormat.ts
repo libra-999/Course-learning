@@ -8,18 +8,6 @@ export const TIME_QUERY = {
    endTime: " 23:59:59"
 }
 
-export const strToDate = (date: any) => {
-   if (date == "" || date == null) {
-      return ""
-   }
-   date = date.trim ().replace (/[./]/g, "-")
-   const parts = date.split ("-")
-   if (parts[2].length === 4) {
-      return `${parts[2]}-${parts[1].padStart (2, "0")}-${parts[0].padStart (2, "0")}`
-   }
-   return ""
-}
-
 export const dayMonthFormat = (date: Date): string => {
    const d = new Date (date)
    const year = d.getFullYear ()
@@ -46,7 +34,7 @@ export const timeStampMinuteFormat = (value: number): string => {
    return new Date (value).toLocaleTimeString ([], {hour: '2-digit', minute: '2-digit'})
 }
 
-export const remaingTime = (second: string | number) => {
+export const remainingTime = (second: string | number) => {
    return Math.max (
        0,
        Math.ceil ((new Date (second).getTime () - Date.now ()) / 1000),

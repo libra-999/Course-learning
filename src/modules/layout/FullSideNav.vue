@@ -75,6 +75,10 @@ function handleClickDevice() {
 
    &-main {
       width: 100%;
+      .menu-main{
+         height: 100%;
+         background-color: $accent;
+      }   
    }
 
    &-draw-bg {

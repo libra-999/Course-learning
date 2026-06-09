@@ -147,7 +147,7 @@ import SwitchLang from '@/app/components/Localization/SwitchLang.vue'
 import { useI18n } from 'vue-i18n'
 import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
 import ScanQR from '@/app/components/Opencamera/ScanQR.vue'
-import { isMobile } from '@/app/utils/common'
+import { isMobile } from '@/app/utils/responsive.ts'
 
 
 const message = useMessage ()

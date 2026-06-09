@@ -10,8 +10,6 @@ import Test from "@/app/components/Test/Test.vue";
 import PaymentABA from "@/modules/view/Payment/PaymentABA.vue";
 import BookLayout from "@/modules/view/Book/index.vue";
 import Bot from "@/modules/view/System/Setting/Bot/index.vue";
-import Setting from "@/modules/view/System/Setting/index.vue";
-import Mng from "@/modules/view/System/Mng/index.vue";
 import User from "@/modules/view/System/Mng/User/index.vue";
 import FullSideNav from "@/modules/layout/FullSideNav.vue";
 import Dashboard from "@/modules/view/System/Dashboard/index.vue"
@@ -30,7 +28,6 @@ export const apiMenuRouteConstant = [
       path: 'setting',
       name: 'Setting',
       meta: {requiredAuth: true},
-      component: Setting,
       children: [
          {
             path: 'bot/index',
@@ -44,7 +41,6 @@ export const apiMenuRouteConstant = [
       path: 'mng',
       name: 'Management',
       meta: {requiredAuth: true},
-      component: Mng,
       children: [
          {
             path: 'user/index',

@@ -17,7 +17,7 @@ export async function getBooks(
    return response.data.data
 }
 
-export async function viewBook(id: number | string) {
+export async function viewBook(id: number | string): Promise<any> {
    const response = await apiRequest.get (`/api/books/${id}`)
    return response.data.data
 }

@@ -16,12 +16,6 @@ export function toggleHTMLClass(name: string) {
    }
 }
 
-export const isMobile =  window.innerWidth < 768
-
-export const allowCamera = () => {
-   return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
-}
-
 export const renderRawText = (text: string) => {
    if (text === null && text === '') return ''
    const md = new MarkdownIt ({
@@ -55,15 +49,22 @@ export const getNormalPath = (path: string) => {
    return res
 }
 
-export const rewriteMenuPath = (parentPath?: string, childPath?: string) => {
-   if (childPath) return `/system/menu/${childPath}`
-   return `/system/menu/${parentPath}`
-}
-
 export const isExternal = (path: string) => {
    return /^(https?:|mailto:|tel:)/.test (path)
 }
 
-export const getIcon = (icon: string) => {
+export const elementIconDynamic = (icon: string) => {
    return ElementPlusIconsVue[icon as keyof typeof ElementPlusIconsVue]
+}
+
+export const strToDate = (date: any) => {
+   if (date == "" || date == null) {
+      return ""
+   }
+   date = date.trim ().replace (/[./]/g, "-")
+   const parts = date.split ("-")
+   if (parts[2].length === 4) {
+      return `${parts[2]}-${parts[1].padStart (2, "0")}-${parts[0].padStart (2, "0")}`
+   }
+   return ""
 }

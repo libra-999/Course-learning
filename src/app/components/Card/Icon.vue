@@ -1,11 +1,11 @@
 <template>
    <el-icon v-if="props.name">
-      <component :is="getIcon(props.name)"/>
+      <component :is="elementIconDynamic(props.name)"/>
    </el-icon>
 </template>
 
 <script setup lang="ts">
-import { getIcon } from '@/app/utils/common';
+import { elementIconDynamic } from '@/app/utils/common';
 
 
 const props = defineProps ({

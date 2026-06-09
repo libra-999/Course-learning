@@ -58,8 +58,6 @@ export async function roleDelete(id: string): Promise<any> {
 	return remove.data
 }
 
-
-/* Permisison Module */
 export async function permissionList(): Promise<any> {
 	const permissions = await apiRequest.get('api/permissions', {
 		params: {

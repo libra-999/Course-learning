@@ -101,7 +101,7 @@ import route from '@/modules/route'
 import { useMessage } from '@/app/utils/message.ts'
 import type { LoginRequest, QRCodeData, User } from '../types/auth'
 import { generateQR, getQR, login } from '../api/auth'
-import { minuteFormat, remaingTime } from '@/app/utils/dateFormat'
+import { minuteFormat, remainingTime } from '@/app/utils/dateFormat'
 import { Refresh, Select } from '@element-plus/icons-vue'
 import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue'
 import scanTick from '@/app/assets/image/scan_tick.png'
@@ -110,7 +110,7 @@ import useSocket from '@/app/utils/si'
 import { QR_KEY } from '@/modules/config/socket.config'
 import { useLocale } from '@/modules/locales'
 import Cookies from "js-cookie"
-import { createHash } from '@/app/utils/crypto'
+import { generateHash } from '@/app/utils/crypto'
 
 
 const {t} = useI18n ()
@@ -182,7 +182,7 @@ async function submit() {
       const loginApi = await login (payload)
       if (userRef.value.isRemember) {
          Cookies.set ("username", userRef.value.username, {expires: 30}) // expired in a month
-         Cookies.set ("password", createHash (userRef.value.password), {expires: 30})
+         Cookies.set ("password", generateHash (userRef.value.password), {expires: 30})
          Cookies.set ("isRemember", userRef.value.isRemember, {expires: 30})
       } else {
          Cookies.remove ("username")
@@ -213,7 +213,7 @@ async function submit() {
 function startQRCodeCountdown(expired = 120) {
    stopQRCodeCountdown ()
    const tick = () => {
-      qr.value.qrCountDown = remaingTime (expired)
+      qr.value.qrCountDown = remainingTime (expired)
       if (qr.value.qrCountDown <= 0) { // expired countdown time
          qr.value.qrCodeStatus = 'expired'
          leaveQRRoom () // leave roome when QR code expired
@@ -241,7 +241,7 @@ async function generateQRLogin() {
       qr.value.qrToken = genQR.data.qrCodeToken
       qr.value.qrCodeStatus = genQR.data.status
       qr.value.qrCodeExpired = genQR.data.expiredTime
-      qr.value.qrCountDown = remaingTime (qr.value.qrCodeExpired)
+      qr.value.qrCountDown = remainingTime (qr.value.qrCodeExpired)
       if (genQR.code == 201) {
 
          /** join room */

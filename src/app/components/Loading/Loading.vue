@@ -5,6 +5,9 @@
 </template>
 <style scoped lang="scss">
 .loader {
+   position: absolute;
+   top: 50%;
+   left: 50%;
    width: 60px;
    display: flex;
    align-items: flex-start;

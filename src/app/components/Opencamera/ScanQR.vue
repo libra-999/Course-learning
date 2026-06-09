@@ -25,7 +25,7 @@
 import { computed, nextTick, onUnmounted, ref } from 'vue'
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode'
 import { extractQR } from '@/app/utils/authToken'
-import { allowCamera } from '@/app/utils/common'
+import { allowCamera } from '@/app/utils/deviceParty.ts'
 import { useMessage } from '@/app/utils/message'
 import { confirmLogin, scanQR } from '@/modules/api/auth'
 import useSocket, { type SocketAck } from '@/app/utils/si'

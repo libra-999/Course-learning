@@ -40,6 +40,7 @@ function addIframe() {
    width: 100%;
    position: relative;
    overflow: hidden;
+   padding: .7rem 0.23rem;
 }
 
 .fixed-header + .app-main {

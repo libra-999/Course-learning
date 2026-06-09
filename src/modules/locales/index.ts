@@ -34,6 +34,7 @@ export const locales: { label: string; value: LocaleType; code: string }[] = [
    {label: "ខ្មែរ", value: "kh", code: "km-KH"},
 ];
 
+// map locale i18n to element i18n
 export const elementPlusLocaleMap: Record<LocaleType, any> = {
    en: epEn,
    ch: epZhCn,
@@ -44,7 +45,7 @@ export const useLocale = () => {
    const i18n = useI18n ();
    const currentLocale = computed (() => i18n.locale.value);
    
-   // which label lang from system
+   // label display i18n in locale
    const currentLabel = computed (() => {
       const match = locales.find (
           (locales) => locales.value === currentLocale.value,
@@ -52,7 +53,7 @@ export const useLocale = () => {
       return match?.label || "English";
    });
    
-   // which value lang from system
+   // value i18n in locale
    const currentValue = computed ((): LocaleType => {
       const match = locales.find (
           (locales) => locales.value === currentLocale.value,
@@ -60,7 +61,7 @@ export const useLocale = () => {
       return match?.value || "en";
    });
    
-   // which code lang from system
+   // code i18n in locale
    const currentCode = computed (() => {
       const match = locales.find (
           (locales) => locales.value === currentLocale.value,
@@ -76,7 +77,7 @@ export const useLocale = () => {
       }
    };
    
-   // apply current locale to element plus
+   // modify element i18n base on locale i18n
    const elementPlusLocale = computed (() => {
       return elementPlusLocaleMap[currentValue.value];
    });
