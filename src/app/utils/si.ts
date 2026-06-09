@@ -35,9 +35,15 @@ export default function useSocket<T>({
    const authLogin = loginStore ()
    let socket: Socket | null = null
    const SOCKET_URL = import.meta.env.VITE_SERVER_SOCKET_URL
+   const ENV = import.meta.env.MODE
 
    function onConneted() {
-      console.log ('ConnectID: ' + socket?.id)
+      if (ENV === 'prod'){
+         console.log('Socket Connected')
+      }else{
+         console.log ('ConnectID: ' + socket?.id)
+
+      }
    }
    
    function onError(err: any) {
