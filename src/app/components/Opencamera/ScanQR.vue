@@ -7,15 +7,15 @@
    </div>
    <Teleport to="body">
       <div v-if="isScannerVisible" class="scan-overlay" @click.self="stopScanner">
-         <div class="scan-toolbar">
-            <p class="scan-title">Scan QR</p>
-            <button type="button" class="scan-close-btn" @click.stop="stopScanner">Close</button>
+         <div class="scan-overlay-toolbar">
+            <p class="scan-overlay-toolbar-title">Scan QR</p>
+            <button type="button" class="scan-overlay-toolbar-close-btn" @click.stop="stopScanner">Close</button>
          </div>
 
-         <div class="scan-reader-wrap">
-            <div :id="READER_ID" class="scan-reader"></div>
-            <div class="scan-frame" :style="scanFrameStyle" aria-hidden="true"></div>
-            <p class="scan-tip">Align QR code inside the frame</p>
+         <div class="scan-overlay-reader-wrap">
+            <div :id="READER_ID" class="scan-overlay-reader-wrap-reader"></div>
+            <div class="scan-overlay-reader-wrap-frame" :style="scanFrameStyle" aria-hidden="true"></div>
+            <p class="scan-overlay-reader-wrap-tip">Align QR code inside the frame</p>
          </div>
       </div>
    </Teleport>
@@ -216,79 +216,73 @@ onUnmounted (() => {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .scan-overlay {
    position: fixed;
    inset: 0;
    z-index: 9999;
-   background: #050505;
+   background: $scan_overlay;
    display: flex;
    flex-direction: column;
+   &-toolbar{
+      height: 56px;
+      min-height: 56px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.72);
+      &-title{
+         color: $white;
+         font-size: 14px;
+         font-weight: 700;
+         letter-spacing: 0.2px;
+      }
+      &-close-btn{
+         border: 0;
+         color: $scan_close_btn;
+         background: $white;
+         border-radius: 8px;
+         padding: 6px 10px;
+         font-size: 12px;
+         font-weight: 700;
+         cursor: pointer;
+      }
+   }
+   &-reader-wrap{
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      &-reader{
+         width: 100%;
+         height: 100%;
+      }
+      &-frame{
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         border: 2px solid rgba(255, 255, 255, 0.9);
+         border-radius: 12px;
+         pointer-events: none;
+         box-shadow: 0 0 0 200vmax rgba(0, 0, 0, 0.44);
+      }
+      &-tip{
+         position: absolute;
+         left: 50%;
+         bottom: max(44px, env(safe-area-inset-bottom));
+         transform: translateX(-50%);
+         color: rgba(255, 255, 255, 0.9);
+         font-size: 13px;
+         letter-spacing: 0.2px;
+      }
+   }
 }
 
-.scan-toolbar {
-   height: 56px;
-   min-height: 56px;
-   padding: 0 12px;
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   background: rgba(0, 0, 0, 0.72);
-}
-
-.scan-title {
-   color: #fff;
-   font-size: 14px;
-   font-weight: 700;
-   letter-spacing: 0.2px;
-}
-
-.scan-close-btn {
-   border: 0;
-   color: #111827;
-   background: #fff;
-   border-radius: 8px;
-   padding: 6px 10px;
-   font-size: 12px;
-   font-weight: 700;
-   cursor: pointer;
-}
-
-.scan-reader-wrap {
-   position: relative;
-   flex: 1;
-   overflow: hidden;
-}
-
-.scan-reader {
-   width: 100%;
-   height: 100%;
-}
-
-.scan-frame {
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   border: 2px solid rgba(255, 255, 255, 0.9);
-   border-radius: 12px;
-   pointer-events: none;
-   box-shadow: 0 0 0 200vmax rgba(0, 0, 0, 0.44);
-}
-
-.scan-tip {
-   position: absolute;
-   left: 50%;
-   bottom: max(44px, env(safe-area-inset-bottom));
-   transform: translateX(-50%);
-   color: rgba(255, 255, 255, 0.9);
-   font-size: 13px;
-   letter-spacing: 0.2px;
-}
 
 :deep(#qr-reader) {
    border: 0 !important;
-   background: #050505 !important;
+   background: $scan_overlay !important;
 }
 
 :deep(#qr-reader video) {

@@ -16,6 +16,7 @@ const {currentValue, elementPlusLocale} = useLocale ()
 
 document.title = t ("TITLE_SYSTEM")
 watch ((currentValue), () => document.title = t ("TITLE_SYSTEM")) // can be nearly real time to see title changed
+
 </script>
 <style scoped lang="scss">
 
