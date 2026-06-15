@@ -34,7 +34,7 @@ export async function uploadCard(files: FormData): Promise<any> {
 }
 
 export async function ocrData (ocr_id_uuid: string) : Promise<any> {
-	const ocrData = await apiRequest.get('/api/ocr/card/',{
+	const ocrData = await apiRequest.get('/api/ocr/card',{
 		headers: {
 			'ocr_job_id': ocr_id_uuid
 		}
