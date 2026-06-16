@@ -1,19 +1,19 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "test-app",
+  "productName": "course-learning",
   "version": "0.1.0",
   "identifier": "com.course.dev",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:7001",
-    "beforeDevCommand": "pnpm run dev",
-    "beforeBuildCommand": "pnpm run build:dev"
+    "beforeDevCommand": "pnpm run prod",
+    "beforeBuildCommand": "pnpm run build:prod"
   },
   "app": {
     "windows": [
       {
-        "title": "test-app",
-        "width": 800,
+        "title": "course-learning",
+        "width": 994,
         "height": 600,
         "resizable": true,
         "fullscreen": false

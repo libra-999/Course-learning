@@ -72,6 +72,15 @@ body {
   overflow-x: scroll;
 }
 
+.el-menu--collapse {
+    .menu-title {
+        display: none;
+    }
+    .el-sub-menu__icon-arrow{
+      display: none;
+    }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

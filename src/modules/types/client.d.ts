@@ -1,7 +1,12 @@
 type AnyTypeModule = any
 
-// markdown format 
 declare module "markdown-it" {
-    const MarkdownIT: AnyTypeModule
-    export default MarkdownIT    
+   const MarkdownIT: any
+   export default MarkdownIT
+}
+
+declare module "element-plus/es/locales.mjs" {
+   export const en: any
+   export const zhCn: any
+   export const km: any
 }

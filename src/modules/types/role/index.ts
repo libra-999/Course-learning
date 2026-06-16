@@ -2,6 +2,7 @@ export interface RoleQueryParam {
     keyword?: string,
     status: number | undefined
 }
+
 export interface RoleItem{
     id: string,
     code: string,
@@ -10,6 +11,7 @@ export interface RoleItem{
     createdAt: Date,
     createdBy: string
 }
+
 export interface QueryParams{
     page: number,
     size: number,
@@ -21,12 +23,14 @@ export interface PermissionItem {
     name: string,
     module: string,
 }
+
 export interface PermissionTree {
     id: string,
     name: string,
     module?: string,
     children?: PermissionTree[]
 }
+
 export interface RolePermissionItem {
     role: RoleItem,
     permissions: PermissionItem[]
@@ -37,6 +41,7 @@ export interface RoleReq {
     name: string,
     createdBy?: string
 }
+
 export interface RoleUpdateReq {
     roleId: string,
     name: string,

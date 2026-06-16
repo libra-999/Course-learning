@@ -17,14 +17,14 @@ export async function createUploadFiles(
 	return upload.data.data
 }
 
-export async function removeFile(fileName: string) {
+export async function removeFile(fileName: string): Promise<any> {
 	const remove = await apiRequest.post('/api/file/delete', {
 		fileName: fileName, // no object container , so it is raw body
 	})
 	return remove.data.data
 }
 
-export async function uploadCard(files: FormData) {
+export async function uploadCard(files: FormData): Promise<any> {
 	const upload = await apiRequest.post('/api/ocr/card',files, {
 		headers: {
 			'Content-Type': 'multipart/form-data',

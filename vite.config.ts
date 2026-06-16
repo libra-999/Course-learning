@@ -1,19 +1,15 @@
-import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
-import { clientLogPlugin } from './src/app/utils/terminalLog'
 import PostCssPxToRem from 'postcss-pxtorem'
-import { loadEnv } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
+
 
 const pathSrc = path.resolve(__dirname, 'src')
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), '')
 	return {
 		server: {
-			watch: {
-				ignored: ['**/src-tauri/**','**/src-tauri/target/**']	
-			},
 			host: '0.0.0.0', // allow anywhere
 			port: 7001, // port access
 			proxy: {
@@ -28,9 +24,15 @@ export default defineConfig(({ mode }) => {
 					ws: true,
 				}
 			},
+			watch: {
+				ignored: [
+					'**/src-tauri/target/**',
+					'**/src-tauri/gen/**',
+				],
+			},
 		},
 		// basicSsl() = testing for handling in secure
-		plugins: [vue(), tailwindcss(), clientLogPlugin()],
+		plugins: [vue(), tailwindcss()],
 		test: {
 			globals: true,
 		},

@@ -4,6 +4,7 @@ import type { UploadRule } from '@/modules/types/uploadFile'
 export type UploadErrorResp = {
 	error?: string // easy to apply with ElMessage
 }
+
 export const UploadRuleForm: UploadRule[] = [
 	{
 		label: 'image',
