@@ -1,5 +1,5 @@
 export default {
-   TITLE_SYSTEM: 'មេរៀន Vue',
+   TITLE_SYSTEM: 'មេរៀន Vue 3',
    language: 'ខ្មែរ',
 
    MAIN_LAYOUT: {
@@ -85,6 +85,7 @@ export default {
             pwd_pattern_validate: 'ពាក្យសម្ងាត់ត្រូវមានតួអក្សរធំ តួអក្សរតូច និងលេខ',
             pwd_placeholder: 'បញ្ចូលពាក្យសម្ងាត់',
             submit: 'បញ្ជូន',
+            remember: 'រក្សាការចូលគណនីរបស់ខ្ញុំ?'
          },
       },
       API: {

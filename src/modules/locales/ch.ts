@@ -1,5 +1,5 @@
 export default {
-   TITLE_SYSTEM: 'Vue实践',
+   TITLE_SYSTEM: 'Vue 3 实践',
    language: '中文',
    
    MAIN_LAYOUT: {

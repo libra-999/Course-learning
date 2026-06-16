@@ -388,19 +388,34 @@ onUnmounted (() => {
    }
 }
 
+@media (min-width: $screen-lg) and (max-width: $screen-xxl) {
+   .login-container{
+      width: 80%;
+      margin: 0 auto;
+      &.container{
+         width: 100%;
+      }
+   }
+}
+
+@media (min-width: $screen-md) and (max-width: $screen-lg) {
+   .login-container{
+      width: 80%;
+      margin: 0 auto;
+   }
+}
 
 @media (max-width: $screen-md) {
 
    .login-container {
       width: 100%;
       padding: 0.2rem;
-
       & .container {
-         width: 100%;
          height: 100%;
          display: flex;
          justify-content: center;
          border-radius: 0;
+         margin: 0 auto;
 
          & :deep(.el-input__wrapper) {
             min-height: 60px;

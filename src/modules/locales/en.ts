@@ -1,5 +1,5 @@
 export default {
-   TITLE_SYSTEM: 'Vue',
+   TITLE_SYSTEM: 'Vue 3 Tutorial',
    language: 'English',
 
    MAIN_LAYOUT: {

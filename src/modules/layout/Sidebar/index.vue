@@ -43,7 +43,7 @@ const activeMenu = computed (() => {
 .sidebar-container {
    background-color: $defaultSidebarItem;
    color: $surface;
-
+   
 
    .scrollbar-wrapper {
       background-color: $default;

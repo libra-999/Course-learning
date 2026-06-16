@@ -41,7 +41,8 @@ const {t} = useI18n ()
    width: 100%;
    height: 60px;
    overflow: hidden;
-
+   padding: 0 1.2rem;
+   
    &-link {
       width: 100%;
       height: 100%;
@@ -52,9 +53,11 @@ const {t} = useI18n ()
          height: 35px;
          vertical-align: middle;
       }
-
       &-title {
+         width: 100%;
          font-weight: bold;
+         white-space: nowrap;
+         vertical-align: middle;
       }
    }
 
