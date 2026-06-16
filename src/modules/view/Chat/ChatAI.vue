@@ -130,7 +130,7 @@ import { useI18n } from 'vue-i18n'
 const TEXTAREA_MAX_HEIGHT = 124
 const BOT_ERROR_NOTIFY = 'It has something wrong with bot, Please try again later'
 const BOT_FALLBACK_REPLY = 'សុំទោស ខ្ញុំមិនអាចឆ្លើយបានទេ'
-const BOT_ERROR_REPLY = 'សុំទោស ប្រព័ន្នកំពុងមានបញ្ហា'
+const BOT_ERROR_REPLY = 'សុំទោស ប្រព័ន្ទកំពុងមានបញ្ហា'
 
 const { t } = useI18n()
 const isOpen = ref (false)
@@ -201,8 +201,8 @@ const createMessage = (role: Message['role'], content: string, loading = false):
 
 const buildBotContents = () =>
     messages.value.filter (({loading}) => !loading).map (({role, content}) => ({
-       role: role === 'assistant' ? 'model' : 'user',
-       content: content,
+       role: role === 'assistant' ? 'assistant' : 'user',
+       content,
     }))
 
 const replaceMessage = (id: number, payload: Partial<Omit<Message, 'id' | 'role'>>): void => {
