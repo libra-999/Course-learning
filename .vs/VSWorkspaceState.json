@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src-tauri",
+    "\\src-tauri\\capabilities",
+    "\\src-tauri\\gen\\schemas",
+    "\\src-tauri\\target",
+    "\\src-tauri\\target\\release"
+  ],
+  "SelectedNode": "\\src-tauri\\capabilities\\default.json",
+  "PreviewInSolutionExplorer": false
+}

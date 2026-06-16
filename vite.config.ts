@@ -11,6 +11,9 @@ export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), '')
 	return {
 		server: {
+			watch: {
+				ignored: ['**/src-tauri/**','**/src-tauri/target/**']	
+			},
 			host: '0.0.0.0', // allow anywhere
 			port: 7001, // port access
 			proxy: {
