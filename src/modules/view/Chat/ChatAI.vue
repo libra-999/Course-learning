@@ -202,7 +202,7 @@ const createMessage = (role: Message['role'], content: string, loading = false):
 const buildBotContents = () =>
     messages.value.filter (({loading}) => !loading).map (({role, content}) => ({
        role: role === 'assistant' ? 'model' : 'user',
-       parts: [{text: content}],
+       content: content,
     }))
 
 const replaceMessage = (id: number, payload: Partial<Omit<Message, 'id' | 'role'>>): void => {
