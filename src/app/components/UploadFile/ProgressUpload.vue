@@ -85,7 +85,7 @@ const handleDeleteImage = (fileName: string, index: string) => {
 const { t } = useI18n()
 
 </script>
-<style scoped>
+<style lang="scss" scoped>
 :deep(.custom-upload .el-upload-dragger) {
    border: 1px dashed #213547;
    background: var(--bg-color-blue-2);
