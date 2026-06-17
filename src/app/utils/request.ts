@@ -6,11 +6,12 @@ import i18n from '@/modules/locales'
 
 const SERVER_PROXY = import.meta.env.VITE_SERVER_PROXY
 const SERVER_VERSION = import.meta.env.VITE_SERVER_VERSION
+const SERVER_URL = import.meta.env.VITE_SERVER_URL
 
 const BASE_URL = import.meta.env.DEV ? `${SERVER_PROXY}/${SERVER_VERSION}` : `${SERVER_URL}/${SERVER_VERSION}`
 const t = i18n.global.t
 const apiRequest: AxiosInstance = axios.create({
-	baseURL: `${SERVER_PROXY}/${SERVER_VERSION}`,
+	baseURL: `${BASE_URL}`,
 	timeout: 50000, // 5s
 })
 
