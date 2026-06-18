@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import { inject } from "@vercel/analytics"
 import { createPinia } from 'pinia'
 import { useTheme } from '@/modules/store/theme.ts'
 import App from './App.vue'
@@ -15,7 +14,6 @@ const app = createApp(App);
 const pinia = createPinia();
 const router = route;
 
-inject()
 pinia.use(piniaPluginPersistedstate)
 app.use(i18n)
 app.use(pinia);
