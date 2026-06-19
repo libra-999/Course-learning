@@ -5,47 +5,37 @@
 </template>
 <style scoped lang="scss">
 .loader {
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   width: 60px;
-   display: flex;
-   align-items: flex-start;
-   aspect-ratio: 1;
-   margin: auto;
-
-   &::before,
-   &::after {
-      content: "";
-      flex: 1;
-      aspect-ratio: 1;
-      --g: conic-gradient(from -90deg at 10px 10px, var(--text-color) 90deg, #0000 0);
-      background: var(--g), var(--g), var(--g);
-      filter: drop-shadow(30px 30px 0 var(--text-color));
-      animation: l20 1s infinite;
-   }
-
-   &::after {
-      transform: scaleX(-1);
-   }
-
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	display: block;
+	margin:15px auto;
+	position: relative;
+	color: var(--text-color);
+	box-sizing: border-box;
+	transform: translate(-50%,-50%);
+	animation: animloader 1s linear infinite alternate;
 }
 
-@keyframes l20 {
-   0% {
-      background-position: 0 0, 10px 10px, 20px 20px
-   }
+@keyframes animloader {
+	0% {
+		box-shadow: -38px -6px, -14px 6px,  14px -6px;
+	}
+	33% {
+		box-shadow: -38px 6px, -14px -6px,  14px 6px;
+	}
+	66% {
+		box-shadow: -38px -6px, -14px 6px, 14px -6px;
+	}
+	100% {
+		box-shadow: -38px 6px, -14px -6px, 14px 6px;
+	}
+}
 
-   33% {
-      background-position: 10px 10px
-   }
+@media screen and (max-width: $screen-md) {
+	.loader {
+		transform: translate(-50%,-50%) scale(0.6);
+	}
 
-   66% {
-      background-position: 0 20px, 10px 10px, 20px 0
-   }
-
-   100% {
-      background-position: 0 0, 10px 10px, 20px 20px
-   }
 }
 </style>

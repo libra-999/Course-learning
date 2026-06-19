@@ -27,9 +27,11 @@
                   </div>
                </div>
                <div class="chat-header__actions">
-                  <ButtonGlobal value="" class="icon-btn icon-btn--close" @click.prevent="closeChat">
+                  <ButtonGlobal value="" class="icon-btn--close" @click.prevent="closeChat">
                      <template #icon-right>
-                        <CloseBold/>
+								<el-icon color="#20202e">
+									<CloseBold/>
+								</el-icon>
                      </template>
                   </ButtonGlobal>
                </div>
@@ -98,10 +100,11 @@
                                   @blur="inputFocused = false" @input="autoResize"/>
 
                   <ButtonGlobal value="" :class="['send-btn', { 'send-btn--active': canSend }]"
-
                                 :disabled="!canSend" @click.prevent="sendMessage">
-                     <template #icon-left>
-                        <Position/>
+                     <template #icon-right>
+								<el-icon color="#fff">
+									<Position/>
+								</el-icon>
                      </template>
                   </ButtonGlobal>
                </div>
@@ -146,6 +149,8 @@ let checkAIStatus: ReturnType<typeof setInterval> | null = null
 
 let messageId = 0
 
+const openChatWindow = defineModel<boolean> ('openChat')
+
 // recommendation content
 const quickPrompts: QuickPrompt[] = [
    {icon: '💬', label: 'What can you help with?', text: 'What can you help me with?'},
@@ -179,11 +184,13 @@ const autoResize = (): void => {
 
 const openChat = (): void => {
    isOpen.value = true
+	openChatWindow.value = true
    focusInput ()
 }
 
 const closeChat = (): void => {
    isOpen.value = false
+	openChatWindow.value = false
 }
 
 const sendQuickPrompt = (text: string): void => {
@@ -440,11 +447,15 @@ onUnmounted (() => {
       background: $surface;
       color: $text;
    }
-
-   &--close:hover {
-      background: rgba($red, 0.12);
-      color: $red;
-   }
+	&--close {
+		width: 35px;
+		height: 35px;
+		background: white;
+		&:deep(.el-icon):hover{
+			background: rgba($red, 0.12);
+			color: $red;
+		}
+	}
 }
 
 .messages {
@@ -710,7 +721,6 @@ onUnmounted (() => {
    flex-shrink: 0;
    cursor: not-allowed;
    transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
-
    &--active {
       background: linear-gradient(135deg, var(--text-color), var(--text-color));
       cursor: pointer;

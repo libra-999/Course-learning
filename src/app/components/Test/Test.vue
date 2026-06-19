@@ -1,6 +1,6 @@
 <template>
 	<div class="test-container">
-		<ButtonGlobal class=" absolute top-1 left-1 p-4" value="" @click="back">
+		<ButtonGlobal :class="['fixed z-10 left-1 p-4', isMobile ? 'bottom-2 ' : 'top-2']" style="border-radius: 50%;" value="" @click="back">
 			<template #icon-right>
 				<el-icon>
 					<ArrowLeftBold/>
@@ -27,6 +27,7 @@ import { ArrowLeftBold } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { isMobile } from '@/app/utils/responsive.ts'
 
 const boxValue = ref<number[]>([0])
 const count = ref<number>(0)
@@ -67,6 +68,8 @@ const handleClickAdd = () => {
 			width: 80%;
 			overflow: hidden;
 			display: flex;
+			align-items: center;
+			justify-content: center;
 			flex-wrap:wrap;
 			gap: .2rem;
 		}
