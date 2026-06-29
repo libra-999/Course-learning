@@ -129,8 +129,8 @@ const qr = ref<QRCodeData> ({
    qrCodeExpired: '120',
 })
 const userRef = ref<LoginRequest> ({
-   username: '',
-   password: '',
+   username: 'test',
+   password: 'Test88888$',
    isRemember: false
 
 })
@@ -138,7 +138,7 @@ const userRule: FormRules<LoginRequest> = {
    username: [
       {required: true, message: t ("LOGIN.FILL.FORM_ITEM.username_isNull"), trigger: 'blur'},
       {
-         min: 7,
+         min: 3,
          max: 40,
          message: t ("LOGIN.FILL.FORM_ITEM.username_length_validate"),
          trigger: 'blur',
