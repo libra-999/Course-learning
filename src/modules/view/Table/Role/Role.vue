@@ -57,7 +57,7 @@
          </div>
          <!-- Table Display -->
          <Loading class="m-auto" v-if="loading"/>
-         <el-table v-else row-key="id" :data="pageData" default-expand-all table-layout="auto" style="width: 100%"
+         <el-table v-else row-key="id" :data="visibleRole" default-expand-all table-layout="auto" style="width: 100%"
                    @selection-change="handleSelectionChange">
             <el-table-column>
                <el-table-column type="selection" align="center"/>
@@ -76,7 +76,7 @@
                </el-table-column>
                <el-table-column min-width="260" label="操作" align="center" class-name="action-table">
                   <template #default="scope">
-                     <div class="flex gap-1.5">
+                     <div class="flex gap-1.5 justify-center">
                         <ButtonGlobal class="bg-orange-400  text-white hover:bg-orange-500" value="编辑"
                                       @click="handleOpenUpdateDialog(scope.row.id)">
                            <template #icon-left>
@@ -85,7 +85,7 @@
                               </el-icon>
                            </template>
                         </ButtonGlobal>
-                        <ButtonGlobal class="bg-yellow-400 text-white hover:bg-yellow-500" value="分配"
+                        <ButtonGlobal v-if="isAdmin" class="bg-yellow-400 text-white hover:bg-yellow-500" value="分配"
                                       @click="handleOpenRolePermissionDrawer(scope.row.id)">
                            <template #icon-left>
                               <el-icon>
@@ -93,7 +93,7 @@
                               </el-icon>
                            </template>
                         </ButtonGlobal>
-                        <ButtonGlobal class="bg-red-600 text-white hover:bg-red-700" value="删除"
+                        <ButtonGlobal v-if="isAdmin" class="bg-red-600 text-white hover:bg-red-700" value="删除"
                                       @click="handleRoleDelete(scope.row.id)">
                            <template #icon-left>
                               <el-icon>
@@ -123,12 +123,13 @@ import Loading from '@/app/components/Loading/Loading.vue';
 import { dayMonthFormat } from '@/app/utils/dateFormat';
 import { switchStatusCode, useMessage } from '@/app/utils/message';
 import { roleDelete, rolePage } from '@/modules/api/role';
+import { loginStore } from '@/modules/store/auth';
 import { type QueryParams, type RoleItem, type RoleQueryParam, type RoleUpdateReq } from '@/modules/types/role';
 import DialogForm from '@/modules/view/Table/Role/DialogForm.vue';
 import RolePermissionView from '@/modules/view/Table/Role/RolePermissionView.vue';
 import { Delete, Edit, EditPen, Plus, Refresh, Search } from '@element-plus/icons-vue';
 import type { FormInstance } from 'element-plus';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 /* Ref */
 const roleQueryFormRef = ref<FormInstance> ()
@@ -159,6 +160,13 @@ const queryParams = ref<QueryParams> ({
    page: 1,
    size: 10,
    sort: "desc"
+})
+
+/* verify login role */
+const authStore = loginStore()
+const isAdmin = computed(()=> {
+   const role = authStore.user?.username;
+   return role === 'admin' || role === 'super-admin' || role === 'admin666'
 })
 
 /* action event*/
@@ -211,6 +219,13 @@ const handleRoleDelete = async (id: string) => {
    const remove = await roleDelete (id);
    switchStatusCode (remove.code, remove.message)
 }
+const visibleRole = computed(()=>{
+   if (isAdmin.value){
+      return pageData.value ?? []
+   }else{
+      return pageData.value?.filter(i => !i.code.endsWith('ADMIN')) ?? []
+   }
+})
 
 /* watch data change */
 onMounted (() => {
