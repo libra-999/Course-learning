@@ -1,9 +1,9 @@
 <template>
    <div>
-      <ButtonGlobal class=" absolute top-2 mobile right-1 text-white" value="" @click="back">
+      <ButtonGlobal :class="['fixed z-10 text-white', isMobile ? 'bottom-2 left-1': 'top-2  right-1']" style="border-radius: 50%" value="" @click="back">
          <template #icon-right>
             <el-icon>
-               <CloseBold/>
+               <ArrowLeftBold/>
             </el-icon>
          </template>
       </ButtonGlobal>
@@ -14,8 +14,9 @@
 <script setup lang="ts">
 import ButtonGlobal from '@/app/components/Button/ButtonGlobal.vue';
 import Role from '@/modules/view/Table/Role/Role.vue';
-import { CloseBold } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
+import { isMobile } from '@/app/utils/responsive.ts'
+import { ArrowLeftBold } from '@element-plus/icons-vue'
 
 
 const route = useRouter ()
@@ -23,11 +24,4 @@ const back = () => route.back()
 </script>
 
 <style lang="scss" scoped>
-@media screen and (max-width: 728px){
-   .mobile {
-      position: absolute;
-      top: 12%;
-      z-index: 100;
-   }
-}
 </style>
