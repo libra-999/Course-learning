@@ -1,2 +1,2 @@
 ## Endpoint
-Client Demo --> [**web-course**](https://course-vue-22.vercel.app)
+Client Demo --> [**web-course**](https://course-serksa.hldev.xyz)
