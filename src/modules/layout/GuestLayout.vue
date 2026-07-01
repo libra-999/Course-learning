@@ -1,6 +1,6 @@
 <template>
-   <div class="w-full flex gap-1 px-3 py-5">
-      <div class="w-[100%]">
+   <div class="w-full min-h-screen gap-1 px-3 py-5">
+      <div class="w-full">
          <div
              class="mx-auto lg:w-[100%] xl:w-[80%] sm:w-[100%] md:w-[95%] py-10 border-b-[#112a46] border-2 border-r-transparent border-t-transparent border-l-transparent">
             <p class="uppercase font-bold lg:text-center text-start sm:text-start text-sm mb-3">
@@ -42,11 +42,13 @@
          </div>
       </div>
    </div>
+   <Footer/>
 </template>
 <script setup lang="ts">
 import { Avatar, ChatDotRound, DataLine, DocumentAdd, Postcard, UploadFilled } from '@element-plus/icons-vue'
 import Cardbox from '@/app/components/Card/Cardbox.vue'
 import SwitchLang from '@/app/components/Localization/SwitchLang.vue'
+import Footer from '@/modules/view/Footer/index.vue'
 import { useI18n } from 'vue-i18n';
 
 

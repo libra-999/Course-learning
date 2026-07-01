@@ -1,13 +1,13 @@
 <template>
-   <div>
-      <ButtonGlobal :class="['fixed z-10 text-white', isMobile ? 'bottom-2 left-1': 'top-2  right-1']" style="border-radius: 50%" value="" @click="back">
+   <div class="min-h-screen">
+      <ButtonGlobal class=" absolute top-2 mobile right-1 text-white" value="" @click="back">
          <template #icon-right>
             <el-icon>
-               <ArrowLeftBold/>
+               <ArrowLeftBold />
             </el-icon>
          </template>
       </ButtonGlobal>
-      <Role/>
+      <Role />
    </div>
 </template>
 
@@ -19,9 +19,8 @@ import { isMobile } from '@/app/utils/responsive.ts'
 import { ArrowLeftBold } from '@element-plus/icons-vue'
 
 
-const route = useRouter ()
+const route = useRouter()
 const back = () => route.back()
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
