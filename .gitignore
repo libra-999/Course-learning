@@ -20,3 +20,9 @@ dist-ssr
 .DS_Store
 .env.dev
 .env.prod
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vs
