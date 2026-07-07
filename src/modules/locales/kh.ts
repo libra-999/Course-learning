@@ -1,5 +1,5 @@
 export default {
-   TITLE_SYSTEM: 'មេរៀន Vue 3',
+   TITLE_SYSTEM: 'សិក្សា',
    language: 'ខ្មែរ',
 
    MAIN_LAYOUT: {
