@@ -130,7 +130,7 @@ const qr = ref<QRCodeData> ({
 })
 const userRef = ref<LoginRequest> ({
    username: 'test',
-   password: 'Test88888$',
+   password: 'Test88888$$',
    isRemember: false
 
 })
