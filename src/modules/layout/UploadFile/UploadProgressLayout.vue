@@ -1,6 +1,6 @@
 <template>
    <div class="text-black w-full mobile min-h-screen">
-      <ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
+      <ButtonGlobal :class="['fixed left-1 p-4 text-white', isMobile ? 'bottom-1': 'hidden top-1 ']" style="border-radius: 50%;" value="" @click="back">
          <template #icon-right>
             <el-icon>
                <ArrowLeftBold />

@@ -1,6 +1,6 @@
 <template>
 	<div class="test-container">
-		<ButtonGlobal :class="['fixed z-10 left-1 p-4', isMobile ? 'bottom-2 ' : 'top-2']" style="border-radius: 50%;" value="" @click="back">
+		<ButtonGlobal :class="['fixed z-10 left-1 p-4', isMobile ? 'bottom-2 ' : 'top-2 hidden']" style="border-radius: 50%;" value="" @click="back">
 			<template #icon-right>
 				<el-icon>
 					<ArrowLeftBold/>
