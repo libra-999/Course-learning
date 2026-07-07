@@ -1,6 +1,6 @@
 <template>
    <div class="book-layout flex place-items-center px-2 py-4">
-      <ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
+      <ButtonGlobal :class="['absolute top-1 left-1 p-4 text-white', isMobile ? '' : 'hidden']" value="" @click="back">
          <template #icon-right>
             <el-icon>
                <ArrowLeftBold />

@@ -1,6 +1,6 @@
 <template>
    <div class="min-h-screen">
-      <ButtonGlobal class=" absolute top-1 left-1 p-4 text-white" value="" @click="back">
+      <ButtonGlobal v-if="!openChat" :class="['fixed top-1 left-1 p-4 text-white', isMobile ? '' : 'hidden']" style="border-radius: 50%;" value="" @click="back">
          <template #icon-right>
             <el-icon>
                <ArrowLeftBold />
